@@ -1,5 +1,7 @@
 package isa.tim13.PozoristaiBioskopi.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +18,9 @@ public class PozoristaIBioskopiService {
 		//Servis postoji zato sto ovde mogu da se izvrse razne provere pre samog modifikovanja
 		rep.save(k);
 		
+	}
+
+	public Collection<InstitucijaKulture> prikaziInstitucije() {
+		return (Collection<InstitucijaKulture>) rep.findAll();
 	}
 }

@@ -19,13 +19,15 @@ public class PozoristaIBioskopiController {
 	@Autowired
 	PozoristaIBioskopiService servis;
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public Collection<InstitucijaKulture> prikaziInstitucije() {
-		return null;
+		return servis.prikaziInstitucije();
 	}
 	
 	@RequestMapping(value = "/registruj", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void registrujInstituciju(@RequestBody InstitucijaKulture k) {
 		servis.dodajInstitucijuKulture(k);
 	}
+	
+	
 }
