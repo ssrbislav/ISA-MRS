@@ -2,7 +2,7 @@
  var dodajProjekciju = "/dodajProjekciju";
 
 
-function regFormaUJSON(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, slika, opis, cena) {
+function regFormaUJSON(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, slika, opis, cena, lista_sala, lista_projekcija) {
 	return JSON.stringify({
 		"naziv":naziv,
 		"spisak_glumaca":spisak_glumaca,
@@ -11,8 +11,9 @@ function regFormaUJSON(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, sli
 		"trajanje":trajanje,
 		"slika":slika,
 		"opis":opis,
-		"cena":cena
-		//Treba jos lista termina i sala
+		"cena":cena,
+		"lista_sala": lista_sala,
+	    "lista_projekcija": lista_projekcija
 	});
 }
 
@@ -27,6 +28,12 @@ function formaNevalidna(){
 }
 
 $(document).ready(function() {
+	$("#dodaj_salu").click(function(event) {
+		lista_sala.push();
+	})
+	$("#dodaj_termin").click(function(event) {
+		lista_termina.push();
+	})
 	$("#dodaj_projekciju").click(function(event) {
 		var naziv = $("input[name=naziv]").val();
 		var spisak_glumaca = $("input[name=spisak_glumaca]").val();
@@ -37,7 +44,8 @@ $(document).ready(function() {
 		var opis = $("input[name=opis]").val();
 		var cena = $("input[name=cena]").val();
 		
-		if(formaNevalidna(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, opis, cena)){
+		
+		if(formaNevalidna(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, opis, cena, lista_sala, lista_projekcija)){
 			alert("Potrebno je popuniti sva polja! ");
 			return;
 		}
@@ -48,7 +56,7 @@ $(document).ready(function() {
 			url: dodajProjekciju,
 			contentType : "application/json; charset=utf-8",
 			dataType: "json",
-			data: regFormaUJSON(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, opis, cena),
+			data: regFormaUJSON(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, opis, cena, lista_sala, lista_projekcija),
 			complete: function(data,status){
 				if(status!="error"){
 					window.location = '/';
