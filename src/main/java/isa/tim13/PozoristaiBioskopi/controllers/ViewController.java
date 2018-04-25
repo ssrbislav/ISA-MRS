@@ -22,4 +22,15 @@ public class ViewController {
 	public String prijava() {
 		return "prijava";
 	}
+	
+	@RequestMapping("/projekcija")
+	public String projekcija() {
+		return "projekcija";
+	}
+	
+	@RequestMapping("/predstava")
+	public String predstava() {
+		return "predstava";
+	}
+
 }
