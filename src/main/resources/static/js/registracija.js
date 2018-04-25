@@ -1,9 +1,7 @@
-<<<<<<< Updated upstream
+
 var registrujInstitucijuPutanja = "/pozoristaibioskopi/registruj";
 var prikazSvihInstitucijaPutanja = "/pozoristaibioskopi"
-=======
-var registrujInstitucijuPutanja = "/register";
->>>>>>> Stashed changes
+
 
 
 function regFormaUJSON(naziv,adresa,telefon,opis,tip){
