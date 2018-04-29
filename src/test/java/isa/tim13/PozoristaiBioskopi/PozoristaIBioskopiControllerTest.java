@@ -1,7 +1,5 @@
 package isa.tim13.PozoristaiBioskopi;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,10 +24,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import isa.tim13.PozoristaiBioskopi.controllers.PozoristaIBioskopiController;
+
 import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
 import isa.tim13.PozoristaiBioskopi.model.TipInstitucijeKulture;
-import isa.tim13.PozoristaiBioskopi.service.PozoristaIBioskopiService;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
