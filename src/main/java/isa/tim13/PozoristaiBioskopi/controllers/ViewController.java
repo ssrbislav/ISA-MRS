@@ -32,5 +32,10 @@ public class ViewController {
 	public String predstava() {
 		return "predstava";
 	}
+	
+	@RequestMapping("/registracijaInstitucija")
+	public String registracijaInstitucija() {
+		return "registracijaInstitucija";
+	}
 
 }
