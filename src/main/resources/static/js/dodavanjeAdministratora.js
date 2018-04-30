@@ -2,8 +2,13 @@
 var administratoriPutanja = "/administratori"
 var prikazSvihInstitucijaPutanja = "/pozoristaibioskopi"
 
+var institucionalni = "INSTITUCIONALNI";
+var sistemski = "SISTEMSKI";
+var fanZona = "FAN_ZONA";
+var tipoviAdministratora = [sistemski,fanZona];
 
-var tipoviAdministratora = ["INSTITUCIONALNI","SISTEMSKI","FAN_ZONA"]
+var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
 
 
 function adminFormaUJSON(ime,prezime,lozinka,email,tip_administratora,id_institucije){
@@ -32,7 +37,7 @@ function formaNevalidna(){
 
 function dobaviId(){
 	var pr = $("select[name=tip_administratora]");
-	if(pr.val() != tipoviAdministratora[0]){
+	if(pr.val() != institucionalni){
 		return 0;
 	}
 	else{
@@ -43,7 +48,7 @@ function dobaviId(){
 
 function prikaziIliSakrijInstitucijeZaBiranje(){
 	var pr = $("select[name=tip_administratora]");
-	if(pr.val() != tipoviAdministratora[0]){
+	if(pr.val() != institucionalni){
 		$("#prikazInstitucijaZaBiranje").hide();
 	}
 	else{
@@ -62,6 +67,18 @@ function popuniInstitucije(items){
 	});
 }
 
+
+
+function popuniStavke(items){
+	
+	$.each(items, function (i, item) {
+		var newOption = $("<option></option>");
+		newOption.attr("value",item).text(item);
+	    $('select[name=tip_administratora]').append(newOption);
+	            
+	});
+}
+
 $(document).ready(function(){
 	
 	prikaziIliSakrijInstitucijeZaBiranje();
@@ -69,10 +86,15 @@ $(document).ready(function(){
 	$.ajax({ url:prikazSvihInstitucijaPutanja,
 		   type: "GET",
 		   success: function(data){
+			  if(data.length !=0){
+				  tipoviAdministratora.push(institucionalni);
+				  $("#hint").hide();
+			  }
+			  popuniStavke(tipoviAdministratora);
 			  popuniInstitucije(data);
 		   },
 		  error : function(XMLHttpRequest, textStatus, errorThrown) {
-			}
+		}
 		   
  });
 	
@@ -87,9 +109,17 @@ $(document).ready(function(){
 		var email = $("input[name=email]").val();
 		var tip_administratora =  $("select[name=tip_administratora]").val();
 		var id_institucije = dobaviId();
-	
+	    
+		
+		
+		
 		if(formaNevalidna(ime,prezime,lozinka,email,tip_administratora,id_institucije)){
 			alert("Niste popunili sva polja kako treba! ");
+			return;
+		}
+		
+		if(!emailRegex.test(String(email).toLowerCase())){
+			alert("Neispravna email adresa!");
 			return;
 		}
 		
@@ -102,8 +132,9 @@ $(document).ready(function(){
 			type: "POST",
 			dataType: "text",
 			data: adminFormaUJSON(ime,prezime,lozinka,email,tip_administratora,id_institucije),
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				alert("Desila se greska: " + textStatus);
+			error : function(xhr, textStatus, errorThrown) {
+				var err = xhr["responseText"];
+				alert(err);
 			}
 			
 		});
