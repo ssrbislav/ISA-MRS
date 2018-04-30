@@ -46,7 +46,7 @@ public class RegistracioniController {
 		noviKorisnik.setPrezime(registracija.getPrezime());
 		noviKorisnik.setTelefon(registracija.getTelefon());
 		noviKorisnik.setGrad(registracija.getGrad());
-		noviKorisnik.setLozika(registracija.getLozika1());
+		noviKorisnik.setLozinka(registracija.getLozika1());
 		
 		noviKorisnik.setRegistracioniLink(UUID.randomUUID().toString());
 		noviKorisnik.setAktivan(false);

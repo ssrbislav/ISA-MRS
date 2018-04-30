@@ -22,8 +22,8 @@ public abstract class Osoba {
 	@Column(name = "email")
 	private String email;
 	
-	@Column(name = "lozika")
-	private String lozika;
+	@Column(name = "lozinka")
+	private String lozinka;
 	
 	@Column(name = "lokacijaSlike")
 	private String lokacijaSlike;
@@ -52,8 +52,8 @@ public abstract class Osoba {
 		return email;
 	}
 
-	public String getLozika() {
-		return lozika;
+	public String getLozinka() {
+		return lozinka;
 	}
 
 	public String getLokacijaSlike() {
@@ -88,8 +88,8 @@ public abstract class Osoba {
 		this.email = email;
 	}
 
-	public void setLozika(String lozika) {
-		this.lozika = lozika;
+	public void setLozinka(String lozinka) {
+		this.lozinka = lozinka;
 	}
 
 	public void setLokacijaSlike(String lokacijaSlike) {
