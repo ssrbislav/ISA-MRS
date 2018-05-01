@@ -1,5 +1,6 @@
 package isa.tim13.PozoristaiBioskopi.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,10 @@ public class AdministratoriService {
 		}
 		
 		rep.save(a);
+	}
+
+	public Iterable<Administrator> prikaziAdministratore() {
+		return rep.findAll();
 	}
 	
 }

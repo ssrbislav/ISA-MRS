@@ -1,5 +1,6 @@
 package isa.tim13.PozoristaiBioskopi.controllers;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import isa.tim13.PozoristaiBioskopi.dto.AdministratorDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.InstitucijaNePostojiException;
 import isa.tim13.PozoristaiBioskopi.exceptions.OsobaVecPostojiException;
+import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.service.AdministratoriService;
 
 
@@ -35,6 +37,11 @@ public class AdministratoriController {
 		}
 		
 		return new ResponseEntity<String>("Administrator uspesno registrovan. ",HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public Iterable<Administrator> prikaziAdministratore(){
+		return servis.prikaziAdministratore();
 	}
 	
 }

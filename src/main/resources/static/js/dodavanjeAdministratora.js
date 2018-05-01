@@ -100,6 +100,27 @@ $(document).ready(function(){
 	
 	$("select[name=tip_administratora]").change(prikaziIliSakrijInstitucijeZaBiranje);
 	
+	$("#prikazAdministratoraDugme").click(function(event){
+		$.ajax({ url:administratoriPutanja,
+			   type: "GET",
+			   success: function(data){
+				   var resultHtml = "<table border=\"1\"><tr bgcolor=\"lightgrey\">";
+				   resultHtml += "<tr><th>Ime</th><th>Prezime</th><th>Email</th><th>Tip administratora</th></tr>";
+				   
+				   
+				   for ( i=0;i < data.length;i++){
+					   
+					   resultHtml += "<tr>"+"<td>"+data[i]["ime"]+"</td><td>"+data[i]["prezime"]+"</td><td>"+data[i]["email"]+"</td><td>"+data[i]["tip"]+"</td></tr>";
+				   }
+				   resultHtml += "</table>"
+				   $("#prikazAdministratora").html(resultHtml);
+			   },
+			   error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("Desila se greska: " + errorThrown);
+				}
+			   
+	    });
+	});
 	
 	$("#registracijaDugme").click(function(event){
 		

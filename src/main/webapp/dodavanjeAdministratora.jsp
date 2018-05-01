@@ -21,7 +21,7 @@
 	</div>
 	<input type="button" id="prikazAdministratoraDugme" value="Prikaz postojecih administratora"/>
 </div>
-<div id="prikaz" style="margin: 0 auto; width: 250px;">
+<div id="prikazAdministratora" style="margin: 0 auto; width: 250px;">
 	
 </div>
 </body>
