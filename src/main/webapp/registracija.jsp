@@ -13,19 +13,18 @@
 	<div style="margin: 0 auto; width: 250px;">
 		<img src="images/reg.png" style="width: 330px; height: 230px;"></img>
 		<br>
-		<label style="color: #000066;">Popunite podatke zaregistraciju: </label>
+		<label style="color: #015188;">Popunite podatke zaregistraciju: </label>
 		<br>
 		<br>
-		<input name="email" placeholder="Email Adresa" size=50></input>
-		<input type="password" name="lozinka1" placeholder="Lozinka" size=50></input>
-		<input type="password" name="lozinka2" placeholder="Ponovi lozinku" size=50></input>
-		<input name="ime" placeholder="Ime" size=50></input>
-		<input name="prezime" placeholder="Prezime" size=50></input>
-		<input name="grad" placeholder="Grad" size=50></input>
-		<input name="telefon" placeholder="Broj telefona" size=50></input>
-		<br>
-		<br>
-		<button id="registracijaDugme">Registracija</button>
+		<input style="width:322.467px;" name="email" placeholder="Email Adresa" size=50></input>
+		<input style="width:322.467px;" type="password" name="lozinka1" placeholder="Lozinka" size=50></input>
+		<input style="width:322.467px;" type="password" name="lozinka2" placeholder="Ponovi lozinku" size=50></input>
+		<input style="width:322.467px;" name="ime" placeholder="Ime" size=50></input>
+		<input style="width:322.467px;" name="prezime" placeholder="Prezime" size=50></input>
+		<input style="width:322.467px;" name="grad" placeholder="Grad" size=50></input>
+		<input style="width:322.467px;" name="telefon" placeholder="Broj telefona" size=50></input>
+		<button id="registracijaDugme"  style="width:326.467px;">Registracija</button><br/><br/>
+		<a href="/prijava">Prijava</a>
 	</div>
 </body>
 </html>
