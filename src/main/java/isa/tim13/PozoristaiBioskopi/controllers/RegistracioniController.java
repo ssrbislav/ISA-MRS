@@ -1,11 +1,16 @@
 package isa.tim13.PozoristaiBioskopi.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,9 +40,9 @@ public class RegistracioniController {
 			noviKorisnik(registracija, noviKorisnik);
 			korisniciServis.dodajKorisnika(noviKorisnik);
 			mail(noviKorisnik.getEmail(), noviKorisnik.getRegistracioniLink());
-			return  ResponseEntity.ok().build();
+			return  ResponseEntity.status(HttpStatus.OK).build();
 		}
-		return ResponseEntity.badRequest().build();		
+		return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();	
 	}
 
 	private void noviKorisnik(RegisterDTO registracija, Korisnik noviKorisnik) {
@@ -61,7 +66,7 @@ public class RegistracioniController {
 	
 	private void mail(String mailTo, String registracioniLink) {
 		String naslov = "Potvrda registracije";
-		String sadrzaj = "Pozdrav, molimo Vas da potvrdite registraciju putem sledeceg linka:\nhttp://localhost:8080/registerUser/aktivacija/"+ registracioniLink;
+		String sadrzaj = "Pozdrav, molimo Vas da potvrdite registraciju putem sledeceg linka:\nhttp://localhost:8080/aktivacija/"+ registracioniLink;
 		emailService.sendEmail(mailTo, naslov, sadrzaj);
 	}
 }

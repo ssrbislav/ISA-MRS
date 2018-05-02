@@ -58,17 +58,15 @@ $(document).ready(function(){
 			type: "POST",
 			url: registrujKorisnika,
 			contentType : "application/json; charset=utf-8",
-			dataType: "json",
 			data: regFormaUJSON(email,lozinka1,lozinka2,ime,prezime,grad,telefon),
 			complete: function(data,status){
-				if(status!="error"){
+				if(status=="success"){
 					window.location = '/prijava';
-				}else{
+				} else if(status=="notmodified"){
 					alert("Korisnik vec postoji!" );
+				} else {
+					alert("Doslo je do greske!" );
 				}
-			},
-			failure : function(error) {
-				alert("Desila se greska!" );
 			}
 		});
 		

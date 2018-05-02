@@ -18,5 +18,9 @@ public class KorisniciService {
 	public Korisnik pronadjiKorisnikaPoEmailu(String email) {
 		return rep.findByEmail(email);
 	}
+	
+	public Korisnik pronadjiNeaktivnogKorisnika(String registracioniLink) {
+		return rep.findByRegistracioniLink(registracioniLink);
+	}
 
 }

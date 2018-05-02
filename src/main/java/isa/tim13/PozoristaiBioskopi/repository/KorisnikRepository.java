@@ -8,4 +8,5 @@ import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 @Repository
 public interface KorisnikRepository extends CrudRepository<Korisnik, Integer> {
 	Korisnik findByEmail(String email);
+	Korisnik findByRegistracioniLink(String registracioniLink);
 }
