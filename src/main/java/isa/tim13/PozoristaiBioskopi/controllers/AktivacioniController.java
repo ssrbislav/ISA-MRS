@@ -24,8 +24,6 @@ public class AktivacioniController {
 		if(kor != null) {
 			kor.setAktivan(true);
 			korisniciServis.dodajKorisnika(kor);
-		}else {
-			System.out.println("Korisnik sa datim aktivacionim linkom nije pronadjen!");
 		}
 		response.sendRedirect("/prijava");
 	}

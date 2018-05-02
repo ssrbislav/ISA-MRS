@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,6 +74,15 @@ private static final String URL_PREFIX = "/registerUser";
 	public void before() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(emailService).sendEmail(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        Korisnik zaBrisanje = repozitorijum.findByEmail(registracija.getEmail());
+        if(zaBrisanje != null) {
+        	repozitorijum.delete(zaBrisanje);
+        	zaBrisanje = null;
+        }
+	}
+	
+	@After
+	public void after() {
         Korisnik zaBrisanje = repozitorijum.findByEmail(registracija.getEmail());
         if(zaBrisanje != null) {
         	repozitorijum.delete(zaBrisanje);
