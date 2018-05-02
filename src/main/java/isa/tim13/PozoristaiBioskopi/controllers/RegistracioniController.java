@@ -1,16 +1,12 @@
 package isa.tim13.PozoristaiBioskopi.controllers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +31,7 @@ public class RegistracioniController {
 	@RequestMapping(method=RequestMethod.POST,  consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> registruj(@RequestBody RegisterDTO registracija) {
 		Korisnik noviKorisnik  = korisniciServis.pronadjiKorisnikaPoEmailu(registracija.getEmail());
-		if(registracija.getLozika1().equals(registracija.getLozinka2()) && noviKorisnik == null) {
+		if(registracija.getLozinka1().equals(registracija.getLozinka2()) && noviKorisnik == null) {
 			noviKorisnik = new Korisnik();
 			noviKorisnik(registracija, noviKorisnik);
 			korisniciServis.dodajKorisnika(noviKorisnik);
@@ -51,7 +47,7 @@ public class RegistracioniController {
 		noviKorisnik.setPrezime(registracija.getPrezime());
 		noviKorisnik.setTelefon(registracija.getTelefon());
 		noviKorisnik.setGrad(registracija.getGrad());
-		noviKorisnik.setLozinka(registracija.getLozika1());
+		noviKorisnik.setLozinka(registracija.getLozinka1());
 		
 		noviKorisnik.setRegistracioniLink(UUID.randomUUID().toString());
 		noviKorisnik.setAktivan(false);

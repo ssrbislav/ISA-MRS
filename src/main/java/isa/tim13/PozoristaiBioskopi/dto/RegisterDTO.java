@@ -11,7 +11,7 @@ public class RegisterDTO {
 	@JsonProperty(value = "email")
 	private String email;
 	@JsonProperty(value = "lozinka1")
-	private String lozika1;
+	private String lozinka1;
 	@JsonProperty(value = "lozinka2")
 	private String lozinka2;
 	@JsonProperty(value = "telefon")	
@@ -31,8 +31,8 @@ public class RegisterDTO {
 		return email;
 	}
 
-	public String getLozika1() {
-		return lozika1;
+	public String getLozinka1() {
+		return lozinka1;
 	}
 
 	public String getLozinka2() {
@@ -59,8 +59,8 @@ public class RegisterDTO {
 		this.email = email;
 	}
 
-	public void setLozika1(String lozika) {
-		this.lozika1 = lozika;
+	public void setLozinka1(String lozinka) {
+		this.lozinka1 = lozinka;
 	}
 
 	public void setLozinka2(String lozinka2) {
