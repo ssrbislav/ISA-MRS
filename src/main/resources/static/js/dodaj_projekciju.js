@@ -25,29 +25,37 @@ function formaNevalidna(){
 	return false;
 }
 
+function popuniStavke(items){
+	
+	$.each(items, function (i, item) {
+		var newOption = $("<option></option>");
+		newOption.attr("value",item).text(item);
+	    $('select[name=lista_sala]').append(newOption);
+   
+	});
+}
+
+
+function prikaziListuSala(){
+	var ls = $("select[id=lista_sala]");
+		$("#izabrane_sale").show();
+}
+
+
 $(document).ready(function() {
-	
-	
-	$("#dodaj_salu").click(function(event) {
-		lista_sala.push();
-	})
-	
-	$("#dodaj_termin").click(function(event) {
-		lista_termina.push();
-	})
 	
 	$("#dodaj_projekciju").click(function(event) {
 		var naziv = $("input[name=naziv]").val();
 		var spisak_glumaca = $("input[name=spisak_glumaca]").val();
-		var ime_reditelja = $("input[name=ime_reditelja]").val();
+		var ime_reditelja = $("input[name=reditelj]").val();
 		var zanr = $("input[name=zanr]").val();
 		var trajanje =  $("input[name=trajanje]").val();
-		var slika = $("input[name=slika]").val();
+		var slika = $("input[name=naziv_slike]").val();
 		var opis = $("input[name=opis]").val();
 		var cena = $("input[name=cena]").val();
 		
 		
-		if(formaNevalidna(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, opis, cena, lista_sala, lista_projekcija)){
+		if(formaNevalidna(naziv, spisak_glumaca, reditelj, zanr, trajanje, opis, cena, lista_sala, lista_termina)){
 			alert("Potrebno je popuniti sva polja! ");
 			return;
 		}
@@ -58,7 +66,7 @@ $(document).ready(function() {
 			url: dodajProjekciju,
 			contentType : "application/json; charset=utf-8",
 			dataType: "json",
-			data: regFormaUJSON(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, opis, cena, lista_sala, lista_projekcija),
+			data: regFormaUJSON(naziv, spisak_glumaca, reditelj, zanr, trajanje, opis, cena, lista_sala, lista_termina),
 			complete: function(data,status){
 				if(status!="error"){
 					window.location = '/';
