@@ -65,8 +65,6 @@ public class AktivacioniControllerTest {
 	}
 	
 	@Test
-	@Transactional
-	@Rollback(true)
 	public void registracioniTest() throws JsonProcessingException, Exception {
 		mockMvc.perform(get(URL_PREFIX+"/test")).andExpect(status().isMovedTemporarily());
 		assertTrue(repozitorijum.findByEmail("test").getAktivan());

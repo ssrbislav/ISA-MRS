@@ -91,8 +91,6 @@ private static final String URL_PREFIX = "/registerUser";
 	}
 	
 	@Test
-	@Transactional
-	@Rollback(true)
 	public void registracioniTest() throws JsonProcessingException, Exception {
 		mockMvc.perform(post(URL_PREFIX)
 		.contentType(contentType)
@@ -100,8 +98,6 @@ private static final String URL_PREFIX = "/registerUser";
 	}
 	
 	@Test
-	@Transactional
-	@Rollback(true)
 	public void registracioniTestKorisnikVecPostoji() throws JsonProcessingException, Exception {
 		mockMvc.perform(post(URL_PREFIX)
 				.contentType(contentType)
@@ -113,8 +109,6 @@ private static final String URL_PREFIX = "/registerUser";
 	}
 	
 	@Test
-	@Transactional
-	@Rollback(true)
 	public void registracioniTestLozinkaSeNePoklapa() throws JsonProcessingException, Exception {
 		registracija.setLozinka2("neSlazeSe");
 		mockMvc.perform(post(URL_PREFIX)
