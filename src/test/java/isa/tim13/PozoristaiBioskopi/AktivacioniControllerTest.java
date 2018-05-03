@@ -25,6 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import isa.tim13.PozoristaiBioskopi.model.Korisnik;
+import isa.tim13.PozoristaiBioskopi.model.Osoba;
 import isa.tim13.PozoristaiBioskopi.model.PredstavaProjekcija;
 import isa.tim13.PozoristaiBioskopi.repository.KorisnikRepository;
 
@@ -57,7 +58,7 @@ public class AktivacioniControllerTest {
 	
 	@After
 	public void after() {
-		Korisnik zaBrisanje = repozitorijum.findByEmail(korisnik.getEmail());
+		Osoba zaBrisanje = repozitorijum.findByEmail(korisnik.getEmail());
         if(zaBrisanje != null) {
         	repozitorijum.delete(zaBrisanje);
         	zaBrisanje = null;

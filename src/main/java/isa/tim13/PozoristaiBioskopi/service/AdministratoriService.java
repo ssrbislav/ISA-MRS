@@ -29,6 +29,7 @@ public class AdministratoriService {
 		a.setEmail(dto.getEmail());
 		a.setLozinka(dto.getLozinka());
 		a.setTip(dto.getTip());
+		a.setAktivan(true);
 		if(a.getTip()==TipAdministratora.INSTITUCIONALNI) {
 			InstitucijaKulture k = irep.findById(dto.getIdInstitucije()).orElse(null);
 			if(k==null) {

@@ -1,7 +1,16 @@
 package isa.tim13.PozoristaiBioskopi.controllers;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
+import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
+import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
+import isa.tim13.PozoristaiBioskopi.service.AuthService;
 
 @Controller
 public class ViewController {
@@ -34,12 +43,22 @@ public class ViewController {
 	}
 	
 	@RequestMapping("/registracijaInstitucija")
-	public String registracijaInstitucija() {
+	public String registracijaInstitucija(HttpSession s) {
+		try {
+			AuthService.adminProvera(s, TipAdministratora.SISTEMSKI);
+		} catch (NeovlascenPristupException e) {
+			return "prijava";
+		}
 		return "registracijaInstitucija";
 	}
 	
 	@RequestMapping("/dodavanjeAdministratora")
-	public String dodavanjeAdministratora() {
+	public String dodavanjeAdministratora(HttpSession s)  {
+		try {
+			AuthService.adminProvera(s, TipAdministratora.SISTEMSKI);
+		} catch (NeovlascenPristupException e) {
+			return "prijava";
+		}
 		return "dodavanjeAdministratora";
 	}
 

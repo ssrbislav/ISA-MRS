@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import isa.tim13.PozoristaiBioskopi.model.Korisnik;
+import isa.tim13.PozoristaiBioskopi.model.Osoba;
 import isa.tim13.PozoristaiBioskopi.service.KorisniciService;
 
 @Controller
@@ -23,7 +23,7 @@ public class LoginController {
 	@RequestMapping(method=RequestMethod.POST)
 	public String registruj(HttpServletRequest request,HttpSession session, @RequestParam(value="email", required=true) String email, @RequestParam(value="lozinka", required=true) String lozinka){
 		
-		Korisnik korisnik = korisniciServis.pronadjiKorisnikaPoEmailu(email);
+		Osoba korisnik = korisniciServis.pronadjiKorisnikaPoEmailu(email);
 		
 		if(korisnik != null) {
 			if(korisnik.getAktivan()) {

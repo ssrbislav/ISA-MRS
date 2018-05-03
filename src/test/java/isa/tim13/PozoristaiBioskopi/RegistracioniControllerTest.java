@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,6 +31,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import isa.tim13.PozoristaiBioskopi.controllers.RegistracioniController;
 import isa.tim13.PozoristaiBioskopi.dto.RegisterDTO;
 import isa.tim13.PozoristaiBioskopi.model.Korisnik;
+import isa.tim13.PozoristaiBioskopi.model.Osoba;
 import isa.tim13.PozoristaiBioskopi.repository.KorisnikRepository;
 import isa.tim13.PozoristaiBioskopi.service.EmailService;
 
@@ -74,7 +74,7 @@ private static final String URL_PREFIX = "/registerUser";
 	public void before() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(emailService).sendEmail(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
-        Korisnik zaBrisanje = repozitorijum.findByEmail(registracija.getEmail());
+        Osoba zaBrisanje = repozitorijum.findByEmail(registracija.getEmail());
         if(zaBrisanje != null) {
         	repozitorijum.delete(zaBrisanje);
         	zaBrisanje = null;
@@ -83,7 +83,7 @@ private static final String URL_PREFIX = "/registerUser";
 	
 	@After
 	public void after() {
-        Korisnik zaBrisanje = repozitorijum.findByEmail(registracija.getEmail());
+        Osoba zaBrisanje = repozitorijum.findByEmail(registracija.getEmail());
         if(zaBrisanje != null) {
         	repozitorijum.delete(zaBrisanje);
         	zaBrisanje = null;

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import isa.tim13.PozoristaiBioskopi.model.Korisnik;
+import isa.tim13.PozoristaiBioskopi.model.Osoba;
 import isa.tim13.PozoristaiBioskopi.repository.KorisnikRepository;
 
 @Service
@@ -15,7 +16,7 @@ public class KorisniciService {
 		rep.save(kor);
 	}
 	
-	public Korisnik pronadjiKorisnikaPoEmailu(String email) {
+	public Osoba pronadjiKorisnikaPoEmailu(String email) {
 		return rep.findByEmail(email);
 	}
 	

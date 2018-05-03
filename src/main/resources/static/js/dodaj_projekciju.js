@@ -2,7 +2,7 @@
  var dodajProjekciju = "/dodajProjekciju";
 
 
-function regFormaUJSON(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, slika, opis, cena, lista_sala, lista_projekcija) {
+function regFormaUJSON(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, slika, opis, cena, lista_sala) {
 	return JSON.stringify({
 		"naziv":naziv,
 		"spisak_glumaca":spisak_glumaca,
@@ -12,8 +12,7 @@ function regFormaUJSON(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, sli
 		"slika":slika,
 		"opis":opis,
 		"cena":cena,
-		"lista_sala": lista_sala,
-	    "lista_projekcija": lista_projekcija
+		"lista_sala": lista_sala
 	});
 }
 

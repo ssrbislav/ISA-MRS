@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import isa.tim13.PozoristaiBioskopi.dto.RegisterDTO;
 import isa.tim13.PozoristaiBioskopi.model.Korisnik;
+import isa.tim13.PozoristaiBioskopi.model.Osoba;
 import isa.tim13.PozoristaiBioskopi.model.PredstavaProjekcija;
 import isa.tim13.PozoristaiBioskopi.service.EmailService;
 import isa.tim13.PozoristaiBioskopi.service.KorisniciService;
@@ -30,11 +31,11 @@ public class RegistracioniController {
 	
 	@RequestMapping(method=RequestMethod.POST,  consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> registruj(@RequestBody RegisterDTO registracija) {
-		Korisnik noviKorisnik  = korisniciServis.pronadjiKorisnikaPoEmailu(registracija.getEmail());
+		Osoba noviKorisnik  = korisniciServis.pronadjiKorisnikaPoEmailu(registracija.getEmail());
 		if(registracija.getLozinka1().equals(registracija.getLozinka2()) && noviKorisnik == null) {
 			noviKorisnik = new Korisnik();
-			noviKorisnik(registracija, noviKorisnik);
-			korisniciServis.dodajKorisnika(noviKorisnik);
+			noviKorisnik(registracija, (Korisnik)noviKorisnik);
+			korisniciServis.dodajKorisnika((Korisnik)noviKorisnik);
 			mail(noviKorisnik.getEmail(), noviKorisnik.getRegistracioniLink());
 			return  ResponseEntity.status(HttpStatus.OK).build();
 		}

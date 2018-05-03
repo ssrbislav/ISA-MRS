@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,8 +25,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-
+import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
+import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
 import isa.tim13.PozoristaiBioskopi.model.TipInstitucijeKulture;
 
 
@@ -45,10 +47,21 @@ public class PozoristaIBioskopiControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	
+	@Autowired
+    MockHttpSession session;
+	
 
 	@PostConstruct
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		
+		Administrator a = new Administrator();
+		a.setAktivan(true);
+		a.setIme("Test");
+		a.setPrezime("Testic");
+		a.setEmail("majic@majic.com");
+		a.setTip(TipAdministratora.SISTEMSKI);
+		session.setAttribute("korisnik", a);
 	}
 	
 	@Test
@@ -64,11 +77,12 @@ public class PozoristaIBioskopiControllerTest {
 		
 		mockMvc.perform(post(URL_PREFIX+"/registruj")
 		.contentType(contentType)
+		.session(session)
 		.content(TestUtil.toJson(i))).andExpect(status().isCreated());
 	}
 	
 	@Test
 	public void pribaviSveInstitucije() throws Exception {
-		mockMvc.perform(get(URL_PREFIX)).andExpect(status().isOk());
+		mockMvc.perform(get(URL_PREFIX).session(session)).andExpect(status().isOk());
 	}
 }
