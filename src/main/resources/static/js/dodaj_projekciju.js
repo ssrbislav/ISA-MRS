@@ -1,19 +1,18 @@
 
  var dodajProjekciju = "/dodajProjekciju";
 
-
-function regFormaUJSON(naziv, spisak_glumaca, ime_reditelja, zanr, trajanje, slika, opis, cena, lista_sala) {
+function regFormaUJSON(naziv, spisak_glumaca, reditelj, zanr, trajanje, naziv_slike, opis, cena, lista_sala, lista_termina) {
 	return JSON.stringify({
 		"naziv":naziv,
 		"spisak_glumaca":spisak_glumaca,
-		"ime_reditelja":ime_reditelja,
+		"ime_reditelja":reditelj,
 		"zanr":zanr,
 		"trajanje":trajanje,
 		"slika":slika,
 		"opis":opis,
 		"cena":cena,
-		"lista_sala": lista_sala
-	});
+		"lista_sala": lista_sala,
+		"lista_termina": lista_termina
 }
 
 
@@ -27,12 +26,16 @@ function formaNevalidna(){
 }
 
 $(document).ready(function() {
+	
+	
 	$("#dodaj_salu").click(function(event) {
 		lista_sala.push();
 	})
+	
 	$("#dodaj_termin").click(function(event) {
 		lista_termina.push();
 	})
+	
 	$("#dodaj_projekciju").click(function(event) {
 		var naziv = $("input[name=naziv]").val();
 		var spisak_glumaca = $("input[name=spisak_glumaca]").val();

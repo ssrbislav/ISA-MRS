@@ -59,7 +59,7 @@
                                 <option value="5">Sala 5</option>
                             </select>
                             <button id="dodaj_salu">Dodaj salu</button>
-                            <input id="dodaj_predstavu" type="submit" value="Sign me up!" class="inputButton"/>
+                            <input id="dodaj_predstavu" type="submit" value="Dodaj predstavu" class="inputButton"/>
 
                         </form>
                     </div>
