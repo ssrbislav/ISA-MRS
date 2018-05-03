@@ -11,7 +11,7 @@ public class AuthService {
 	
 	public static void adminProvera(HttpSession s,TipAdministratora tip) throws NeovlascenPristupException {
 		Osoba o = (Osoba)s.getAttribute("korisnik");
-		if(o!= null & o instanceof Administrator) {
+		if(o!= null && o instanceof Administrator) {
 			if(((Administrator)o).getTip().equals(tip)) {
 				return;
 			}
