@@ -18,5 +18,16 @@
 <div id="prikaz" style="margin: 0 auto; width: 250px;">
 	
 </div>
+<br/>
+<div style="margin: 0 auto; width: 250px;">
+	Naziv sale: <br/><input type="text" name="nazivSale" size=20/><br/>
+	Broj vrsta sale: <input type="number" name="brojVrstaSale" size=20/><br/>
+	Broj kolona sale: <input type="number" name="brojKolonaSale" size=20/><br/>
+	<input type="button" id="dodavanjeSaleDugme" value="Dodaj salu"/><br/>
+</div>
+
+<div id="prikazDodatihSala" style="margin: 0 auto; width: 250px;">
+  
+</div>
 </body>
 </html>

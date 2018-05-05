@@ -2,15 +2,16 @@
 var registrujInstitucijuPutanja = "/pozoristaibioskopi/registruj";
 var prikazSvihInstitucijaPutanja = "/pozoristaibioskopi"
 
+sale = [];
 
-
-function regFormaUJSON(naziv,adresa,telefon,opis,tip){
+function regFormaUJSON(naziv,adresa,telefon,opis,tip,sale){
 	return JSON.stringify({
 		"naziv":naziv,
 		"adresa":adresa,
 		"telefon":telefon,
 		"opis":opis,
-		"tip":tip
+		"tip":tip,
+		"sale": sale
 	});
 }
 
@@ -27,9 +28,47 @@ function formaNevalidna(){
 }
 
 
+function dodajSaluUListu(){
+	var oznaka_sale = $("input[name=nazivSale]").val();
+	var broj_vrsta = $("input[name=brojVrstaSale]").val();
+	var broj_kolona = $("input[name=brojKolonaSale]").val();
+	
+	if(formaNevalidna(oznaka_sale,broj_vrsta,broj_kolona)){
+		alert("Morate popuniti sva polja za unos sale.");
+		return;
+	}
+	var novaSala = {};
+	novaSala.oznaka_sale = oznaka_sale;
+	novaSala.broj_vrsta = broj_vrsta;
+	novaSala.broj_kolona = broj_kolona;
+	sale.push(novaSala);
+	prikazSala();
+}
+
+function obrisiSalu(index){
+	sale.splice(index,1);
+	prikazSala();
+}
+
+
+function prikazSala() {
+	var resultHtml = "<table border=\"1\"><tr bgcolor=\"lightgrey\">";
+    resultHtml += "<tr><th>Oznaka sale</th><th>Broj vrsta</th><th>Broj kolona</th><th>Opcija</th></tr>";	   
+	   for ( i=0;i < sale.length;i++){
+		   
+		   resultHtml += "<tr><td>"+sale[i]["oznaka_sale"]+"</td>"+"<td>"+sale[i]["broj_vrsta"]+"</td>"+"<td>"+sale[i]["broj_kolona"]+"</td>"+"<td><input type=\"button\" value=\"obrisi\" onclick=\"obrisiSalu("+i+")\">"+"</td>"+"</tr>";
+	   }
+	   resultHtml += "</table>"
+	
+    $("#prikazDodatihSala").html(resultHtml);
+	  
+}
+
 
 $(document).ready(function(){
 	
+	
+	$("#dodavanjeSaleDugme").click(dodajSaluUListu);
 	
 	$("#prikazInstitucijaDugme").click(function(event){
 		$.ajax({ url:prikazSvihInstitucijaPutanja,
@@ -66,6 +105,11 @@ $(document).ready(function(){
 			return;
 		}
 		
+		if(sale.length==0){
+			alert("Morate dodati bar jednu salu!");
+			return;
+		}
+		
 		$.ajax({
 			url: registrujInstitucijuPutanja,
 			contentType : "application/json",
@@ -74,7 +118,7 @@ $(document).ready(function(){
 			},
 			type: "POST",
 			dataType: "text",
-			data: regFormaUJSON(naziv,adresa,telefon,opis,tip),
+			data: regFormaUJSON(naziv,adresa,telefon,opis,tip,sale),
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				alert("Desila se greska: " + errorThrown);
 			}

@@ -5,12 +5,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
-import org.aspectj.lang.annotation.After;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,7 @@ import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
 import isa.tim13.PozoristaiBioskopi.model.Osoba;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
 import isa.tim13.PozoristaiBioskopi.model.TipInstitucijeKulture;
+import isa.tim13.PozoristaiBioskopi.repository.InstitucijaKultureRepository;
 import isa.tim13.PozoristaiBioskopi.repository.KorisnikRepository;
 
 @RunWith(SpringRunner.class)
@@ -49,13 +49,19 @@ public class AdministratoriControllerTest {
 	
 	@Autowired
     MockHttpSession session;
+	
+	
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	
 	@Autowired
-	private KorisnikRepository repozitorijum;
+	private KorisnikRepository korisnikRepozitorijum;
 	
+	@Autowired
+	private InstitucijaKultureRepository instRepo;
+	
+    private String emailAdmina = null;
 
 	@PostConstruct
 	public void setup() {
@@ -70,21 +76,31 @@ public class AdministratoriControllerTest {
 		
 	}
 	
-	@After(value = "")
-	public void after() {
-		ArrayList<Osoba> osobeZaBrisanje = new ArrayList<Osoba>();
-		osobeZaBrisanje.add(repozitorijum.findByEmail("test@test.com"));
-		osobeZaBrisanje.add(repozitorijum.findByEmail("test@test2.com"));
-		osobeZaBrisanje.add(repozitorijum.findByEmail("test@test3.com"));
-		osobeZaBrisanje.add(repozitorijum.findByEmail("test@test4.com"));
-		
-		for(Osoba o : osobeZaBrisanje) {
-			if(o !=null) {
-				repozitorijum.delete(o);
+	@Transactional
+	public void obrisiSve() {
+		if(emailAdmina!=null) {
+			Osoba o = korisnikRepozitorijum.findByEmail(emailAdmina);
+			if(o!=null) {
+				Administrator a = (Administrator)o;
+				if(a.getInst()!=null) {
+					instRepo.delete(a.getInst());
+					
+				}
+				
+				korisnikRepozitorijum.delete(a);
+				
+				emailAdmina = null;
 			}
 		}
 		
 	}
+	
+	@After
+	public void after() {
+		obrisiSve();
+	}
+	
+	
 	
 	@Test
 	@Transactional
@@ -94,12 +110,14 @@ public class AdministratoriControllerTest {
 		adDTO.setIme("Test");
 		adDTO.setPrezime("Testic");
 		adDTO.setLozinka("LOZINKA1234");
-		adDTO.setEmail("test@test.com");
+		emailAdmina = "test@test.com";
+		adDTO.setEmail(emailAdmina);
 		adDTO.setTip(TipAdministratora.SISTEMSKI);
 		mockMvc.perform(post(URL_PREFIX)
 				.session(session)
 				.contentType(contentType)
 				.content(TestUtil.toJson(adDTO))).andExpect(status().isCreated());
+		
 	}
 	
 	
@@ -111,7 +129,8 @@ public class AdministratoriControllerTest {
 		adDTO.setIme("Test");
 		adDTO.setPrezime("Testic");
 		adDTO.setLozinka("LOZINKA1234");
-		adDTO.setEmail("test@test2.com");
+		emailAdmina = "test@test2.com";
+		adDTO.setEmail(emailAdmina);
 		adDTO.setTip(TipAdministratora.SISTEMSKI);
 		mockMvc.perform(post(URL_PREFIX)
 				.session(session)
@@ -127,6 +146,8 @@ public class AdministratoriControllerTest {
 				.contentType(contentType)
 				.content(TestUtil.toJson(adDTO))).andExpect(status().isBadRequest());
 		
+		obrisiSve();
+		
 	}
 	
 	
@@ -139,13 +160,15 @@ public class AdministratoriControllerTest {
 		adDTO.setIme("Test");
 		adDTO.setPrezime("Testic");
 		adDTO.setLozinka("LOZINKA1234");
-		adDTO.setEmail("test@test3.com");
-		adDTO.setIdInstitucije(5); //institucija ne postoji, zato ocekujemo bad request
+		emailAdmina = "test@test3.com";
+		adDTO.setEmail(emailAdmina);
+		adDTO.setIdInstitucije(0); //institucija ne postoji, zato ocekujemo bad request
 		adDTO.setTip(TipAdministratora.INSTITUCIONALNI);
 		mockMvc.perform(post(URL_PREFIX)
 				.session(session)
 				.contentType(contentType)
 				.content(TestUtil.toJson(adDTO))).andExpect(status().isBadRequest());
+		
 		
 	}
 	
@@ -157,7 +180,7 @@ public class AdministratoriControllerTest {
 		//prvo kreiramo instituciju
 		
 		InstitucijaKulture i = new InstitucijaKulture();
-		i.setNaziv("Bioskop 1");
+		i.setNaziv("Bioskop 1-Test");
 		i.setAdresa("Adresa 1");
 		i.setOpis("Opis 1");
 		i.setTelefon("0654545877");
@@ -170,18 +193,21 @@ public class AdministratoriControllerTest {
 		
 		
 		
+		
 		AdministratorDTO adDTO  = new AdministratorDTO();
 		adDTO.setIme("Test");
 		adDTO.setPrezime("Testic");
 		adDTO.setLozinka("LOZINKA1235");
-		adDTO.setEmail("test@test4.com");
-		
-		adDTO.setIdInstitucije(1);
+		emailAdmina = "test@test4.com";
+		adDTO.setEmail(emailAdmina);
+		i = instRepo.findByNaziv(i.getNaziv());
+		adDTO.setIdInstitucije(i.getId());
 		adDTO.setTip(TipAdministratora.INSTITUCIONALNI);
 		mockMvc.perform(post(URL_PREFIX)
 				.session(session)
 				.contentType(contentType)
 				.content(TestUtil.toJson(adDTO))).andExpect(status().isCreated());
+		
 		
 	}
 	

@@ -8,6 +8,8 @@ import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
 
 @Repository
 public interface InstitucijaKultureRepository extends CrudRepository<InstitucijaKulture, Integer>   {
+
+	InstitucijaKulture findByNaziv(String naziv);
 	
 	
 }
