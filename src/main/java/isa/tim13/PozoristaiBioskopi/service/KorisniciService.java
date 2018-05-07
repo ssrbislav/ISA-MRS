@@ -12,7 +12,7 @@ public class KorisniciService {
 	@Autowired
 	KorisnikRepository rep;
 	
-	public void dodajKorisnika(Korisnik kor) {
+	public void dodajKorisnika(Osoba kor) {
 		rep.save(kor);
 	}
 	

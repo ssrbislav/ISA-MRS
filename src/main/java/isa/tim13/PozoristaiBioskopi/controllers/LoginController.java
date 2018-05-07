@@ -21,7 +21,7 @@ public class LoginController {
 	private KorisniciService korisniciServis;
 
 	@RequestMapping(method=RequestMethod.POST)
-	public String registruj(HttpServletRequest request,HttpSession session, @RequestParam(value="email", required=true) String email, @RequestParam(value="lozinka", required=true) String lozinka){
+	public String prijava(HttpServletRequest request,HttpSession session, @RequestParam(value="email", required=true) String email, @RequestParam(value="lozinka", required=true) String lozinka){
 		
 		Osoba korisnik = korisniciServis.pronadjiKorisnikaPoEmailu(email);
 		
