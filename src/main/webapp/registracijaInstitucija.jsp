@@ -2,16 +2,35 @@
 <html>
 <head><title>Registracija bioskopa/pozorista</title>
 <script type="text/javascript" src="js/jquery-3.2.1.js" ></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
 </head>
 <body>
 <script type="text/javascript" src="js/registracijaInstitucija.js"></script>
+
+<nav class="navbar navbar-default" style= "background: #29927d;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"></a>
+    </div>
+    <ul class="nav navbar-nav">
+		<li><a href="/dodavanjeAdministratora" style="color: white;">Dodavanje administratora</a></li>
+         
+        </ul>
+  </div>
+</nav>
+
 <div style="margin: 0 auto; width: 250px;">
-   <label style="color: #000066;">Popunite podatke za registraciju: </label>
-	Unesite naziv <input type="text" name="naziv" size=50/><br/>
-	Unesite adresu <input type="text" name="adresa" size=50/><br/>
-	Unesite telefon <input type="tel" name="telefon" size=50/><br/>
-	Unesite opis <input type="text" name="opis" size=50/><br/>
-	Odaberite tip <select name="tip"><option>BIOSKOP</option><option>POZORISTE</option></select><br/>
+   <label style="color:  #87837e  ;">Popunite podatke za registraciju: </label>
+	Unesite naziv <input style="width:322.467px;" type="text" name="naziv" size=50/><br/>
+	Unesite adresu <input style="width:322.467px;" type="text" name="adresa" size=50/><br/>
+	Unesite telefon <input style="width:322.467px;" type="tel" name="telefon" size=50/><br/>
+	Unesite opis <input style="width:322.467px;" type="text" name="opis" size=50/><br/>
+	Odaberite tip <select style="width:322.467px;" name="tip"><option>BIOSKOP</option><option>POZORISTE</option></select><br/>
 	<input type="button" id="registracijaDugme" value="Registruj instituciju"/><br/>
 	<input type="button" id="prikazInstitucijaDugme" value="Prikaz postojece institucije"/>
 </div>
