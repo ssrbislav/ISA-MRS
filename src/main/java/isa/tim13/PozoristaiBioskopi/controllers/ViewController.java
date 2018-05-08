@@ -44,6 +44,11 @@ public class ViewController {
 		return "izmenaLozinke";
 	}
 
+	// strana za profil
+		@RequestMapping("/izmenaPodataka")
+		public String izmenaPodataka() {
+			return "izmenaPodataka";
+		}
 	@RequestMapping("/projekcija")
 	public String projekcija() {
 		return "projekcija";

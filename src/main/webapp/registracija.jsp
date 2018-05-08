@@ -16,9 +16,9 @@
 	
 </head>
 <br>
-<body>
+<body style="background:  #f4ffe1 ">
 
-<nav class="navbar navbar-default" style= "background: #228061;">
+<nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#"></a>
@@ -34,7 +34,7 @@
 </nav>
 	<div style="margin: 0 auto; width: 250px;">
 		<br>
-		<label style="color: #228061;">Popunite podatke za registraciju: </label>
+		<label style="color: #29927d;">Popunite podatke za registraciju: </label>
 		<br>
 		<br>
 		<input style="width:322.467px;" name="email" placeholder="Email Adresa" size=50></input>

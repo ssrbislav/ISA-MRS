@@ -12,9 +12,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 	
 </head>
-<br>
-<body>
-	<nav class="navbar navbar-default" style= "background: #228061;">
+
+<body style= "background:  #f4ffe1 ">
+	<nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#"></a>
@@ -37,7 +37,7 @@
 	    
 	<form action="/login" method="post" id="prijavnaForma" style="margin: 0 auto; width: 250px;">
 		<br>
-		<label style="color: #228061;">Popunite podatke za prijavu: </label>
+		<label style="color: #29927d;">Popunite podatke za prijavu: </label>
 		<br>
 		<br>
 		<input style="width:322.467px;" name="email" placeholder="Email Adresa" size=50></input>

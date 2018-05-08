@@ -17,9 +17,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
-<body>
+<body style="background:  #efffd1 ">
 
-<nav class="navbar navbar-default" style= "background: #228061;">
+<nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#"></a>
@@ -34,9 +34,9 @@
   </div>
 </nav>
 
-<form action="/profil" method="post" id="izmenaLozinke" style="margin: 0 auto; width: 250px;">
+<form action="/profil/izmenaLozinke" method="post" id="izmenaLozinke" style="margin: 0 auto; width: 250px;">
 		<br>
-		<label style="color: #228061;"><b>Izmena lozinke</b> </label>
+		<label style="color: #29927d;"><b>Izmena lozinke</b> </label>
 		<br>
 		<br>
 		<input type="hidden" name="pravaLozinka" value="${korisnik.lozinka}" />

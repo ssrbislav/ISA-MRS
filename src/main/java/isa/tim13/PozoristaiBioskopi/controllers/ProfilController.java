@@ -20,8 +20,8 @@ public class ProfilController {
 	@Autowired
 	private KorisniciService korisniciServis;
 
-	@RequestMapping(method = RequestMethod.POST)
-	public String izmeniLozinku(HttpServletRequest request, HttpSession session,
+	@RequestMapping(value = "/izmenaLozinke", method = RequestMethod.POST)
+	public String izmeniLozinku( HttpServletRequest request, HttpSession session,
 			@RequestParam(value = "lozinka1", required = true) String lozinka) {
 
 		Osoba korisnik = korisniciServis.pronadjiKorisnikaPoEmailu(((Osoba)session.getAttribute("korisnik")).getEmail());
@@ -31,7 +31,26 @@ public class ProfilController {
 		
 		korisniciServis.dodajKorisnika(korisnik);
 	
-		return "profilKorisnika";
+		return "/profilKorisnika";
+
+	}
+	
+	@RequestMapping( value = "/izmenaPodataka",method = RequestMethod.POST)
+	public String izmenaPodataka(HttpServletRequest request, HttpSession session,
+			@RequestParam(value = "ime", required = true) String ime, @RequestParam(value = "prezime", required = true) String prezime, @RequestParam(value = "grad", required = true) String grad, @RequestParam(value = "telefon", required = true) String telefon ) {
+
+		Osoba korisnik = korisniciServis.pronadjiKorisnikaPoEmailu(((Osoba)session.getAttribute("korisnik")).getEmail());
+		
+		korisnik.setIme(ime);
+		korisnik.setPrezime(prezime);
+		korisnik.setGrad(grad);
+		korisnik.setTelefon(telefon);
+		
+		session.setAttribute("korisnik",korisnik);
+		
+		korisniciServis.dodajKorisnika(korisnik);
+	
+		return "/profilKorisnika";
 
 	}
 }

@@ -12,9 +12,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
-<body>
+<body style="background:  #f4ffe1 ">
 
-	<nav class="navbar navbar-default" style= "background: #228061;">
+	<nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#"></a>
@@ -27,7 +27,7 @@
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="/izmenaLozinke">Izmena lozinke</a></li>
-          <li><a href="#">Izmena informacija</a></li>
+          <li><a href="izmenaPodataka">Izmena licnih podataka</a></li>
          
         </ul>
       </li>
