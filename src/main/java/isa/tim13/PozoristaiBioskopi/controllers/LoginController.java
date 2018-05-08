@@ -36,8 +36,11 @@ public class LoginController {
 					PredstavaProjekcija p2= new PredstavaProjekcija();
 					p2.setNaziv("Narodno pozoriste");
 					
-					((Korisnik) korisnik).getIstorijatPoseta().add(p1);
-					((Korisnik) korisnik).getIstorijatPoseta().add(p2);
+					if(korisnik instanceof Korisnik) {
+						((Korisnik) korisnik).getIstorijatPoseta().add(p1);
+						((Korisnik) korisnik).getIstorijatPoseta().add(p2);
+					}
+					
 					
 					session.setAttribute("korisnik", korisnik);
 					session.setAttribute("ulogovan", korisnik.getIme()+" "+korisnik.getPrezime());
