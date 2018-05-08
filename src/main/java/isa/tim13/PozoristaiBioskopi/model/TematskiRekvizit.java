@@ -1,10 +1,34 @@
 package isa.tim13.PozoristaiBioskopi.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class TematskiRekvizit {
 	
+	
+	@Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
+	private int id;
+	
+	public int getId() {
+		return id;
+	}
+	
+	@Column(name="naziv")
 	private String nazivRekvizita;
+	
+	@Column(name="putanja_do_slike")
 	private String putanjaDoSlike;
+	
+	@Column(name="opis")
 	private String opisRekvizita;
+	
+	@Column(name="cena")
 	private double cenaRekvizita;
 	
 	public TematskiRekvizit() {
