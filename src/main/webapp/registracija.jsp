@@ -15,8 +15,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 	
 </head>
-<br>
-<body style="background:  #f4ffe1 ">
+<body>
 
 <nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
@@ -34,7 +33,7 @@
 </nav>
 	<div style="margin: 0 auto; width: 250px;">
 		<br>
-		<label style="color: #29927d;">Popunite podatke za registraciju: </label>
+		<label style="color:    #87837e  ;">Popunite podatke za registraciju: </label>
 		<br>
 		<br>
 		<input style="width:322.467px;" name="email" placeholder="Email Adresa" size=50></input>

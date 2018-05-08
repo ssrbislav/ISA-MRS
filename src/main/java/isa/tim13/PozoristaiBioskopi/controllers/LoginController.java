@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Osoba;
+import isa.tim13.PozoristaiBioskopi.model.PredstavaProjekcija;
 import isa.tim13.PozoristaiBioskopi.service.KorisniciService;
 
 @Controller
@@ -28,6 +30,15 @@ public class LoginController {
 		if(korisnik != null) {
 			if(korisnik.getAktivan()) {
 				if(lozinka.equals(korisnik.getLozinka())){
+					//za testiranje ispisa poseta
+					PredstavaProjekcija p1= new PredstavaProjekcija();
+					p1.setNaziv("ArenaCineplex");
+					PredstavaProjekcija p2= new PredstavaProjekcija();
+					p2.setNaziv("Narodno pozoriste");
+					
+					((Korisnik) korisnik).getIstorijatPoseta().add(p1);
+					((Korisnik) korisnik).getIstorijatPoseta().add(p2);
+					
 					session.setAttribute("korisnik", korisnik);
 					session.setAttribute("ulogovan", korisnik.getIme()+" "+korisnik.getPrezime());
 					session.removeAttribute(PORUKA_GRESKE);
@@ -41,6 +52,7 @@ public class LoginController {
 		}else{
 			request.setAttribute(PORUKA_GRESKE, "Uneli ste netacnu email adresu i/ili lozinku.");
 		}
+		
 		return "prijava";
 		
 }}

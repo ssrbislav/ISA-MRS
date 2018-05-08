@@ -17,7 +17,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
-<body style="background:  #efffd1 ">
+<body >
 
 <nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
@@ -36,7 +36,7 @@
 
 <form action="/profil/izmenaLozinke" method="post" id="izmenaLozinke" style="margin: 0 auto; width: 250px;">
 		<br>
-		<label style="color: #29927d;"><b>Izmena lozinke</b> </label>
+		<label style="color:  #87837e  ;"><b>Izmena lozinke</b> </label>
 		<br>
 		<br>
 		<input type="hidden" name="pravaLozinka" value="${korisnik.lozinka}" />

@@ -17,7 +17,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
-<body style="background:    #f8ffec  ">
+<body >
 
 <nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
@@ -36,7 +36,7 @@
 
 <form action="/profil/izmenaPodataka" method="post" id="izmenaPodataka" style="margin: 0 auto; width: 250px;">
 		<br>
-		<label style="color: #29927d;"><b>Izmenite svoje licne podatke: </b> </label>
+		<label style="color:  #87837e  ;"><b>Izmenite vase licne podatke: </b> </label>
 		<br>
 		<br>
 		<input style="width:322.467px;"   name="ime" value="${korisnik.ime}" size=50></input>
