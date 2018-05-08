@@ -40,6 +40,10 @@ public abstract class Osoba {
 	@Column(name = "registracioniLink")
 	private String registracioniLink;
 
+	public Integer getId() {
+		return id;
+	}
+	
 	public String getIme() {
 		return ime;
 	}

@@ -41,10 +41,14 @@
   </div>
 </nav>
 	<div class="container">
-	 <div class="col-md-4" >
-		<img src="profilne_slike" style="width: 250px; height: 300px;"></img>
+	 <div class="col-md-3" >
+		<img src="/upravljanjeSlikama?putanjaDoSlike=${korisnik.lokacijaSlike}" style="width: 250px; height: 300px;"></img>
 		</br>
-		<button id="promenaSlike">Promeni sliku</button>
+		<form method="POST" enctype="multipart/form-data" action="/profil/dodajSliku">
+				<input type="file" name="file" id="selekcija" style="display: none;" />
+				<input type="button" value="Odaberite sliku" onclick="document.getElementById('selekcija').click();" />
+				<input type="submit" value="Promeni sliku" />
+		</form>
 	
 		
 	</div>
