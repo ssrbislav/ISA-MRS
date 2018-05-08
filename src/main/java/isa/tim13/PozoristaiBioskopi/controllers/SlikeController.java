@@ -1,0 +1,37 @@
+package isa.tim13.PozoristaiBioskopi.controllers;
+
+
+import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import isa.tim13.PozoristaiBioskopi.service.SlikeService;
+
+@Controller
+@RequestMapping("/upravljanjeSlikama")
+public class SlikeController {
+	
+	@Autowired
+	SlikeService servis;
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<byte[]> dobaviSliku(@RequestParam("putanjaDoSlike")String putanjaDoSlike) throws IOException {
+		byte[] slika = servis.dobaviSliku(putanjaDoSlike);
+		HttpHeaders headers = new HttpHeaders();
+	    headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+	     
+	    ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(slika, headers, HttpStatus.OK);
+	    return responseEntity;
+	}
+}

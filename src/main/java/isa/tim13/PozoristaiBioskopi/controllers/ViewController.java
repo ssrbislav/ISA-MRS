@@ -69,6 +69,16 @@ public class ViewController {
 		return "registracijaInstitucija";
 	}
 	
+	@RequestMapping("/prikazTematskihRekvizita")
+	public String prikazTematskihRekvizita(HttpSession s) {
+		try {
+			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+		} catch (NeovlascenPristupException e) {
+			return "prijava";
+		}
+		return "prikazTematskihRekvizita";
+	}
+	
 	@RequestMapping("/dodavanjeTematskihRekvizita")
 	public String dodavanjeTematskihRekvizita(HttpSession s) {
 		try {

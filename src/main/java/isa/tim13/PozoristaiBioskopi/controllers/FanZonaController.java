@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitVecPostojiException;
+import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
 import isa.tim13.PozoristaiBioskopi.service.AuthService;
 import isa.tim13.PozoristaiBioskopi.service.FanZonaService;
@@ -29,6 +31,14 @@ public class FanZonaController {
 	
 	@Autowired
 	FanZonaService servis;
+	
+	
+	@RequestMapping(value="/prikaziTematskeRekvizite",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Iterable<TematskiRekvizit> prikaziSveTematskeRekvizite(){
+		return servis.prikaziSveTematskeRekvizite();
+	}
+	
+	
 	
 	@RequestMapping(value = "/dodajTematskiRekvizit", method=RequestMethod.POST)
 	@ResponseBody

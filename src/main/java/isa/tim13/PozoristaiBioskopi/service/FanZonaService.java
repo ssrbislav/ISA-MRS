@@ -1,10 +1,7 @@
 package isa.tim13.PozoristaiBioskopi.service;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,9 @@ public class FanZonaService {
 	@Autowired
 	FanZonaRepository rep;
 	
+	@Autowired 
+	SlikeService slikeServis;
+	
 	private static final String PUTANJA_PREFIKS = "slike/";
 
 	public void dodajTematskiRekvizit(RekvizitDTO rekvizit, MultipartFile file) throws IOException, RekvizitVecPostojiException {
@@ -36,17 +36,23 @@ public class FanZonaService {
 			direktorijum.mkdir();
 		}
 		
-		tematskiRekvizit.setPutanjaDoSlike(putanjaDoSlikeRekvizita);
+		
 		
 		TematskiRekvizit test = rep.findByNazivRekvizita(rekvizit.getNazivRekvizita());
 		if(test!=null) {
 			throw new RekvizitVecPostojiException();
 		}
 		
-		FileOutputStream fos = new FileOutputStream(putanjaDoSlikeRekvizita);
-		fos.write(file.getBytes());
-		fos.close();
+		putanjaDoSlikeRekvizita = putanjaDoSlikeRekvizita.replace(' ', '_');
+		putanjaDoSlikeRekvizita += "."+slikeServis.pribaviEkstenziju(file);
+		slikeServis.sacuvajSliku(putanjaDoSlikeRekvizita,file);
+		
+		tematskiRekvizit.setPutanjaDoSlike(putanjaDoSlikeRekvizita);
 		rep.save(tematskiRekvizit);
+	}
+
+	public Iterable<TematskiRekvizit> prikaziSveTematskeRekvizite() {
+		return rep.findAll();
 	}
 
 }

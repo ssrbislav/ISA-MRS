@@ -10,8 +10,9 @@
 	Unesite naziv rekvizita <input type="text" name="nazivRekvizita" size=20 required/><br/>
 	Unesite opis rekvizita <textarea name="opisRekvizita" maxlength=1000 required></textarea><br/>
 	Unesite cenu <input type="number" name="cenaRekvizita" size=20 required/><br/>
-	<input type="file" name="file" value="Odaberi sliku..." id="slikaRekvizita"><br/>
+	<input type="file" name="file" value="Odaberi sliku..." id="slikaRekvizita" accept="image/*"><br/>
 	<input type="button" id="dodavanjeRekvizitaDugme" value="Dodaj rekvizit"/><br/>
+	<a href="/prikazTematskihRekvizita">Prikazi postojece tematske rekvizite</a>
 </div>
 </body>
 </html>
