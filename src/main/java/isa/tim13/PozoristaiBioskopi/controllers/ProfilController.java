@@ -39,11 +39,12 @@ public class ProfilController {
 		Osoba korisnik = korisniciServis.pronadjiKorisnikaPoEmailu(((Osoba)session.getAttribute("korisnik")).getEmail());
 		
 		korisnik.setLozinka(lozinka);
+		
 		session.setAttribute("korisnik",korisnik);
 		
 		korisniciServis.dodajKorisnika(korisnik);
 	
-		return "/profilKorisnika";
+		return "redirect:/profilKorisnika";
 
 	}
 	
@@ -62,7 +63,7 @@ public class ProfilController {
 		
 		korisniciServis.dodajKorisnika(korisnik);
 	
-		return "/profilKorisnika";
+		return "redirect:/profilKorisnika";
 
 	}
 	
@@ -75,6 +76,6 @@ public class ProfilController {
 		} catch (IOException e) {
 			System.out.println("Doslo je do greske prilikom baratanja s fajlom ili JSONOM");
 		}
-		return "/profilKorisnika";
+		return "redirect:/profilKorisnika";
 	}
 }

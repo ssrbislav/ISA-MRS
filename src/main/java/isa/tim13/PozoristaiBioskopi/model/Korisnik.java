@@ -23,7 +23,7 @@ public class Korisnik extends Osoba implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
 	List<Korisnik> zahtevi;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
 	List<PredstavaProjekcija> istorijatPoseta;
 
 	public Double getBrojBodova() {

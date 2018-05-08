@@ -80,7 +80,7 @@ public class LoginControllerTest {
 		repozitorijum.save(korisnik);
 		mockMvc.perform(post(URL_PREFIX).contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.content(buildUrlEncodedFormEntity("email", "test", "lozinka", "test")))
-				.andExpect(status().isOk());
+				.andExpect(status().isMovedTemporarily());
 	}
 	
 	@Test

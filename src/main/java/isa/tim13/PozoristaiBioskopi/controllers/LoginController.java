@@ -1,6 +1,10 @@
 package isa.tim13.PozoristaiBioskopi.controllers;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +25,9 @@ public class LoginController {
 	
 	@Autowired
 	private KorisniciService korisniciServis;
-
+	
 	@RequestMapping(method=RequestMethod.POST)
-	public String prijava(HttpServletRequest request,HttpSession session, @RequestParam(value="email", required=true) String email, @RequestParam(value="lozinka", required=true) String lozinka){
+	public void prijava(HttpServletRequest request, HttpServletResponse response, HttpSession session, @RequestParam(value="email", required=true) String email, @RequestParam(value="lozinka", required=true) String lozinka) throws ServletException, IOException{
 		
 		Osoba korisnik = korisniciServis.pronadjiKorisnikaPoEmailu(email);
 		
@@ -43,9 +47,9 @@ public class LoginController {
 					
 					
 					session.setAttribute("korisnik", korisnik);
-					session.setAttribute("ulogovan", korisnik.getIme()+" "+korisnik.getPrezime());
 					session.removeAttribute(PORUKA_GRESKE);
-					return "profilKorisnika";
+					response.sendRedirect("/profilKorisnika");
+					return;
 				}else {
 					request.setAttribute(PORUKA_GRESKE, "Uneli ste netacnu email adresu i/ili lozinku.");
 				}
@@ -55,7 +59,6 @@ public class LoginController {
 		}else{
 			request.setAttribute(PORUKA_GRESKE, "Uneli ste netacnu email adresu i/ili lozinku.");
 		}
-		
-		return "prijava";
+		request.getRequestDispatcher("/prijava").forward(request, response);
 		
 }}
