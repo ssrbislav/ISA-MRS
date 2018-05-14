@@ -6,9 +6,12 @@
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+  
+  <link href="http://code.jquery.com/ui/1.12.1/themes/blitzer/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 </head>
 <body>
+
 <script type="text/javascript" src="js/prikazTematskihRekvizita.js"></script>
 
 <nav class="navbar navbar-default" style= "background: #29927d;">
@@ -25,6 +28,15 @@
 <div style="margin: 0 auto; width: 250px;">
    <label style="color:  #87837e  ;">Tematski rekviziti: </label><br/>
  	<br/>
+   <div id="izmenaDijalog">
+   <label style="color:  #87837e  ;">Popunite podatke za izmenu rekvizita: </label><br/>
+   		<b>Id: </b><p id="izmenaIdRekvizita"></p><br/>
+		Naziv rekvizita <input style="width:322.467px;" type="text" id="izmenaNazivRekvizita" size=20 required/><br/>
+		Opis rekvizita <textarea style="width:322.467px;" id="izmenaOpisRekvizita" maxlength=1000 required></textarea><br/>
+		Cena <input type="number" style="width:322.467px;" id="izmenaCenaRekvizita" size=20 required/><br/>
+		<input type="button" id="izmenaRekvizitaDugme" value="Izmeni rekvizit"/><br/>
+   		
+   </div>
    <div id="prikazRekvizita">
     	
    </div>

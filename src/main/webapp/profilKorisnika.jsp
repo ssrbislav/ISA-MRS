@@ -33,7 +33,7 @@
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="/izmenaLozinke">Izmena lozinke</a></li>
-          <li><a href="izmenaPodataka">Izmena licnih podataka</a></li>
+          <li><a href="/izmenaPodataka">Izmena licnih podataka</a></li>
          
         </ul>
       </li>

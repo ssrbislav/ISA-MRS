@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
+import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitVecPostojiException;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
@@ -36,6 +37,50 @@ public class FanZonaController {
 	@RequestMapping(value="/prikaziTematskeRekvizite",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Iterable<TematskiRekvizit> prikaziSveTematskeRekvizite(){
 		return servis.prikaziSveTematskeRekvizite();
+	}
+	
+	
+	@RequestMapping(value = "/modifikujSlikuTematskogRekvizita", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> modifikujSlikuTematskogRekvizita(HttpSession s,@RequestParam(value= "id") String id,@RequestParam(value = "file") MultipartFile file) {
+		try {
+			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+			String novaPutanja = servis.modifikujSlikuRekvizita(Integer.parseInt(id), file);
+			return new ResponseEntity<String>(novaPutanja,HttpStatus.OK);
+		} catch (NeovlascenPristupException e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.FORBIDDEN);
+		} catch (RekvizitNePostoji e) {
+			return  new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<String>("Doslo je do greske prilikom baratanja s fajlom ili JSONOM",HttpStatus.BAD_REQUEST);
+		}
+		
+		
+		
+	}
+	
+	@RequestMapping(value="/modifikujTematskiRekvizitInformacije",method=RequestMethod.PUT)
+	public ResponseEntity<String> modifikujTematskiRekvizitInformacije(HttpSession s,@RequestParam("id") int id,@RequestParam("rekvizit") String rekvizitJson) {
+		try {
+			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+			ObjectMapper objMapper = new ObjectMapper();
+			RekvizitDTO rekvizit = objMapper.readValue(rekvizitJson,RekvizitDTO.class);
+			servis.modifikujRekvizit(id,rekvizit);
+		} catch (NeovlascenPristupException e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.FORBIDDEN);
+		}
+		catch(IOException e) {
+			return new ResponseEntity<String>("Doslo je do greske prilikom baratanja s fajlom ili JSONOM",HttpStatus.BAD_REQUEST);
+		} 
+		catch (RekvizitNePostoji e) {
+			return  new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		} 
+		catch (RekvizitVecPostojiException e) {
+			return  new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<String>("Rekvizit uspesno modifikovan",HttpStatus.OK);
 	}
 	
 	
