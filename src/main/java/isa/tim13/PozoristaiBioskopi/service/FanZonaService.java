@@ -96,4 +96,15 @@ public class FanZonaService {
 		
 	}
 
+	public void brisanjeTematskogRekvizita(int id) throws RekvizitNePostoji {
+		Optional<TematskiRekvizit> rekvizitIzBaze = rep.findById(id);
+		if(rekvizitIzBaze.isPresent()==false) {
+			throw new RekvizitNePostoji();
+		}
+		
+		slikeServis.obrisiStaruSliku(rekvizitIzBaze.get().getPutanjaDoSlike());
+		rep.deleteById(id);
+		
+	}
+
 }

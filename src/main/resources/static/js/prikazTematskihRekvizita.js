@@ -2,6 +2,7 @@ var prikazTematskihRekvizitaPutanja = "/fanzona/prikaziTematskeRekvizite";
 var putanjaDoSlika = "/upravljanjeSlikama?putanjaDoSlike=";
 var modifikovanjeTematskihRekvizitaInfoPutanja = "/fanzona/modifikujTematskiRekvizitInformacije";
 var modifikovanjeTematskihRekvizitaSlikaPutanja = "/fanzona/modifikujSlikuTematskogRekvizita";
+var brisanjeTematskihRekvizitaPutanja = "/fanzona/obrisiTematskiRekvizit"
 
 
 function formaNevalidna(){
@@ -25,6 +26,25 @@ function prikaziDijalog(id){
 
 function napraviId(text,id){
 	return text + id;
+}
+
+function obrisiRekvizit(id){
+	allData = {};
+	allData["id"] = parseInt(id);
+	$.ajax({
+		url: brisanjeTematskihRekvizitaPutanja,
+		success: function(result){
+			$("#"+id).remove();
+		},
+		type: 'PUT',
+		dataType: "text",
+		data: allData,
+		error : function(xhr, textStatus, errorThrown) {
+			var err = xhr["responseText"];
+			alert(err);
+		}
+		
+	});
 }
 
 function promeniSliku(id){
@@ -62,7 +82,7 @@ function dodajPrikazRekvizita(rekvizit){
 	var id = rekvizit["id"];
 	var newDiv = $("<div id=\""+id+"\""+"></div>");
 	
-	var divHtml ="<b>Naziv rekvizita: </b>"+"<p id=\""+napraviId("nazivRekvizita",id)+"\">"+rekvizit["nazivRekvizita"]+"</p><br/>";
+	var divHtml ="<b>Naziv rekvizita: </b>"+"<p id=\""+napraviId("nazivRekvizita",id)+"\">"+rekvizit["nazivRekvizita"]+"</p><input type=\"button\" value=\"Obrisi\" onclick=\""+"obrisiRekvizit("+id+")\"></input><br/>";
 	var divHtml = divHtml + "<b>Opis rekvizita: <br/></b>"+"<p id=\""+napraviId("opisRekvizita",id)+"\">"+rekvizit["opisRekvizita"]+"</p><br/>";
 	var divHtml = divHtml + "<b>Cena rekvizita: </b>"+"<p id=\""+napraviId("cenaRekvizita",id)+"\">"+rekvizit["cenaRekvizita"]+"</p><br/>";
 	newDiv.html(divHtml);

@@ -39,6 +39,19 @@ public class FanZonaController {
 		return servis.prikaziSveTematskeRekvizite();
 	}
 	
+	@RequestMapping(value = "/obrisiTematskiRekvizit", method=RequestMethod.PUT)
+	public ResponseEntity<String> brisanjeTematskogRekvizita(HttpSession s,@RequestParam(value="id")int id){
+		try {
+			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+			servis.brisanjeTematskogRekvizita(id);
+			return new ResponseEntity<String>("Rekvizit uspesno obrisan",HttpStatus.OK);
+		} catch (NeovlascenPristupException e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.FORBIDDEN);
+		} catch (RekvizitNePostoji e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	
 	@RequestMapping(value = "/modifikujSlikuTematskogRekvizita", method=RequestMethod.POST)
 	@ResponseBody
