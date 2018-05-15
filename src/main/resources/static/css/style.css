@@ -81,3 +81,8 @@ h1, input {
     outline: none;
 }
 
+.rekvizitiGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}

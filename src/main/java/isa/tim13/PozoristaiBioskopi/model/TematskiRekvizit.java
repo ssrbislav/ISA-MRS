@@ -31,6 +31,17 @@ public class TematskiRekvizit {
 	@Column(name="cena")
 	private double cenaRekvizita;
 	
+	@Column(name="broj")
+	private int broj;
+	
+	public int getBroj() {
+		return broj;
+	}
+
+	public void setBroj(int broj) {
+		this.broj = broj;
+	}
+
 	public TematskiRekvizit() {
 		
 	}

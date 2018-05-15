@@ -13,6 +13,9 @@ public class RekvizitDTO {
 	@JsonProperty("cenaRekvizita")
 	private double cenaRekvizita;
 	
+	@JsonProperty("broj")
+	private int broj;
+	
 	
 	public String getNazivRekvizita() {
 		return nazivRekvizita;
@@ -33,6 +36,13 @@ public class RekvizitDTO {
 		this.cenaRekvizita = cenaRekvizita;
 	}
 	
+	
+	public int getBroj() {
+		return broj;
+	}
+	public void setBroj(int broj) {
+		this.broj = broj;
+	}
 	public RekvizitDTO() {}
 	
 	

@@ -70,6 +70,7 @@ public class FanZonaControllerTest {
 		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
 		rekvizit.setNazivRekvizita("Test1");
 		rekvizit.setCenaRekvizita(50);
+		rekvizit.setBroj(5);
 		rekvizit.setOpisRekvizita("Opis rekvizita test 1");
 		MockMultipartFile mockFile = new MockMultipartFile("file", "test.jpg", "image/jpg", inputStream);
 		mockMvc.perform(fileUpload(URL_PREFIX+"/dodajTematskiRekvizit")
@@ -90,6 +91,7 @@ public class FanZonaControllerTest {
 		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
 		rekvizit.setNazivRekvizita("Test2");
 		rekvizit.setCenaRekvizita(50);
+		rekvizit.setBroj(5);
 		rekvizit.setOpisRekvizita("Opis rekvizita test 1");
 		MockMultipartFile mockFile = new MockMultipartFile("file", "test.jpg", "image/jpg", inputStream);
 		mockMvc.perform(fileUpload(URL_PREFIX+"/dodajTematskiRekvizit")
@@ -117,6 +119,7 @@ public class FanZonaControllerTest {
 		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
 		rekvizit.setNazivRekvizita("Test3");
 		rekvizit.setCenaRekvizita(50);
+		rekvizit.setBroj(5);
 		rekvizit.setOpisRekvizita("Opis rekvizita test 1");
 		MockMultipartFile mockFile = new MockMultipartFile("file", "test.jpg", "image/jpg", inputStream);
 		
