@@ -15,6 +15,6 @@ public interface FanZonaRepository extends CrudRepository<TematskiRekvizit, Inte
 	TematskiRekvizit findByNazivRekvizita(String naziv);
 	
 	
-	@Query(value="select * from pozorista_i_bioskopi.tematski_rekvizit where lower(naziv) like lower(concat('%',:nazivRekvizita,'%')) and cena >= :donjaCena and cena <= :gornjaCena",nativeQuery=true)
+	@Query(value="select r from TematskiRekvizit r where lower(r.nazivRekvizita) like lower(concat('%',:nazivRekvizita,'%')) and r.cenaRekvizita >= :donjaCena and r.cenaRekvizita <= :gornjaCena",nativeQuery=false)
 	Iterable<TematskiRekvizit> findByRazniKriterijumi(@Param("nazivRekvizita")String nazivRekvizita, @Param("donjaCena")double donjaCena, @Param("gornjaCena")double gornjaCena);
 }
