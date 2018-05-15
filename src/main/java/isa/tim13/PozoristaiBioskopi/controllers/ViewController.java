@@ -1,19 +1,28 @@
 package isa.tim13.PozoristaiBioskopi.controllers;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
+import isa.tim13.PozoristaiBioskopi.model.TipInstitucijeKulture;
 import isa.tim13.PozoristaiBioskopi.service.AuthService;
+import isa.tim13.PozoristaiBioskopi.service.PozoristaIBioskopiService;
+
 
 @Controller
 public class ViewController {
+	
+	
+@Autowired  
+PozoristaIBioskopiService servis;
+
 	// Pocetna strana
 	@RequestMapping("/")
 	public String welcome() {
@@ -48,6 +57,47 @@ public class ViewController {
 		@RequestMapping("/izmenaPodataka")
 		public String izmenaPodataka() {
 			return "izmenaPodataka";
+			
+		}
+		
+		// spisak bioskopa
+		@RequestMapping("/bioskopi")
+		public String bioskopi(HttpSession sesion) {
+			
+			ArrayList<InstitucijaKulture> institucije = (ArrayList<InstitucijaKulture>) servis.prikaziInstitucije() ;
+			ArrayList<InstitucijaKulture> bioskopi = new ArrayList<InstitucijaKulture>() ;
+			
+			for (InstitucijaKulture i : institucije) {
+				if (i.getTip()==TipInstitucijeKulture.BIOSKOP) {
+					bioskopi.add(i);
+					
+				}
+			}
+			sesion.setAttribute("institucijePrikaz", bioskopi);
+			return "BioskopiPozorista";
+		}
+		
+		
+		// spisak pozorista
+		@RequestMapping("/pozorista")
+		public String pozorista(HttpSession sesion) {
+			
+			ArrayList<InstitucijaKulture> institucije = (ArrayList<InstitucijaKulture>) servis.prikaziInstitucije() ;
+			ArrayList<InstitucijaKulture> pozorista = new ArrayList<InstitucijaKulture>() ;
+			
+			for (InstitucijaKulture i : institucije) {
+				if (i.getTip()==TipInstitucijeKulture.POZORISTE) {
+					pozorista.add(i);
+					
+				}
+			}
+			sesion.setAttribute("institucijePrikaz", pozorista);
+			return "BioskopiPozorista";
+		}
+		
+		@RequestMapping("/repertoar")
+		public String repertoar() {
+			return "repertoar";
 		}
 	@RequestMapping("/projekcija")
 	public String projekcija() {

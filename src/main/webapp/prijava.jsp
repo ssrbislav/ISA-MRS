@@ -43,7 +43,7 @@
 		<input style="width:322.467px;" name="email" placeholder="Email Adresa" size=50></input>
 		<input style="width:322.467px;" type="password" name="lozinka" placeholder="Lozinka" size=50></input>
 		
-		<button type="button" name="button" id="prijavaDugme" style="width:322.467px;">Prijava</button><br/><br/>
+		<button type="submit" name="button" id="prijavaDugme" style="width:322.467px;">Prijava</button><br/><br/>
 	
 	</form>
 </body>

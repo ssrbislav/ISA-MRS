@@ -33,6 +33,12 @@ public class InstitucijaKulture {
     @Column(name="adresa")
 	private String adresa;
     
+    @Column(name="grad")
+  	private String grad;
+    
+    @Column(name="rejting")
+    private double rejting;
+    
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
     private List<Sala> sale;
     
@@ -48,10 +54,18 @@ public class InstitucijaKulture {
 		return tip;
 	}
 
+	
 	public void setTip(TipInstitucijeKulture tip) {
 		this.tip = tip;
 	}
 
+	public double getRejting() {
+		return rejting;
+	}
+	
+	public void setRejting(double rejting) {
+		this.rejting = rejting;
+	}
 
 
 
@@ -104,6 +118,14 @@ public class InstitucijaKulture {
 
 	public void setOpis(String opis) {
 		this.opis = opis;
+	}
+	public String getGrad() {
+		return grad;
+	}
+
+
+	public void setGrad(String drag) {
+		this.grad = grad;
 	}
 
 
