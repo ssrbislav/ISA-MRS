@@ -124,7 +124,7 @@ public class InstitucijaKulture {
 	}
 
 
-	public void setGrad(String drag) {
+	public void setGrad(String grad) {
 		this.grad = grad;
 	}
 

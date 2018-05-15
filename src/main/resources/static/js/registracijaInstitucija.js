@@ -4,14 +4,15 @@ var prikazSvihInstitucijaPutanja = "/pozoristaibioskopi"
 
 sale = [];
 
-function regFormaUJSON(naziv,adresa,telefon,opis,tip,sale){
+function regFormaUJSON(naziv,adresa,telefon,opis,tip,sale,grad){
 	return JSON.stringify({
 		"naziv":naziv,
 		"adresa":adresa,
 		"telefon":telefon,
 		"opis":opis,
 		"tip":tip,
-		"sale": sale
+		"sale": sale,
+		"grad":grad
 	});
 }
 
@@ -96,11 +97,12 @@ $(document).ready(function(){
 		
 		var naziv = $("input[name=naziv]").val();
 		var adresa = $("input[name=adresa]").val();
+		var grad = $("input[name=grad]").val();
 		var telefon = $("input[name=telefon]").val();
 		var opis = $("input[name=opis]").val();
 		var tip =  $("select[name=tip]").val();;
 		
-		if(formaNevalidna(naziv,adresa,telefon,opis,tip)){
+		if(formaNevalidna(naziv,adresa,telefon,opis,tip,grad)){
 			alert("Niste popunili sva polja kako treba! ");
 			return;
 		}
@@ -118,7 +120,7 @@ $(document).ready(function(){
 			},
 			type: "POST",
 			dataType: "text",
-			data: regFormaUJSON(naziv,adresa,telefon,opis,tip,sale),
+			data: regFormaUJSON(naziv,adresa,telefon,opis,tip,sale,grad),
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
 				alert("Desila se greska: " + errorThrown);
 			}
