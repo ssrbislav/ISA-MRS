@@ -29,6 +29,7 @@
 	Unesite naziv rekvizita <input style="width:322.467px;" type="text" name="nazivRekvizita" size=20 required/><br/>
 	Unesite opis rekvizita <textarea style="width:322.467px;" name="opisRekvizita" maxlength=1000 required></textarea><br/>
 	Unesite cenu <input type="number" style="width:322.467px;" name="cenaRekvizita" size=20 required/><br/>
+	Broj dostupnih rekvizita <input type="number" style="width:322.467px;" name="broj" size=20 required/><br/>
 	<input type="file" name="file" style="width:322.467px;" value="Odaberi sliku..." id="slikaRekvizita" accept="image/*"><br/>
 	<input type="button" id="dodavanjeRekvizitaDugme" value="Dodaj rekvizit"/><br/>
 </div>

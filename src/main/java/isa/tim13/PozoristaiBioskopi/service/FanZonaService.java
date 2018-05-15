@@ -32,6 +32,7 @@ public class FanZonaService {
 		tematskiRekvizit.setNazivRekvizita(rekvizit.getNazivRekvizita());
 		tematskiRekvizit.setOpisRekvizita(rekvizit.getOpisRekvizita());
 		tematskiRekvizit.setCenaRekvizita(rekvizit.getCenaRekvizita());
+		tematskiRekvizit.setBroj(rekvizit.getBroj());
 		StringBuilder putanjaDoSlikeRekvizita = new StringBuilder(PUTANJA_PREFIKS+(rekvizit.getNazivRekvizita().replaceAll("\\W", "_")));
 		
 		File direktorijum = new File(PUTANJA_PREFIKS);
@@ -71,6 +72,7 @@ public class FanZonaService {
 		rekvizitIzBaze.get().setCenaRekvizita(rekvizit.getCenaRekvizita());
 		rekvizitIzBaze.get().setOpisRekvizita(rekvizit.getOpisRekvizita());
 		rekvizitIzBaze.get().setNazivRekvizita(rekvizit.getNazivRekvizita());
+		rekvizitIzBaze.get().setBroj(rekvizit.getBroj());
 		rep.save(rekvizitIzBaze.get());
 		
 	}
@@ -105,6 +107,11 @@ public class FanZonaService {
 		slikeServis.obrisiStaruSliku(rekvizitIzBaze.get().getPutanjaDoSlike());
 		rep.deleteById(id);
 		
+	}
+
+	public Iterable<TematskiRekvizit> pretraziTematskeRekvizite(String nazivRekvizita, double donjaCena,
+			double gornjaCena) {
+		return rep.findByRazniKriterijumi(nazivRekvizita,donjaCena,gornjaCena);
 	}
 
 }

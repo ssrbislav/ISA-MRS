@@ -52,6 +52,11 @@ public class FanZonaController {
 		}
 	}
 	
+	@RequestMapping(value="/pretraziTematskeRekvizite",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Iterable<TematskiRekvizit> pretraziTematskeRekvizite(@RequestParam(value="nazivRekvizita") String nazivRekvizita,@RequestParam("donjaCena")double donjaCena,@RequestParam("gornjaCena")double gornjaCena){
+		return servis.pretraziTematskeRekvizite(nazivRekvizita,donjaCena,gornjaCena);
+	}
+	
 	
 	@RequestMapping(value = "/modifikujSlikuTematskogRekvizita", method=RequestMethod.POST)
 	@ResponseBody

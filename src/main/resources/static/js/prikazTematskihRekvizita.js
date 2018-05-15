@@ -3,6 +3,7 @@ var putanjaDoSlika = "/upravljanjeSlikama?putanjaDoSlike=";
 var modifikovanjeTematskihRekvizitaInfoPutanja = "/fanzona/modifikujTematskiRekvizitInformacije";
 var modifikovanjeTematskihRekvizitaSlikaPutanja = "/fanzona/modifikujSlikuTematskogRekvizita";
 var brisanjeTematskihRekvizitaPutanja = "/fanzona/obrisiTematskiRekvizit"
+var pretragaTematskihRekvizitaPutanja = "/fanzona/pretraziTematskeRekvizite"
 
 
 function formaNevalidna(){
@@ -83,8 +84,9 @@ function dodajPrikazRekvizita(rekvizit){
 	var newDiv = $("<div id=\""+id+"\""+"></div>");
 	
 	var divHtml ="<b>Naziv rekvizita: </b>"+"<p id=\""+napraviId("nazivRekvizita",id)+"\">"+rekvizit["nazivRekvizita"]+"</p><input type=\"button\" value=\"Obrisi\" onclick=\""+"obrisiRekvizit("+id+")\"></input><br/>";
-	var divHtml = divHtml + "<b>Opis rekvizita: <br/></b>"+"<p id=\""+napraviId("opisRekvizita",id)+"\">"+rekvizit["opisRekvizita"]+"</p><br/>";
-	var divHtml = divHtml + "<b>Cena rekvizita: </b>"+"<p id=\""+napraviId("cenaRekvizita",id)+"\">"+rekvizit["cenaRekvizita"]+"</p><br/>";
+	var divHtml = divHtml + "<b>Opis rekvizita: <br/></b>"+"<p id=\""+napraviId("opisRekvizita",id)+"\">"+rekvizit["opisRekvizita"]+"</p>";
+	var divHtml = divHtml + "<b>Cena rekvizita: </b>"+"<p id=\""+napraviId("cenaRekvizita",id)+"\">"+rekvizit["cenaRekvizita"]+"</p>";
+	var divHtml = divHtml + "<b>Broj artikala: </b>"+"<p id=\""+napraviId("broj",id)+"\">"+rekvizit["broj"]+"</p>";
 	newDiv.html(divHtml);
 	newDiv.append($("<input type=\"button\" value=\"Izmeni podatke o rekvizitu\"></input><br/>").click(function(data){
 		prikaziDijalog(rekvizit["id"]);
@@ -98,11 +100,12 @@ function dodajPrikazRekvizita(rekvizit){
 	 $("#prikazRekvizita").append(newDiv);
 }
 
-function rekvizitFormaUJSON(nazivRekvizita,opisRekvizita,cenaRekvizita){
+function rekvizitFormaUJSON(nazivRekvizita,opisRekvizita,cenaRekvizita,broj){
 	return JSON.stringify({
 		"nazivRekvizita":nazivRekvizita,
 		"opisRekvizita":opisRekvizita,
-		"cenaRekvizita":cenaRekvizita
+		"cenaRekvizita":cenaRekvizita,
+		"broj":broj
 	});
 }
 
@@ -121,15 +124,19 @@ function inicijalizujDijalog(){
 				var nazivRekvizita = $("#izmenaNazivRekvizita").val();
 				var opisRekvizita = $("#izmenaOpisRekvizita").val();
 				var cenaRekvizita = $("#izmenaCenaRekvizita").val();
+				var broj = $("#izmenaBrojaRekvizita").val();
 				
-				
+				if(broj <0){
+					alert("Broj rekvizita ne moze biti manji od 0!");
+					return;
+				}
 		
-				if(formaNevalidna(nazivRekvizita,opisRekvizita,cenaRekvizita)){
+				if(formaNevalidna(nazivRekvizita,opisRekvizita,cenaRekvizita,broj)){
 					alert("Niste popunili sve podatke kako treba!");
 					return;
 				}
 				var allData = {}
-				allData["rekvizit"] = rekvizitFormaUJSON(nazivRekvizita,opisRekvizita,cenaRekvizita);
+				allData["rekvizit"] = rekvizitFormaUJSON(nazivRekvizita,opisRekvizita,cenaRekvizita,broj);
 				allData["id"] = rekvizitId;
 				
 				$.ajax({
@@ -141,6 +148,7 @@ function inicijalizujDijalog(){
 						$("#nazivRekvizita"+rekvizitId).text(nazivRekvizita);
 						$("#opisRekvizita"+rekvizitId).text(opisRekvizita);
 						$("#cenaRekvizita"+rekvizitId).text(cenaRekvizita);
+						$("#broj"+rekvizitId).text(broj);
 						sakrijDijalog();
 					},		   
 					error : function(xhr, textStatus, errorThrown) {
@@ -154,6 +162,44 @@ function inicijalizujDijalog(){
 		
 	);
 	
+}
+
+function pretraziTematskeRekvizite(){
+	var nazivRekvizita = $("#nazivRekvizitaZaPretragu").val();
+	var donjaCena = $("#donjaCenaRekvizita").val();
+	var gornjaCena = $("#gornjaCenaRekvizita").val();
+	
+	if(formaNevalidna(donjaCena,gornjaCena)){
+		alert("Niste popunili neophodne podatke za pretragu.");
+		return;
+	}
+	
+	if(donjaCena > gornjaCena){
+		alert("Donja cena ne moze biti veca od gornje!");
+		return;
+	}
+	
+	var allData = {}
+	allData["nazivRekvizita"] = nazivRekvizita;
+	allData["donjaCena"] = donjaCena;
+	allData["gornjaCena"] = gornjaCena;
+	
+	$.ajax({
+		 url:pretragaTematskihRekvizitaPutanja,
+		type: "GET",
+		data: allData,
+		success: function(data){
+			$("#prikazRekvizita").empty();
+			 for(var i=0;i<data.length;i++){
+				 dodajPrikazRekvizita(data[i]);
+			  }
+		},		   
+		error : function(xhr, textStatus, errorThrown) {
+				var err = xhr["responseText"];
+				alert(err);
+			}
+		
+	});
 }
 
 

@@ -11,11 +11,12 @@ function formaNevalidna(){
 }
 
 
-function rekvizitFormaUJSON(nazivRekvizita,opisRekvizita,cenaRekvizita){
+function rekvizitFormaUJSON(nazivRekvizita,opisRekvizita,cenaRekvizita,broj){
 	return JSON.stringify({
 		"nazivRekvizita":nazivRekvizita,
 		"opisRekvizita":opisRekvizita,
-		"cenaRekvizita":cenaRekvizita
+		"cenaRekvizita":cenaRekvizita,
+		"broj":broj
 	});
 }
 
@@ -27,9 +28,15 @@ $(document).ready(function(){
 		var nazivRekvizita = $("input[name=nazivRekvizita]").val();
 		var opisRekvizita = $("textarea[name=opisRekvizita]").val();
 		var cenaRekvizita = $("input[name=cenaRekvizita]").val();
+		var broj = $("input[name=broj]").val();
 		var slikaPodaci = $("input[name=file]")[0].files[0];
 		
-		if(formaNevalidna(nazivRekvizita,opisRekvizita,cenaRekvizita)){
+		if(broj <0){
+			alert("Broj rekvizita ne moze biti manji od 0!");
+			return;
+		}
+		
+		if(formaNevalidna(nazivRekvizita,opisRekvizita,cenaRekvizita,broj)){
 			alert("Niste popunili sva polja u formi za dodavanje.");
 			return;
 		}
@@ -40,7 +47,7 @@ $(document).ready(function(){
 		}
 		
 		var allData = new FormData();
-		allData.append("rekvizit",rekvizitFormaUJSON(nazivRekvizita,opisRekvizita,cenaRekvizita));
+		allData.append("rekvizit",rekvizitFormaUJSON(nazivRekvizita,opisRekvizita,cenaRekvizita,broj));
 		allData.append("file",slikaPodaci);
 		
 		$.ajax({
