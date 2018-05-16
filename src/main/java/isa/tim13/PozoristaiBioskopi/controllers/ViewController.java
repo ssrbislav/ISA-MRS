@@ -95,6 +95,11 @@ PozoristaIBioskopiService servis;
 			return "BioskopiPozorista";
 		}
 		
+		@RequestMapping("/odjava")
+		public String odjava(HttpSession sesion) {
+			sesion.invalidate();
+			return "prijava";
+		}
 		@RequestMapping("/repertoar")
 		public String repertoar() {
 			return "repertoar";

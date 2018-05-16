@@ -44,6 +44,9 @@
         </ul>
       </li>
     </ul>
+    <ul class="nav navbar-nav pull-right">  
+       <li><a href="/odjava" style="color: white;">Odjava</a></li>
+    </ul>
   </div>
 </nav>
 

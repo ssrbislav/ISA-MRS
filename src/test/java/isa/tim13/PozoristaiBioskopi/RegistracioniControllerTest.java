@@ -14,13 +14,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,7 +29,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import isa.tim13.PozoristaiBioskopi.controllers.RegistracioniController;
 import isa.tim13.PozoristaiBioskopi.dto.RegisterDTO;
-import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Osoba;
 import isa.tim13.PozoristaiBioskopi.repository.KorisnikRepository;
 import isa.tim13.PozoristaiBioskopi.service.EmailService;
@@ -45,9 +43,6 @@ private static final String URL_PREFIX = "/registerUser";
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 	
-	@Mock
-	private EmailService emailService;
-	
 	@InjectMocks
 	@Autowired
 	private RegistracioniController registracioniController;
@@ -61,6 +56,13 @@ private static final String URL_PREFIX = "/registerUser";
 	@Autowired
 	private KorisnikRepository repozitorijum;
 	
+	@Mock
+	private ThreadPoolTaskExecutor taskExecutor;
+	
+	@Mock
+	private EmailService emailThread;
+	
+	
 	private RegisterDTO registracija;
 	
 
@@ -73,7 +75,7 @@ private static final String URL_PREFIX = "/registerUser";
 	@Before
 	public void before() {
         MockitoAnnotations.initMocks(this);
-        doNothing().when(emailService).sendEmail(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        doNothing().when(taskExecutor).execute(emailThread);
         Osoba zaBrisanje = repozitorijum.findByEmail(registracija.getEmail());
         if(zaBrisanje != null) {
         	repozitorijum.delete(zaBrisanje);

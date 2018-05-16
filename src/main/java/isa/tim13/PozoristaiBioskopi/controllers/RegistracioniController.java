@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +28,10 @@ public class RegistracioniController {
 	private KorisniciService korisniciServis;
 	
 	@Autowired
-	private EmailService emailService;
+	private ThreadPoolTaskExecutor taskExecutor;
+	
+	@Autowired
+	private EmailService emailThread;
 	
 	@RequestMapping(method=RequestMethod.POST,  consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> registruj(@RequestBody RegisterDTO registracija) {
@@ -64,6 +68,7 @@ public class RegistracioniController {
 	private void mail(String mailTo, String registracioniLink) {
 		String naslov = "Potvrda registracije";
 		String sadrzaj = "Pozdrav, molimo Vas da potvrdite registraciju putem sledeceg linka:\nhttp://localhost:8080/aktivacija/"+ registracioniLink;
-		emailService.sendEmail(mailTo, naslov, sadrzaj);
+		emailThread.setup(mailTo, naslov, sadrzaj);
+		taskExecutor.execute(emailThread);
 	}
 }
