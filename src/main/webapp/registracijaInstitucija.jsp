@@ -28,6 +28,7 @@
    <label style="color:  #87837e  ;">Popunite podatke za registraciju: </label>
 	Unesite naziv <input style="width:322.467px;" type="text" name="naziv" size=50/><br/>
 	Unesite adresu <input style="width:322.467px;" type="text" name="adresa" size=50/><br/>
+	Unesite grad <input style="width:322.467px;" type="text" name="grad" size=50/><br/>
 	Unesite telefon <input style="width:322.467px;" type="tel" name="telefon" size=50/><br/>
 	Unesite opis <input style="width:322.467px;" type="text" name="opis" size=50/><br/>
 	Odaberite tip <select style="width:322.467px;" name="tip"><option>BIOSKOP</option><option>POZORISTE</option></select><br/>

@@ -24,7 +24,12 @@ public class SlikeController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<byte[]> dobaviSliku(@RequestParam("putanjaDoSlike")String putanjaDoSlike) throws IOException {
-		byte[] slika = servis.dobaviSliku(putanjaDoSlike);
+		byte[] slika;
+		try {
+			slika = servis.dobaviSliku(putanjaDoSlike);
+		} catch (IOException e) {
+			slika = servis.dobaviSliku("inicijalne-slike/profilna.jpg");
+		}
 		HttpHeaders headers = new HttpHeaders();
 	    headers.setCacheControl(CacheControl.noCache().getHeaderValue());
 	     
