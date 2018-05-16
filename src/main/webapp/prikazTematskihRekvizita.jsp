@@ -22,8 +22,11 @@
     </div>
     <ul class="nav navbar-nav">
 		 <li><a href="/dodavanjeTematskihRekvizita" style="color: white;">Dodavanje tematskih rekvizita</a></li>
-         
+         <li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
         </ul>
+    <ul class="nav navbar-nav pull-right">  
+       <li><a href="/odjava" style="color: white;">Odjava</a></li>
+    </ul>
   </div>
   </nav>
 <div style="margin: 0 auto; width: 250px;">
@@ -32,17 +35,17 @@
    <div id="izmenaDijalog">
    <label style="color:  #87837e  ;">Popunite podatke za izmenu rekvizita: </label><br/>
    		<b>Id: </b><p id="izmenaIdRekvizita"></p><br/>
-		Naziv rekvizita <input style="width:322.467px;" type="text" id="izmenaNazivRekvizita" size=10 required/><br/>
-		Opis rekvizita <textarea style="width:322.467px;" id="izmenaOpisRekvizita" maxlength=1000 required></textarea><br/>
-		Cena <input type="number" style="width:322.467px;" id="izmenaCenaRekvizita" size=10 required/><br/>
-		Broj <input type="number" style="width:322.467px;" id="izmenaBrojaRekvizita" size=10 required/><br/>
+		<input style="width:322.467px;" type="text" id="izmenaNazivRekvizita" placeholder="naziv" size=10 required/><br/>
+		<textarea style="width:322.467px;" id="izmenaOpisRekvizita" maxlength=1000 placeholder="opis" required></textarea><br/>
+		<input type="number" style="width:322.467px;" id="izmenaCenaRekvizita" placeholder="cena" size=10 required/><br/>
+		<input type="number" style="width:322.467px;" id="izmenaBrojaRekvizita" placeholder="broj" size=10 required/><br/>
 		<input type="button" id="izmenaRekvizitaDugme" value="Izmeni rekvizit"/><br/>
    		
    </div>
    <div id="pretragaTematskihRekvizita">
-   		Naziv rekvizita sadrzi  <input style="width:322.467px;" type="text" id="nazivRekvizitaZaPretragu" size=10 required/><br/>
-   		Donja cena (obavezno): <input type="number" style="width:322.467px;" id="donjaCenaRekvizita" size=10/><br/>
-   		Gornja cena (obavezno): <input type="number" style="width:322.467px;" id="gornjaCenaRekvizita" size=10/><br/>
+   		<input style="width:322.467px;" type="text" id="nazivRekvizitaZaPretragu" placeholder="naziv" size=10 required/><br/>
+   		<input type="number" style="width:322.467px;" id="donjaCenaRekvizita" placeholder="donja cena *" size=10/><br/>
+   		<input type="number" style="width:322.467px;" id="gornjaCenaRekvizita" placeholder="gornja cena *" size=10/><br/>
    		<input type="button" id="pretragaRekvizitaDugme" value="Pretrazi rekvizite" onclick="pretraziTematskeRekvizite()"/><br/>
    </div>
    

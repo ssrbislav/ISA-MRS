@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
+import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
 import isa.tim13.PozoristaiBioskopi.model.TipInstitucijeKulture;
@@ -43,7 +44,10 @@ PozoristaIBioskopiService servis;
 
 	// strana za profil
 	@RequestMapping("/profilKorisnika")
-	public String profil() {
+	public String profil(HttpSession s) {
+		if(s.getAttribute("korisnik") instanceof Administrator) {
+			return "profilAdministratora";
+		}
 		return "profilKorisnika";
 	}
 

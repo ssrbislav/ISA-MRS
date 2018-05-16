@@ -19,19 +19,22 @@
     </div>
     <ul class="nav navbar-nav">
 		<li><a href="/dodavanjeAdministratora" style="color: white;">Dodavanje administratora</a></li>
-         
+         <li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
         </ul>
+     <ul class="nav navbar-nav pull-right">  
+       <li><a href="/odjava" style="color: white;">Odjava</a></li>
+    </ul>
   </div>
 </nav>
 
 <div style="margin: 0 auto; width: 250px;">
    <label style="color:  #87837e  ;">Popunite podatke za registraciju: </label>
-	Unesite naziv <input style="width:322.467px;" type="text" name="naziv" size=50/><br/>
-	Unesite adresu <input style="width:322.467px;" type="text" name="adresa" size=50/><br/>
-	Unesite grad <input style="width:322.467px;" type="text" name="grad" size=50/><br/>
-	Unesite telefon <input style="width:322.467px;" type="tel" name="telefon" size=50/><br/>
-	Unesite opis <input style="width:322.467px;" type="text" name="opis" size=50/><br/>
-	Odaberite tip <select style="width:322.467px;" name="tip"><option>BIOSKOP</option><option>POZORISTE</option></select><br/>
+	 <input style="width:322.467px;" type="text" name="naziv" placeholder="naziv" size=50/><br/>
+	 <input style="width:322.467px;" type="text" name="adresa" placeholder="adresa" size=50/><br/>
+	 <input style="width:322.467px;" type="text" name="grad" placeholder="grad" size=50/><br/>
+	 <input style="width:322.467px;" type="tel" name="telefon" placeholder="telefon" size=50/><br/>
+	 <input style="width:322.467px;" type="text" name="opis" placeholder="opis" size=50/><br/>
+	 <select style="width:322.467px;" name="tip"><option>BIOSKOP</option><option>POZORISTE</option></select><br/>
 	<input type="button" id="registracijaDugme" value="Registruj instituciju"/><br/>
 	<input type="button" id="prikazInstitucijaDugme" value="Prikaz postojece institucije"/>
 </div>
@@ -40,9 +43,9 @@
 </div>
 <br/>
 <div style="margin: 0 auto; width: 250px;">
-	Naziv sale: <br/><input type="text" name="nazivSale" size=20/><br/>
-	Broj vrsta sale: <input type="number" name="brojVrstaSale" size=20/><br/>
-	Broj kolona sale: <input type="number" name="brojKolonaSale" size=20/><br/>
+	 <input type="text" name="nazivSale" placeholder="Naziv sale" size=20/><br/>
+	<input type="number" name="brojVrstaSale" placeholder="Broj vrsta sale" size=20/><br/>
+	<input type="number" name="brojKolonaSale" placeholder="Broj kolona sale" size=20/><br/>
 	<input type="button" id="dodavanjeSaleDugme" value="Dodaj salu"/><br/>
 </div>
 

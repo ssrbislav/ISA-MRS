@@ -1,6 +1,8 @@
 package isa.tim13.PozoristaiBioskopi.service;
 
 
+import java.util.LinkedHashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,22 @@ public class AdministratoriService {
 	
 	@Autowired
 	InstitucijaKultureRepository irep;
+	
+	private LinkedHashMap<String,String> fanZonaOpcije;
+	private LinkedHashMap<String,String> sistemskiOpcije;
+	private LinkedHashMap<String,String> institucionalniOpcije;
+	
+	public AdministratoriService() {
+		fanZonaOpcije = new LinkedHashMap<String,String>();
+		fanZonaOpcije.put("Dodavanje rekvizita", "/dodavanjeTematskihRekvizita");
+		fanZonaOpcije.put("Prikaz rekvizita","/prikazTematskihRekvizita");
+		
+		sistemskiOpcije = new LinkedHashMap<String,String>();
+		sistemskiOpcije.put("Registracija institucija", "/registracijaInstitucija");
+		sistemskiOpcije.put("Dodavanje admina", "/dodavanjeAdministratora");
+		
+		institucionalniOpcije = new LinkedHashMap<String,String>();
+	}
 	
 	public void registrujAdministratora(AdministratorDTO dto) throws InstitucijaNePostojiException, OsobaVecPostojiException {
 		Administrator a = new Administrator();
@@ -47,6 +65,18 @@ public class AdministratoriService {
 
 	public Iterable<Administrator> prikaziAdministratore() {
 		return rep.findAll();
+	}
+
+	public LinkedHashMap<String, String> pribaviOpcije(Administrator a) {
+		if(a.getTip().equals(TipAdministratora.FAN_ZONA)) {
+			return fanZonaOpcije;
+		}
+		else if(a.getTip().equals(TipAdministratora.SISTEMSKI)) {
+			return sistemskiOpcije;
+		}
+		
+		return institucionalniOpcije;
+		
 	}
 	
 }

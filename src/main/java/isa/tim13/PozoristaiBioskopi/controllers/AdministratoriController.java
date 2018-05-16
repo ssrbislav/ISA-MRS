@@ -2,6 +2,7 @@ package isa.tim13.PozoristaiBioskopi.controllers;
 
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -31,6 +32,18 @@ public class AdministratoriController {
 	
 	@Autowired
 	AdministratoriService servis; 
+	
+	
+	
+	@RequestMapping(value="/pribaviOpcije",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody LinkedHashMap<String,String> pribaviOpcije(HttpSession s){
+			try {
+				Administrator a = AuthService.adminProvera(s);
+				return servis.pribaviOpcije(a);
+			} catch (NeovlascenPristupException e) {
+				return new LinkedHashMap<String,String>();
+			}
+	}
 	
 	@RequestMapping(method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> registrujAdministratora(@RequestBody AdministratorDTO dto,HttpSession s){

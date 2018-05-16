@@ -19,17 +19,20 @@
     </div>
     <ul class="nav navbar-nav">
 		 <li><a href="/prikazTematskihRekvizita" style="color: white;">Prikaz tematskih rekvizita</a></li>
-         
+         <li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
         </ul>
+        <ul class="nav navbar-nav pull-right">  
+       <li><a href="/odjava" style="color: white;">Odjava</a></li>
+    </ul>
   </div>
 </nav>
 
 <div style="margin: 0 auto; width: 250px;">
    <label style="color:  #87837e  ;">Popunite podatke za dodavanje novog rekvizita: </label><br/>
-	Unesite naziv rekvizita <input style="width:322.467px;" type="text" name="nazivRekvizita" size=20 required/><br/>
-	Unesite opis rekvizita <textarea style="width:322.467px;" name="opisRekvizita" maxlength=1000 required></textarea><br/>
-	Unesite cenu <input type="number" style="width:322.467px;" name="cenaRekvizita" size=20 required/><br/>
-	Broj dostupnih rekvizita <input type="number" style="width:322.467px;" name="broj" size=20 required/><br/>
+	<input style="width:322.467px;" type="text" name="nazivRekvizita" placeholder="Naziv" size=20 required/><br/>
+	<textarea style="width:322.467px;" name="opisRekvizita" maxlength=1000 placeholder="Opis" required></textarea><br/>
+	<input type="number" style="width:322.467px;" name="cenaRekvizita" placeholder="Cena" size=20 required/><br/>
+	<input type="number" style="width:322.467px;" name="broj" size=20 placeholder="Broj" required/><br/>
 	<input type="file" name="file" style="width:322.467px;" value="Odaberi sliku..." id="slikaRekvizita" accept="image/*"><br/>
 	<input type="button" id="dodavanjeRekvizitaDugme" value="Dodaj rekvizit"/><br/>
 </div>

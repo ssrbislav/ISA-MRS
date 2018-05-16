@@ -19,4 +19,13 @@ public class AuthService {
 		
 		throw new NeovlascenPristupException();
 	}
+	
+	public static Administrator adminProvera(HttpSession s) throws NeovlascenPristupException {
+		Osoba o = (Osoba)s.getAttribute("korisnik");
+		if(o!=null && o instanceof Administrator) {
+			return (Administrator)o;
+		}
+		
+		throw new NeovlascenPristupException();
+	}
 }

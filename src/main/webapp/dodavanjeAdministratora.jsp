@@ -19,20 +19,25 @@
     </div>
     <ul class="nav navbar-nav">
 		<li><a href="/registracijaInstitucija" style="color: white;">Registracija Institucija</a></li>
+		<li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
          
         </ul>
+    <ul class="nav navbar-nav pull-right">  
+       <li><a href="/odjava" style="color: white;">Odjava</a></li>
+    </ul>
   </div>
+  
 </nav>
 
 <div style="margin: 0 auto; width: 250px;">
    <label style="color:  #87837e  ;">Popunite podatke za dodavanje novog administratora: </label><br/>
-	Unesite ime <input  style="width:322.467px;" type="text" name="ime" size=50 required/><br/>
-	Unesite prezime <input  style="width:322.467px;" type="text" name="prezime" size=50 required/><br/>
-	Unesite lozinku <input style="width:322.467px;" type="password" name="lozinka" size=50 required/><br/>
-	Unesite email <input  style="width:322.467px;" type="email" name="email" size=50 required/><br/>
-	Odaberite tip <select  style="width:322.467px;" name="tip_administratora"></select><br/>
+	<input  style="width:322.467px;" type="text" name="ime" size=50 placeholder="ime" required/><br/>
+	<input  style="width:322.467px;" type="text" name="prezime" size=50 placeholder="prezime" required/><br/>
+	<input style="width:322.467px;" type="password" name="lozinka" size=50 placeholder="lozinka" required/><br/>
+	<input  style="width:322.467px;" type="email" name="email" size=50 placeholder="email" required/><br/>
+	<select  style="width:322.467px;" name="tip_administratora"></select><br/>
 	<div id="prikazInstitucijaZaBiranje">
-	 	Odaberite instituciju <select name="id_institucije"></select><br/>
+	 	<select name="id_institucije"></select><br/>
 	</div>
 	<input type="button" id="registracijaDugme" value="Registruj administratora"/><br/>
 	<div id="hint">Ne vidite opciju za registrovanje bioskopskog/pozorisnog admina?<br/>
