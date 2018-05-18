@@ -40,10 +40,10 @@
 		<label style="color:  #87837e  ;"><b>Izmenite vase licne podatke: </b> </label>
 		<br>
 		<br>
-		<input style="width:322.467px;"   name="ime" value="${korisnik.ime}" size=50></input>
-		<input style="width:322.467px;"  name="prezime" value="${korisnik.prezime}" size=50></input>
-		<input style="width:322.467px;"  name="grad"  value="${korisnik.grad}" size=50></input>
-		<input style="width:322.467px;"  name="telefon"  value="${korisnik.telefon}" size=50></input>
+		<input style="width:322.467px;"   placeholder="ime" name="ime" value="${korisnik.ime}" size=50></input>
+		<input style="width:322.467px;"  placeholder="prezime" name="prezime" value="${korisnik.prezime}" size=50></input>
+		<input style="width:322.467px;"  placeholder="grad" name="grad"  value="${korisnik.grad}" size=50></input>
+		<input style="width:322.467px;"  placeholder="telefon" name="telefon"  value="${korisnik.telefon}" size=50></input>
 		
 		<button type="button" name="button" id="izmenaLozinke" style="width:322.467px;">Sacuvaj izmene</button><br/><br/>
 

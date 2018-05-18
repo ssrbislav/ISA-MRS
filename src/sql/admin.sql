@@ -1,1 +1,1 @@
-insert into pozorista_i_bioskopi.osoba (dtype,aktivan,email,ime,prezime,lozinka,tip_administratora) values("Administrator",1,"majic753@gmail.com","Igor","Majic","sifra1234",0);
+insert into pozorista_i_bioskopi.osoba (dtype,aktivan,email,ime,prezime,lozinka) values("SistemskiAdministrator",1,"majic753@gmail.com","Igor","Majic","sifra1234");

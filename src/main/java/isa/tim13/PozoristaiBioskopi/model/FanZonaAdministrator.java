@@ -2,11 +2,10 @@ package isa.tim13.PozoristaiBioskopi.model;
 
 import javax.persistence.Entity;
 
-
 @Entity
-public abstract class Administrator extends Osoba {
+public class FanZonaAdministrator extends Administrator {
 	
-	public Administrator() {
+	public FanZonaAdministrator() {
 		super();
 	}
 }

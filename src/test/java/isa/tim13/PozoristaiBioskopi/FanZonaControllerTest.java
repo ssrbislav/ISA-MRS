@@ -30,6 +30,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
+import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
 import isa.tim13.PozoristaiBioskopi.repository.FanZonaRepository;
@@ -61,12 +62,11 @@ public class FanZonaControllerTest {
 	@PostConstruct
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		Administrator a = new Administrator();
+		Administrator a = new FanZonaAdministrator();
 		a.setAktivan(true);
 		a.setIme("Test");
 		a.setPrezime("Testic");
 		a.setEmail("majic@majic.com");
-		a.setTip(TipAdministratora.FAN_ZONA);
 		session.setAttribute("korisnik", a);
 		rekvizit = new RekvizitDTO();
 	}

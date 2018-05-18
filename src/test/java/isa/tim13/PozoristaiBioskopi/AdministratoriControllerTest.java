@@ -28,7 +28,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import isa.tim13.PozoristaiBioskopi.dto.AdministratorDTO;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
+import isa.tim13.PozoristaiBioskopi.model.InstitucionalniAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.Osoba;
+import isa.tim13.PozoristaiBioskopi.model.SistemskiAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
 import isa.tim13.PozoristaiBioskopi.model.TipInstitucijeKulture;
 import isa.tim13.PozoristaiBioskopi.repository.InstitucijaKultureRepository;
@@ -66,12 +68,11 @@ public class AdministratoriControllerTest {
 	@PostConstruct
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		Administrator a = new Administrator();
+		Administrator a = new SistemskiAdministrator();
 		a.setAktivan(true);
 		a.setIme("Test");
 		a.setPrezime("Testic");
 		a.setEmail("majic@majic.com");
-		a.setTip(TipAdministratora.SISTEMSKI);
 		session.setAttribute("korisnik", a);
 		
 	}
@@ -82,8 +83,12 @@ public class AdministratoriControllerTest {
 			Osoba o = korisnikRepozitorijum.findByEmail(emailAdmina);
 			if(o!=null) {
 				Administrator a = (Administrator)o;
-				if(a.getInst()!=null) {
-					instRepo.delete(a.getInst());
+				if(a instanceof InstitucionalniAdministrator) {
+					InstitucionalniAdministrator instAdmin = (InstitucionalniAdministrator)a;
+					if(instAdmin.getInst()!=null) {
+						instRepo.delete(instAdmin.getInst());
+					}
+					
 					
 				}
 				

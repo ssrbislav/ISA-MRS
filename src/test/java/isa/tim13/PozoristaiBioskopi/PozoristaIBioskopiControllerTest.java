@@ -27,6 +27,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
+import isa.tim13.PozoristaiBioskopi.model.SistemskiAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
 import isa.tim13.PozoristaiBioskopi.model.TipInstitucijeKulture;
 
@@ -55,12 +56,11 @@ public class PozoristaIBioskopiControllerTest {
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
-		Administrator a = new Administrator();
+		Administrator a = new SistemskiAdministrator();
 		a.setAktivan(true);
 		a.setIme("Test");
 		a.setPrezime("Testic");
 		a.setEmail("majic@majic.com");
-		a.setTip(TipAdministratora.SISTEMSKI);
 		session.setAttribute("korisnik", a);
 	}
 	

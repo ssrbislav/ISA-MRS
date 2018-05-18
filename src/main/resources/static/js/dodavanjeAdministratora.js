@@ -105,12 +105,12 @@ $(document).ready(function(){
 			   type: "GET",
 			   success: function(data){
 				   var resultHtml = "<table border=\"1\"><tr bgcolor=\"lightgrey\">";
-				   resultHtml += "<tr><th>Ime</th><th>Prezime</th><th>Email</th><th>Tip administratora</th></tr>";
+				   resultHtml += "<tr><th>Ime</th><th>Prezime</th><th>Email</th></tr>";
 				   
 				   
 				   for ( i=0;i < data.length;i++){
 					   
-					   resultHtml += "<tr>"+"<td>"+data[i]["ime"]+"</td><td>"+data[i]["prezime"]+"</td><td>"+data[i]["email"]+"</td><td>"+data[i]["tip"]+"</td></tr>";
+					   resultHtml += "<tr>"+"<td>"+data[i]["ime"]+"</td><td>"+data[i]["prezime"]+"</td><td>"+data[i]["email"]+"</td>"+"</tr>";
 				   }
 				   resultHtml += "</table>"
 				   $("#prikazAdministratora").html(resultHtml);
