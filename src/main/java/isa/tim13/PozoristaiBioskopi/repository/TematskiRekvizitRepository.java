@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 
 @Repository
-public interface FanZonaRepository extends CrudRepository<TematskiRekvizit, Integer> {
+public interface TematskiRekvizitRepository extends CrudRepository<TematskiRekvizit, Integer> {
 	
 	TematskiRekvizit findByNazivRekvizita(String naziv);
 	

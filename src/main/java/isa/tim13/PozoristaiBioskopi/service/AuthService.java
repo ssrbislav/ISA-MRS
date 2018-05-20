@@ -23,10 +23,10 @@ public class AuthService {
 		tipovi.put(TipAdministratora.INSTITUCIONALNI, new InstitucionalniAdministrator());
 	}
 	
-	public static void adminProvera(HttpSession s,TipAdministratora tip) throws NeovlascenPristupException {
+	public static Administrator adminProvera(HttpSession s,TipAdministratora tip) throws NeovlascenPristupException {
 		Osoba o = (Osoba)s.getAttribute("korisnik");
 		if(adminPravogTipa(o,tip)) {
-			return;
+			return (Administrator)o;
 		}
 		
 		throw new NeovlascenPristupException();

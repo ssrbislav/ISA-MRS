@@ -32,8 +32,7 @@ import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
-import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
-import isa.tim13.PozoristaiBioskopi.repository.FanZonaRepository;
+import isa.tim13.PozoristaiBioskopi.repository.TematskiRekvizitRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -47,7 +46,7 @@ public class FanZonaControllerTest {
 	private MockMvc mockMvc;
 	
 	@Autowired
-	private FanZonaRepository rep;
+	private TematskiRekvizitRepository rep;
 	
 	@Autowired
     MockHttpSession session;

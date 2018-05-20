@@ -157,5 +157,25 @@ PozoristaIBioskopiService servis;
 		}
 		return "dodavanjeAdministratora";
 	}
+	
+	@RequestMapping("/pregledNeobjavljenihObjava")
+	public String pregledNeobjavljenihObjava(HttpSession s) {
+		try {
+			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+		} catch (NeovlascenPristupException e) {
+			return "prijava";
+		}
+		return "pregledNeobjavljenihObjava";
+	}
+	
+	@RequestMapping("/pregledRazmatranihObjava")
+	public String pregledRazmatranihObjava(HttpSession s) {
+		try {
+			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+		} catch (NeovlascenPristupException e) {
+			return "prijava";
+		}
+		return "pregledRazmatranihObjava";
+	}
 
 }

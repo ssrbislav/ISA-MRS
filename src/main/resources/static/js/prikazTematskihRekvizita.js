@@ -91,7 +91,7 @@ function dodajPrikazRekvizita(rekvizit){
 	newDiv.append($("<input type=\"button\" value=\"Izmeni podatke o rekvizitu\"></input><br/>").click(function(data){
 		prikaziDijalog(rekvizit["id"]);
 	}));
-	 newDiv.append("<b>Slika rekvizita: </b><br/>"+"<img id=\""+napraviId("putanja",id)+"\"src=\""+putanjaDoSlika+rekvizit["putanjaDoSlike"]+"\"/>");
+	 newDiv.append("<b>Slika rekvizita: </b><br/>"+"<img width=\"225\" height=\"225\" id=\""+napraviId("putanja",id)+"\"src=\""+putanjaDoSlika+rekvizit["putanjaDoSlike"]+"\"/>");
 	 
 	 
 	 newDiv.append("<br/><input type=\"file\" id = \""+napraviId("file",id)+"\"name=\"file\" accept=\"image/*\"></input>");

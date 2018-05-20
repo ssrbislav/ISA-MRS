@@ -33,8 +33,11 @@ public class AdministratoriService {
 	
 	public AdministratoriService() {
 		fanZonaOpcije = new LinkedHashMap<String,String>();
+		fanZonaOpcije.put("Pregled razmatranih objava", "/pregledRazmatranihObjava");
+		fanZonaOpcije.put("Pregled neobjavljenih objava", "/pregledNeobjavljenihObjava");
 		fanZonaOpcije.put("Dodavanje rekvizita", "/dodavanjeTematskihRekvizita");
 		fanZonaOpcije.put("Prikaz rekvizita","/prikazTematskihRekvizita");
+		
 		
 		sistemskiOpcije = new LinkedHashMap<String,String>();
 		sistemskiOpcije.put("Registracija institucija", "/registracijaInstitucija");
