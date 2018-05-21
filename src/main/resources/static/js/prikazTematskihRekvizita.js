@@ -166,23 +166,18 @@ function inicijalizujDijalog(){
 
 function pretraziTematskeRekvizite(){
 	var nazivRekvizita = $("#nazivRekvizitaZaPretragu").val();
-	var donjaCena = $("#donjaCenaRekvizita").val();
 	var gornjaCena = $("#gornjaCenaRekvizita").val();
 	
-	if(formaNevalidna(donjaCena,gornjaCena)){
-		alert("Niste popunili neophodne podatke za pretragu.");
-		return;
-	}
 	
-	if(donjaCena > gornjaCena){
-		alert("Donja cena ne moze biti veca od gornje!");
-		return;
-	}
+	
+	
 	
 	var allData = {}
 	allData["nazivRekvizita"] = nazivRekvizita;
-	allData["donjaCena"] = donjaCena;
-	allData["gornjaCena"] = gornjaCena;
+	if(!formaNevalidna(gornjaCena)){
+		allData["gornjaCena"] = gornjaCena; //ukoliko je korisnik uneo cenu, posalji. U suprotnom nemoj.
+	}
+	
 	
 	$.ajax({
 		 url:pretragaTematskihRekvizitaPutanja,

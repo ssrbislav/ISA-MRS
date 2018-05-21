@@ -14,6 +14,8 @@ public interface ObjavaRepository extends CrudRepository<Objava,Integer> {
 	Iterable<Objava> findByStatus(StatusObjave status);
 	Objava findById(int id);
 	
+	Objava findByNaziv(String naziv);
+	
 	@Query(value="select obj from Objava obj where obj.status = 1 and obj.admin =:admin",nativeQuery=false)
 	Iterable<Objava> dobaviRazmatraneObjave(@Param("admin")FanZonaAdministrator admin);
 	

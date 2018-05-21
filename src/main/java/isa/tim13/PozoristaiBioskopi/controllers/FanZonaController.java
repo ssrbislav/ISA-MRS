@@ -47,7 +47,9 @@ public class FanZonaController {
 			return new ResponseEntity<String>("Objava evaluirana.",HttpStatus.OK);
 		} catch (NeovlascenPristupException e) {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.FORBIDDEN);
-		}
+		} catch(Exception e) {
+			return new ResponseEntity<String>("Doslo je do greske. Objava verovatno vec evaluirana!",HttpStatus.BAD_REQUEST);
+	}
 		
 	}
 	
@@ -93,7 +95,9 @@ public class FanZonaController {
 		} catch (ObjavaNePostoji e) {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		} catch (ObjavaNijeNeobjavljena e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.FORBIDDEN);
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		} catch(Exception e) {
+			return new ResponseEntity<String>("Objava vec preuzeta na uvid, ili obrisana!",HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -113,8 +117,8 @@ public class FanZonaController {
 	}
 	
 	@RequestMapping(value="/pretraziTematskeRekvizite",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Iterable<TematskiRekvizit> pretraziTematskeRekvizite(@RequestParam(value="nazivRekvizita") String nazivRekvizita,@RequestParam("donjaCena")double donjaCena,@RequestParam("gornjaCena")double gornjaCena){
-		return servis.pretraziTematskeRekvizite(nazivRekvizita,donjaCena,gornjaCena);
+	public @ResponseBody Iterable<TematskiRekvizit> pretraziTematskeRekvizite(@RequestParam(value="nazivRekvizita") String nazivRekvizita,@RequestParam(value="gornjaCena", defaultValue = ""+Double.MAX_VALUE)double gornjaCena){
+		return servis.pretraziTematskeRekvizite(nazivRekvizita,gornjaCena);
 	}
 	
 	

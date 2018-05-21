@@ -44,8 +44,7 @@
    </div>
    <div id="pretragaTematskihRekvizita">
    		<input style="width:322.467px;" type="text" id="nazivRekvizitaZaPretragu" placeholder="naziv" size=10 required/><br/>
-   		<input type="number" style="width:322.467px;" id="donjaCenaRekvizita" placeholder="donja cena *" size=10/><br/>
-   		<input type="number" style="width:322.467px;" id="gornjaCenaRekvizita" placeholder="gornja cena *" size=10/><br/>
+   		<input type="number" style="width:322.467px;" id="gornjaCenaRekvizita" placeholder="gornja cena" size=10/><br/>
    		<input type="button" id="pretragaRekvizitaDugme" value="Pretrazi rekvizite" onclick="pretraziTematskeRekvizite()"/><br/>
    </div>
    

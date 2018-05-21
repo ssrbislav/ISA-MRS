@@ -8,11 +8,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
+import isa.tim13.PozoristaiBioskopi.model.Objava;
+import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
+import isa.tim13.PozoristaiBioskopi.repository.AdministratoriRepository;
+import isa.tim13.PozoristaiBioskopi.repository.ObjavaRepository;
 import isa.tim13.PozoristaiBioskopi.repository.TematskiRekvizitRepository;
 
 @RunWith(SpringRunner.class)
@@ -49,6 +55,12 @@ public class FanZonaControllerTest {
 	private TematskiRekvizitRepository rep;
 	
 	@Autowired
+	private ObjavaRepository objavaRep;
+	
+	@Autowired
+	private AdministratoriRepository adminRep;
+	
+	@Autowired
     MockHttpSession session;
 	
 	
@@ -57,6 +69,7 @@ public class FanZonaControllerTest {
 	private WebApplicationContext webApplicationContext;
 	
 	private RekvizitDTO rekvizit;
+	private Objava objava;
 	
 	@PostConstruct
 	public void setup() {
@@ -66,9 +79,79 @@ public class FanZonaControllerTest {
 		a.setIme("Test");
 		a.setPrezime("Testic");
 		a.setEmail("majic@majic.com");
+		adminRep.save(a);
 		session.setAttribute("korisnik", a);
 		rekvizit = new RekvizitDTO();
+		objava = new Objava();
+		objava.setDatumIsteka(new Date());
+		objava.setNaziv("Objava1");
+		objava.setStatus(StatusObjave.NEOBJAVLJEN);
+		objava.setOpis("Ovo je neki opis objave");
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void prikaziObjaveTest() throws Exception {
+		mockMvc.perform(get(URL_PREFIX+"/prikaziObjave")
+                .session(session)
+                .param("status","NEOBJAVLJEN"))
+            .andExpect(status().isOk());
+		
+		mockMvc.perform(get(URL_PREFIX+"/prikaziObjave")
+                .param("status","OBJAVLJEN"))
+            .andExpect(status().isOk());
+	}
+	
+	@Before
+	public void podesiAdmina() {
+		session.setAttribute("korisnik",adminRep.findById(1).get());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void prikaziRazmatranebjaveTest() throws Exception {
+		objava.setNaziv("NazivObjave1");
+		objava.setAdmin((FanZonaAdministrator)session.getAttribute("korisnik"));
+		objava.setStatus(StatusObjave.U_RAZMATRANJU);
+		objavaRep.save(objava);
+		mockMvc.perform(get(URL_PREFIX+"/prikaziRazmatraneObjave")
+                .session(session)).andExpect(status().isOk());
+	}
+	
+	@Test
+	@Rollback(true)
+	public void preuzmiObjavuTest() throws Exception {
+		objava.setNaziv("NazivObjave2");
+		objava.setAdmin(null);
+		objava.setStatus(StatusObjave.NEOBJAVLJEN);
+		objavaRep.save(objava);
+		int id = objavaRep.findByNaziv(objava.getNaziv()).getId();
+		mockMvc.perform(put(URL_PREFIX+"/preuzmiObjavu")
+                .session(session).param("id", ""+id)).andExpect(status().isOk());
+		
+		//posto je vec preuzeta ocekujemo fail
+		mockMvc.perform(put(URL_PREFIX+"/preuzmiObjavu")
+                .session(session).param("id", ""+id)).andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	@Rollback(true)
+	public void evaluirajObjavuTest() throws Exception {
+		objava.setNaziv("NazivObjave3");
+		objava.setAdmin((FanZonaAdministrator)session.getAttribute("korisnik"));
+		objava.setStatus(StatusObjave.U_RAZMATRANJU);
+		objavaRep.save(objava);
+		int id = objavaRep.findByNaziv(objava.getNaziv()).getId();
+		mockMvc.perform(put(URL_PREFIX+"/evaluirajObjavu")
+                .session(session).param("id", ""+id).param("prihvacena", "true")).andExpect(status().isOk());
+		
+		//vec prihvacenu objavu pokusavamo da odbijemo, ocekujemo fail(forbidden, posto je neovlasceni pristup u pitanju)
+		mockMvc.perform(put(URL_PREFIX+"/evaluirajObjavu")
+                .session(session).param("id", ""+id).param("prihvacena", "false")).andExpect(status().isForbidden());
+	}
+	
 	
 	
 	@SuppressWarnings("deprecation")

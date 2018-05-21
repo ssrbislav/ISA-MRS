@@ -129,9 +129,9 @@ public class FanZonaService {
 		
 	}
 
-	public Iterable<TematskiRekvizit> pretraziTematskeRekvizite(String nazivRekvizita, double donjaCena,
+	public Iterable<TematskiRekvizit> pretraziTematskeRekvizite(String nazivRekvizita,
 			double gornjaCena) {
-		return rep.findByRazniKriterijumi(nazivRekvizita,donjaCena,gornjaCena);
+		return rep.findByRazniKriterijumi(nazivRekvizita,gornjaCena);
 	}
 
 	public Iterable<Objava> prikaziObjave(StatusObjave status) {
@@ -139,7 +139,7 @@ public class FanZonaService {
 	}
 	
 	//REQUIRES_NEW - metoda uvek pokrece novu transakciju, ako postoji tekuca transakcija ona se suspenduje
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW ,rollbackFor=Exception.class)
 	public void preuzmiObjavu(FanZonaAdministrator admin, int id) throws ObjavaNePostoji, ObjavaNijeNeobjavljena {
 		Objava obj = objavaRep.findById(id);
 		if(obj==null) {
@@ -152,7 +152,6 @@ public class FanZonaService {
 		
 		obj.setStatus(StatusObjave.U_RAZMATRANJU);
 		obj.setAdmin(admin);
-		adminRep.save(admin);
 		objavaRep.save(obj);
 		
 		
@@ -164,7 +163,7 @@ public class FanZonaService {
 		return objavaRep.dobaviRazmatraneObjave(admin);
 	}
 	
-	//@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, rollbackFor=Exception.class)
 	public void evaluirajObjavu(FanZonaAdministrator admin, int id, boolean prihvacena) throws NeovlascenPristupException {
 		Objava obj = objavaRep.findById(id);
 		if(obj.getAdmin().getId()!=admin.getId() || obj.getStatus()!=StatusObjave.U_RAZMATRANJU) {

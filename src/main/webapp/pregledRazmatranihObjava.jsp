@@ -21,6 +21,7 @@
       <a class="navbar-brand" href="#"></a>
     </div>
     <ul class="nav navbar-nav">
+    	 <li><a href="/pregledNeobjavljenihObjava" style="color: white;">Neobjavljene objave</a></li>
          <li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
         </ul>
     <ul class="nav navbar-nav pull-right">  
