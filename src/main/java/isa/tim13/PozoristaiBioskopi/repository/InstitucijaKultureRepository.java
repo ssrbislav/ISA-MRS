@@ -12,4 +12,5 @@ public interface InstitucijaKultureRepository extends CrudRepository<Institucija
 	InstitucijaKulture findByNaziv(String naziv);
 	
 	
+	
 }

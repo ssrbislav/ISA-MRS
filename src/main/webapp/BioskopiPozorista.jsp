@@ -54,7 +54,7 @@
 		<div class="col-lg-4 " >
 		<br>
 		<br>
-		<input class="form-control" id="pretraga" type="text" placeholder="Pretrazite"/>
+		<input class="form-control" id="pretraga" type="text" placeholder="Pretrazite"></input>
 		<table class="table table-striped" data-toggle="table" data-sort-name="ime" data-sort-order="desc"> 
 			<thead style="background:    #eae5e0  ;">
 			 	
@@ -74,9 +74,10 @@
           						<td>  ${i.naziv}</td> 
           						<td>  ${i.grad}</td> 
           						<td>  ${i.rejting}</td>
-          						<td>  <form  action = "/repertoar"  method=post > 
-          						<input type ="hidden" name ="id" value="${i.id}" ></input>
-          						<button style="align:center;">Repertoar</button>
+          						<td>  
+          						<form  action = "/repertoar"  method="post"> 
+	          						<input type ="hidden" name ="id" value="${i.id}" ></input>
+	          						<button style="align:center;">Repertoar</button>
           						</form>
           						
           						</td>

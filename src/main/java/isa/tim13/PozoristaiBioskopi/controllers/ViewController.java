@@ -56,7 +56,11 @@ PozoristaIBioskopiService servis;
 	public String lozinka() {
 		return "izmenaLozinke";
 	}
-
+	// rezervacija
+		@RequestMapping("/rezervacija")
+		public String rezervacija() {
+			return "rezervacija";
+		}
 	// strana za profil
 		@RequestMapping("/izmenaPodataka")
 		public String izmenaPodataka() {
@@ -104,10 +108,7 @@ PozoristaIBioskopiService servis;
 			sesion.invalidate();
 			return "prijava";
 		}
-		@RequestMapping("/repertoar")
-		public String repertoar() {
-			return "repertoar";
-		}
+	
 	@RequestMapping("/projekcija")
 	public String projekcija() {
 		return "projekcija";

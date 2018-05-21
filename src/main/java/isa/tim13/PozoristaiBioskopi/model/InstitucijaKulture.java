@@ -30,6 +30,10 @@ public class InstitucijaKulture {
     @Column(name="naziv")
 	private String naziv;
     
+    @Column(name="lokacijaSlike")
+  	private String lokacijaSlike;
+    
+    
     @Column(name="adresa")
 	private String adresa;
     
@@ -42,12 +46,24 @@ public class InstitucijaKulture {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
     private List<Sala> sale;
     
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+    private List<PredstavaProjekcija> repertoar;
+    
     public List<Sala> getSale() {
 		return sale;
 	}
 
 	public void setSale(List<Sala> sale) {
 		this.sale = sale;
+	}
+
+	 
+    public List<PredstavaProjekcija> getRepertoar() {
+		return repertoar;
+	}
+
+	public void setRepertoar(List<PredstavaProjekcija> repertoar) {
+		this.repertoar = repertoar;
 	}
 
 	public TipInstitucijeKulture getTip() {
@@ -110,6 +126,14 @@ public class InstitucijaKulture {
 		this.telefon = telefon;
 	}
 
+	public String getLokacijaSlike() {
+		return lokacijaSlike;
+	}
+
+
+	public void setLokacijaSlike(String lokacijaSlike) {
+		this.lokacijaSlike = lokacijaSlike;
+	}
 
 	public String getOpis() {
 		return opis;

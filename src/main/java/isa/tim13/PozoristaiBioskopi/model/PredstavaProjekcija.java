@@ -28,6 +28,9 @@ public class PredstavaProjekcija {
     @Column(name="ime_reditelja")
     private String ime_reditelja;
     
+    @Column(name="popust")
+    private int popust;
+    
     @Column(name="zanr")
     private String zanr;
     
@@ -123,7 +126,13 @@ public class PredstavaProjekcija {
 	public void setCena_karte(double cena_karte) {
 		this.cena_karte = cena_karte;
 	}
-    
+	public int getPopust() {
+		return popust;
+	}
+
+	public void setPopust(int popust) {
+		this.popust=  popust;
+	}
     public PredstavaProjekcija() {}
     
     
