@@ -42,6 +42,8 @@ public class SlikeService {
 	public void sacuvajSliku(String putanjaDoSlikeRekvizita, MultipartFile file) throws IOException {
 		
 		FileOutputStream fos = new FileOutputStream(putanjaDoSlikeRekvizita);
+		File f = new File(putanjaDoSlikeRekvizita);
+		f.mkdirs();
 		fos.write(file.getBytes());
 		fos.close();
 		
