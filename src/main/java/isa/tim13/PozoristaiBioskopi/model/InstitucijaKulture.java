@@ -156,7 +156,7 @@ public class InstitucijaKulture {
 
 
 	public InstitucijaKulture() {
-		
+		this.lokacijaSlike = "inicijalne-slike/nedostupna.png";
 	}
 	
 	

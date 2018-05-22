@@ -1,22 +1,25 @@
 package isa.tim13.PozoristaiBioskopi;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.nio.charset.Charset;
+import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,10 +28,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import isa.tim13.PozoristaiBioskopi.dto.InstitucijaDTO;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
-import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
+import isa.tim13.PozoristaiBioskopi.model.Sala;
 import isa.tim13.PozoristaiBioskopi.model.SistemskiAdministrator;
-import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
 import isa.tim13.PozoristaiBioskopi.model.TipInstitucijeKulture;
 
 
@@ -39,8 +42,7 @@ public class PozoristaIBioskopiControllerTest {
 	
 	private static final String URL_PREFIX = "/pozoristaibioskopi";
 
-	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+
     
 	@Autowired
 	private MockMvc mockMvc;
@@ -64,21 +66,39 @@ public class PozoristaIBioskopiControllerTest {
 		session.setAttribute("korisnik", a);
 	}
 	
+	
+	@After
+	public void obrisiSveTestFajlove() {
+		File folder = new File("institucije-slike/");
+		File[] listaFajlova = folder.listFiles();
+
+	    for (int i = 0; i < listaFajlova.length; i++) {
+	      if (listaFajlova[i].isFile() && listaFajlova[i].getName().startsWith("Test")) {
+	       listaFajlova[i].delete();
+	      }
+	    }
+	}
+	
+	@SuppressWarnings("deprecation")
 	@Test
 	@Transactional
 	@Rollback(true)
 	public void dodavanjeInstitucijeTest() throws JsonProcessingException, Exception {
-		InstitucijaKulture i = new InstitucijaKulture();
-		i.setNaziv("Bioskop 1");
+		InstitucijaDTO i = new InstitucijaDTO();
+		i.setNaziv("Test");
 		i.setAdresa("Adresa 1");
 		i.setOpis("Opis 1");
 		i.setTelefon("065456877");
 		i.setTip(TipInstitucijeKulture.BIOSKOP);
+		i.setGrad("Neki tamo");
+		i.setSale(new ArrayList<Sala>());
+		i.getSale().add(new Sala());
+		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
+		MockMultipartFile mockFile = new MockMultipartFile("file", "test.jpg", "image/jpg", inputStream);
 		
-		mockMvc.perform(post(URL_PREFIX+"/registruj")
-		.contentType(contentType)
+		mockMvc.perform(fileUpload(URL_PREFIX+"/registruj").file(mockFile)
 		.session(session)
-		.content(TestUtil.toJson(i))).andExpect(status().isCreated());
+		.param("institucija",TestUtil.toJson(i))).andExpect(status().isCreated());
 	}
 	
 	@Test

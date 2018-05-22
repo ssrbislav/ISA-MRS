@@ -40,6 +40,10 @@ public class Objava {
 	@Version
 	private int version;
 	
+	public Objava() {
+		this.putanjaDoSlike = "inicijalne-slike/nedostupna.png";
+	}
+	
 	
 	@Override
 	public int hashCode() {

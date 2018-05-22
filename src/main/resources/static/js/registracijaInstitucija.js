@@ -100,7 +100,8 @@ $(document).ready(function(){
 		var grad = $("input[name=grad]").val();
 		var telefon = $("input[name=telefon]").val();
 		var opis = $("input[name=opis]").val();
-		var tip =  $("select[name=tip]").val();;
+		var tip =  $("select[name=tip]").val();
+		var slikaPodaci = $("input[name=file]")[0].files[0];
 		
 		if(formaNevalidna(naziv,adresa,telefon,opis,tip,grad)){
 			alert("Niste popunili sva polja kako treba! ");
@@ -112,17 +113,29 @@ $(document).ready(function(){
 			return;
 		}
 		
+		var allData = new FormData();
+		if($("input[name=file]").val() != ''){
+			allData.append("file",slikaPodaci);
+		}
+		
+		
+		allData.append("institucija",regFormaUJSON(naziv,adresa,telefon,opis,tip,sale,grad));
+		
 		$.ajax({
 			url: registrujInstitucijuPutanja,
-			contentType : "application/json",
 			success: function(result){
-				alert("Uspesno ste registrovali pozoriste ili bioskop");
+				alert(result);
 			},
 			type: "POST",
 			dataType: "text",
-			data: regFormaUJSON(naziv,adresa,telefon,opis,tip,sale,grad),
-			error : function(XMLHttpRequest, textStatus, errorThrown) {
-				alert("Desila se greska: " + errorThrown);
+			data: allData,
+			mimeType: "multipart/form-data",
+			contentType: false,
+			cache: false,
+			processData: false,
+			error : function(xhr, textStatus, errorThrown) {
+				var err = xhr["responseText"];
+				alert(err);
 			}
 			
 		});

@@ -35,6 +35,7 @@
 	 <input style="width:322.467px;" type="tel" name="telefon" placeholder="telefon" size=50/><br/>
 	 <input style="width:322.467px;" type="text" name="opis" placeholder="opis" size=50/><br/>
 	 <select style="width:322.467px;" name="tip"><option>BIOSKOP</option><option>POZORISTE</option></select><br/>
+	 <input type="file" name="file" style="width:322.467px;" value="Odaberi sliku..." id="slikaRekvizita" accept="image/*"><br/>
 	<input type="button" id="registracijaDugme" value="Registruj instituciju"/><br/>
 	<input type="button" id="prikazInstitucijaDugme" value="Prikaz postojece institucije"/>
 </div>
