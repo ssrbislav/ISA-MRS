@@ -56,11 +56,8 @@ PozoristaIBioskopiService servis;
 	public String lozinka() {
 		return "izmenaLozinke";
 	}
-	// rezervacija
-		@RequestMapping("/rezervacija")
-		public String rezervacija() {
-			return "rezervacija";
-		}
+	
+	
 	// strana za profil
 		@RequestMapping("/izmenaPodataka")
 		public String izmenaPodataka() {

@@ -1,6 +1,7 @@
 package isa.tim13.PozoristaiBioskopi.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,11 @@ public class PredstaveProjekcijeService {
 	
 	public Collection<PredstavaProjekcija> prikaziPredstaveProjekcije() {
 		return (Collection<PredstavaProjekcija>) rep.findAll();
+	}
+	
+public Optional<PredstavaProjekcija> findById( int id) {
+		
+		return rep.findById(id);
 	}
 	
 }

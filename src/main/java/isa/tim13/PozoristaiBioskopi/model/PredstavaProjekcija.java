@@ -44,11 +44,9 @@ public class PredstavaProjekcija {
     private String opis;
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
-    private List<Sala> lista_sala;
+    private List<Termin> termini;
    
-    
-    @Column(name="cena_karte")
-    private double cena_karte;
+ 
 
 	public int getId() {
 		return id;
@@ -110,22 +108,16 @@ public class PredstavaProjekcija {
 		this.opis = opis;
 	}
 	
-	public List<Sala> getLista_sala() {
-		return lista_sala;
+	public List<Termin> getTermini() {
+		return termini;
 	}
 
-	public void setLista_sala(List<Sala> lista_sala) {
-		this.lista_sala = lista_sala;
+	public void setTermini(List<Termin> termini) {
+		this.termini = termini;
 	}
 	
 
-	public double getCena_karte() {
-		return cena_karte;
-	}
-
-	public void setCena_karte(double cena_karte) {
-		this.cena_karte = cena_karte;
-	}
+	
 	public int getPopust() {
 		return popust;
 	}

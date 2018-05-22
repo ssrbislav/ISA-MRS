@@ -63,11 +63,16 @@
                 <c:forEach var = "i" items= "${institucija.repertoar}">
         						<tr>
         						<td> ${i.naziv}<br> <img src="/upravljanjeSlikama?putanjaDoSlike=${i.slika}" height= "150px" width= "150px"> </img></td>
-        						<td>Režija: ${i.ime_reditelja} <br> Glumci: ${i.spisak_glumaca} <br>Žanr: ${i.zanr} <br> Trajanje:${i.trajanje } min <br>Cena: ${i.cena_karte}  </td>
+        						<td>Režija: ${i.ime_reditelja} <br> Glumci: ${i.spisak_glumaca} <br>Žanr: ${i.zanr} <br> Trajanje:${i.trajanje } min <br></td>
         						
-        						<td>${i.opis}</td>
-        						<form action="/rezervacija" method="post">
-        						<td><button >Rezerviši</button></td>
+        						<td style= " width:150px">${i.opis}</td>
+        						
+        						
+        						<td>
+        						<form action="/rezervacija/termin" method="post">
+        						<input type="hidden" name="id" value="${i.id}"/>
+        						<button >Rezerviši</button>
+        						</td>
         						</tr>
      			 </c:forEach>
      			 </tbody>
