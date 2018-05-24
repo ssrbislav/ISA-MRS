@@ -13,7 +13,7 @@ import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
 import isa.tim13.PozoristaiBioskopi.service.PozoristaIBioskopiService;
 
 @Controller
-@RequestMapping("/repertoar")
+@RequestMapping("/repertoarC")
 public class RepertoarController {
 	@Autowired
 	PozoristaIBioskopiService servis;

@@ -1,6 +1,6 @@
 package isa.tim13.PozoristaiBioskopi;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -9,8 +9,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -42,6 +40,9 @@ public class LoginControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+	
+	@Autowired
+    MockHttpSession session;
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -107,6 +108,22 @@ public class LoginControllerTest {
 				.content(buildUrlEncodedFormEntity("email", "test", "lozinka", "pogresna")))
 				.andExpect(status().isOk());
 	}
+	
+	@Test
+	public void logoutTest() throws JsonProcessingException, Exception {
+		korisnik.setAktivan(true);
+		repozitorijum.save(korisnik);
+		mockMvc.perform(post(URL_PREFIX).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.content(buildUrlEncodedFormEntity("email", "test", "lozinka", "test"))
+				.session(session))
+				.andExpect(status().isMovedTemporarily());
+		assertNotNull(session.getAttribute("korisnik"));
+		mockMvc.perform(post("/odjava").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.session(session))
+				.andExpect(status().isOk());
+		assertTrue(session.isInvalid());
+	}
+	
 
 
 	private Korisnik noviKorisnik() {

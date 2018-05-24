@@ -75,7 +75,7 @@
           						<td>  ${i.grad}</td> 
           						<td>  ${i.rejting}</td>
           						<td>  
-          						<form  action = "/repertoar"  method="post"> 
+          						<form  action = "/repertoarC"  method="post"> 
 	          						<input type ="hidden" name ="id" value="${i.id}" ></input>
 	          						<button style="align:center;">Repertoar</button>
           						</form>
