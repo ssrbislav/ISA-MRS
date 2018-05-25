@@ -175,5 +175,15 @@ PozoristaIBioskopiService servis;
 		}
 		return "pregledRazmatranihObjava";
 	}
+	
+	@RequestMapping("/dodavanjeObjava")
+	public String dodavanjeObjava(HttpSession s) {
+		try {
+			AuthService.korisnikProvera(s);
+		} catch (NeovlascenPristupException e) {
+			return "prijava";
+		}
+		return "dodavanjeObjava";
+	}
 
 }

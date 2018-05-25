@@ -2,6 +2,7 @@ package isa.tim13.PozoristaiBioskopi.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
+import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeNeobjavljena;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitVecPostojiException;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
+import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Objava;
 import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
@@ -178,6 +182,29 @@ public class FanZonaService {
 		else {
 			objavaRep.delete(obj);
 		}
+	}
+
+
+	public void dodajObjavu(Korisnik kor, ObjavaDTO objava, MultipartFile file) throws IOException, DatumIstekaNevalidan {
+		Objava punaObjava = new Objava();
+		punaObjava.setAutor(kor);
+		punaObjava.setDatumIsteka(objava.getDatumIsteka());
+		punaObjava.setNaziv(objava.getNaziv());
+		punaObjava.setOpis(objava.getOpis());
+		punaObjava.setStatus(StatusObjave.NEOBJAVLJEN);
+		
+		if(objava.getDatumIsteka().before(new Date())) {
+			throw new DatumIstekaNevalidan();
+		}
+		
+		if(file!=null) {
+			String konacnaPutanja = slikeServis.pribaviKonacnuPutanju(new StringBuilder(PUTANJA_PREFIKS+"/"+(punaObjava.getNaziv().replaceAll("\\W", "_"))), file);
+			slikeServis.sacuvajSliku(konacnaPutanja, file);
+			punaObjava.setPutanjaDoSlike(konacnaPutanja);
+		}
+		
+		objavaRep.save(punaObjava);
+		
 	}
 
 }

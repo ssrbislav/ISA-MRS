@@ -8,6 +8,7 @@ import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.InstitucionalniAdministrator;
+import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Osoba;
 import isa.tim13.PozoristaiBioskopi.model.SistemskiAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
@@ -21,6 +22,14 @@ public class AuthService {
 		tipovi.put(TipAdministratora.FAN_ZONA, new FanZonaAdministrator());
 		tipovi.put(TipAdministratora.SISTEMSKI, new SistemskiAdministrator());
 		tipovi.put(TipAdministratora.INSTITUCIONALNI, new InstitucionalniAdministrator());
+	}
+	
+	public static Korisnik korisnikProvera(HttpSession s) throws NeovlascenPristupException {
+		Osoba o = (Osoba)s.getAttribute("korisnik");
+		if(o instanceof Korisnik) {
+			return (Korisnik)o;
+		}
+		throw new NeovlascenPristupException();
 	}
 	
 	public static Administrator adminProvera(HttpSession s,TipAdministratora tip) throws NeovlascenPristupException {

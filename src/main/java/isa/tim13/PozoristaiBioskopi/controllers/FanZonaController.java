@@ -18,13 +18,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
+import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeNeobjavljena;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitVecPostojiException;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
+import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Objava;
 import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
@@ -38,6 +41,29 @@ public class FanZonaController {
 	
 	@Autowired
 	FanZonaService servis;
+	
+	private static ObjectMapper objMapper;
+	
+	static {
+		objMapper = new ObjectMapper();
+	}
+	
+	@RequestMapping(value="/dodajObjavu",method=RequestMethod.POST)
+	public ResponseEntity<String> dodajObjavu(HttpSession s,@RequestParam(value="objava")String objavaJson,@RequestParam(value="file",required=false) MultipartFile file){
+		try {
+			Korisnik kor = AuthService.korisnikProvera(s);
+			ObjavaDTO objava = objMapper.readValue(objavaJson, ObjavaDTO.class);
+			servis.dodajObjavu(kor,objava,file);
+			return new ResponseEntity<String>("Objava uspesno dodata",HttpStatus.OK);
+		} catch (NeovlascenPristupException e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.FORBIDDEN);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		} catch (DatumIstekaNevalidan e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	@RequestMapping(value="/evaluirajObjavu",method=RequestMethod.PUT)
 	public ResponseEntity<String> evaluirajObjavu(HttpSession s,@RequestParam(value="id")int id,@RequestParam("prihvacena")boolean prihvacena){
@@ -146,7 +172,6 @@ public class FanZonaController {
 	public ResponseEntity<String> modifikujTematskiRekvizitInformacije(HttpSession s,@RequestParam("id") int id,@RequestParam("rekvizit") String rekvizitJson) {
 		try {
 			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
-			ObjectMapper objMapper = new ObjectMapper();
 			RekvizitDTO rekvizit = objMapper.readValue(rekvizitJson,RekvizitDTO.class);
 			servis.modifikujRekvizit(id,rekvizit);
 		} catch (NeovlascenPristupException e) {
@@ -173,7 +198,6 @@ public class FanZonaController {
 		try {
 			
 			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
-			ObjectMapper objMapper = new ObjectMapper();
 			RekvizitDTO rekvizit = objMapper.readValue(rekvizitJson,RekvizitDTO.class);
 			servis.dodajTematskiRekvizit(rekvizit,file);
 		
