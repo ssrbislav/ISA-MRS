@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
@@ -184,6 +186,27 @@ PozoristaIBioskopiService servis;
 			return "prijava";
 		}
 		return "dodavanjeObjava";
+	}
+	
+	@RequestMapping("/pregledObjavljenihObjava")
+	public String pregledObjavljenihObjava(HttpSession s) {
+		try {
+			AuthService.korisnikProvera(s);
+		} catch (NeovlascenPristupException e) {
+			return "prijava";
+		}
+		return "pregledObjavljenihObjava";
+	}
+	
+	@RequestMapping(value="/prikazObjave" ,method=RequestMethod.GET)
+	public String prikazObjave(HttpSession s,@RequestParam("id") int id) {
+		try {
+			AuthService.korisnikProvera(s);
+		} catch (NeovlascenPristupException e) {
+			return "redirect:/prijava";
+		}
+		s.setAttribute("idObjave", id);
+		return "prikazObjave";
 	}
 
 }

@@ -15,6 +15,15 @@ public class ObjavaDTO {
 	@JsonProperty(value="datumIsteka")
 	private Date datumIsteka;
 	
+	@JsonProperty(value="putanjaDoSlike")
+	private String putanjaDoSlike;
+	
+	public String getPutanjaDoSlike() {
+		return putanjaDoSlike;
+	}
+	public void setPutanjaDoSlike(String putanjaDoSlike) {
+		this.putanjaDoSlike = putanjaDoSlike;
+	}
 	public String getNaziv() {
 		return naziv;
 	}

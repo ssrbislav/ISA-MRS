@@ -10,15 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
+import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
@@ -46,6 +49,35 @@ public class FanZonaController {
 	
 	static {
 		objMapper = new ObjectMapper();
+	}
+	
+	@RequestMapping(value="/pribaviObjavu",method=RequestMethod.GET)
+	public ResponseEntity<String> pribaviObjavu(HttpSession s){
+		try {
+			AuthService.korisnikProvera(s);
+			String retVal = servis.pribaviObjavu(objMapper,(int)s.getAttribute("idObjave"));
+			return new ResponseEntity<String>(retVal,HttpStatus.OK);
+		} catch (NeovlascenPristupException e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		} catch (JsonProcessingException e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<String>("Doslo je do greske prilikom baratanja s JSONOM",HttpStatus.BAD_REQUEST);
+		} catch (ObjavaNePostoji e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value="/dodajPonudu",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> dodajPonuduNaObjavu(HttpSession s,@RequestBody PonudaDTO ponuda){
+		try {
+			Korisnik kor = AuthService.korisnikProvera(s);
+			servis.dodajPonuduNaObjavu(kor,ponuda);
+			return new ResponseEntity<String>("Ponuda uspesno dodata",HttpStatus.OK);
+		} catch (NeovlascenPristupException e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		} catch (ObjavaNePostoji e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@RequestMapping(value="/dodajObjavu",method=RequestMethod.POST)

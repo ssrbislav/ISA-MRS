@@ -1,7 +1,9 @@
 package isa.tim13.PozoristaiBioskopi.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
 @Entity
@@ -36,6 +39,9 @@ public class Objava {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private FanZonaAdministrator admin;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY,mappedBy="objava")
+	private List<Ponuda> ponude;
 	
 	@Version
 	private int version;
@@ -111,6 +117,16 @@ public class Objava {
 	}
 	public void setStatus(StatusObjave status) {
 		this.status = status;
+	}
+
+
+	public List<Ponuda> getPonude() {
+		return ponude;
+	}
+
+
+	public void setPonude(List<Ponuda> ponude) {
+		this.ponude = ponude;
 	}
 	
 }

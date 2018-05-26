@@ -31,6 +31,17 @@
       <li><a href="/bioskopi" style="color: white;">Bioskopi</a></li>
       <li><a href="#" style="color: white;">Prijatelji</a></li>
       <li><a href="#" style="color: white;">Rezervacije</a></li>
+      
+       <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Fan Zona
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="/dodavanjeObjava">Dodaj objavu</a></li>
+          <li><a href="/pregledObjavljenihObjava">Prikaz objava</a></li>
+         
+        </ul>
+      </li>
+      
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Podesavanja
         <span class="caret"></span></a>
@@ -40,6 +51,7 @@
          
         </ul>
       </li>
+      
     </ul>
     <ul class="nav navbar-nav pull-right">  
        <li><a href="/odjava" style="color: white;">Odjava</a></li>

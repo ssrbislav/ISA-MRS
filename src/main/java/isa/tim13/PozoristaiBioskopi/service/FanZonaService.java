@@ -11,7 +11,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
+import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
@@ -22,6 +26,7 @@ import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitVecPostojiException;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Objava;
+import isa.tim13.PozoristaiBioskopi.model.Ponuda;
 import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.repository.AdministratoriRepository;
@@ -204,6 +209,43 @@ public class FanZonaService {
 		}
 		
 		objavaRep.save(punaObjava);
+		
+	}
+
+
+	public void dodajPonuduNaObjavu(Korisnik kor, PonudaDTO ponuda) throws ObjavaNePostoji {
+		Objava objava = objavaRep.findById(ponuda.getIdObjave());
+		
+		if(objava==null) {
+			throw new ObjavaNePostoji();
+		}
+		
+		Ponuda pravaPonuda = new Ponuda();
+		pravaPonuda.setAutor(kor);
+		pravaPonuda.setNaslov(ponuda.getNaslov());
+		pravaPonuda.setOpis(ponuda.getOpis());
+		pravaPonuda.setCena(ponuda.getCena());
+		objava.getPonude().add(pravaPonuda);
+		objavaRep.save(objava);
+	}
+
+
+	public String pribaviObjavu(ObjectMapper objMapper, int idObjave) throws ObjavaNePostoji, NeovlascenPristupException, JsonProcessingException {
+		Objava obj = objavaRep.findById(idObjave);
+		if(obj==null) {
+			throw new ObjavaNePostoji();
+		}
+		if(obj.getStatus()!=StatusObjave.OBJAVLJEN) {
+			throw new NeovlascenPristupException();
+		}
+		
+		ObjavaDTO retVal = new ObjavaDTO();
+		retVal.setDatumIsteka(obj.getDatumIsteka());
+		retVal.setNaziv(obj.getNaziv());
+		retVal.setOpis(obj.getOpis());
+		retVal.setPutanjaDoSlike(obj.getPutanjaDoSlike());
+		
+		return objMapper.writeValueAsString(retVal);
 		
 	}
 
