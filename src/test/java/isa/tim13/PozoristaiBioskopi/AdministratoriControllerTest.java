@@ -191,10 +191,7 @@ public class AdministratoriControllerTest {
 		i.setTelefon("0654545877");
 		i.setTip(TipInstitucijeKulture.BIOSKOP);
 		
-		mockMvc.perform(post("/pozoristaibioskopi"+"/registruj")
-		.contentType(contentType)
-		.session(session)
-		.content(TestUtil.toJson(i)));
+		instRepo.save(i);
 		
 		
 		
