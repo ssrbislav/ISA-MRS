@@ -10,6 +10,7 @@ function dodajPonudu(ponuda){
 	var newDiv = $("<div id="+"\""+napraviId("ponuda",id)+"\""+"></div>");
 	var divHtml = "<b>"+ponuda["naslov"]+"</b><br/>";
 	var divHtml = divHtml + ponuda["opis"]+"<br/>";
+	var divHtml = divHtml + "<b>Autor:</b><br/>"+ponuda["autor"]+"<br/>";
 	var divHtml = divHtml + "<b>Cena:</b><br/>"+ponuda["cena"]+"<br/>";
 	newDiv.html(divHtml);	
 	$("#ponude").append(newDiv);
@@ -78,8 +79,10 @@ $(document).ready(function(){
 			   data: ponudaFormaUJSON(idObjave,naslov,opis,cena),
 			   contentType : "application/json",
 			   success: function(data){
-				   var idPonude = parseInt(data);
-				   ponuda = {"naslov":naslov,"opis":opis,"cena":cena,"idObjave":idObjave,"idPonude":idPonude}
+				   var podaci = JSON.parse(data);
+				   var autor = podaci["autor"];
+				   var idPonude = podaci["idPonude"];
+				   ponuda = {"naslov":naslov,"opis":opis,"cena":cena,"idObjave":idObjave,"idPonude":idPonude,"autor":autor}
 				   
 				  $("#"+napraviId("ponuda",idPonude)).remove();
 					

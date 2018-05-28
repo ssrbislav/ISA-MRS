@@ -86,3 +86,7 @@ h1, input {
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
 }
+
+#ponude {
+    overflow-y: auto;
+}

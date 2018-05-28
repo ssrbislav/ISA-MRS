@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -219,7 +220,7 @@ public class FanZonaService {
 	}
 
 
-	public String dodajPonuduNaObjavu(Korisnik kor, PonudaDTO ponuda) throws ObjavaNePostoji, NeovlascenPristupException {
+	public String dodajPonuduNaObjavu(ObjectMapper objMapper,Korisnik kor, PonudaDTO ponuda) throws ObjavaNePostoji, NeovlascenPristupException, JsonProcessingException {
 		Objava objava = objavaRep.findById(ponuda.getIdObjave());
 		
 		if(objava==null) {
@@ -243,8 +244,10 @@ public class FanZonaService {
 			ponudaRep.save(pravaPonuda);
 		}
 		
-		
-		return ""+pravaPonuda.getId();
+		LinkedHashMap<String,String> retVal = new LinkedHashMap<String,String>();
+		retVal.put("autor", pravaPonuda.getAutor().getIme()+" "+pravaPonuda.getAutor().getPrezime()+"\n"+pravaPonuda.getAutor().getEmail());
+		retVal.put("idPonude",""+pravaPonuda.getId());
+		return objMapper.writeValueAsString(retVal);
 	}
 
 
@@ -303,6 +306,7 @@ public class FanZonaService {
 			ponudaDTO.setNaslov(pon.getNaslov());
 			ponudaDTO.setOpis(pon.getOpis());
 			ponudaDTO.setIdPonude(pon.getId());
+			ponudaDTO.setAutor(pon.getAutor().getIme()+" "+pon.getAutor().getPrezime()+"\n"+pon.getAutor().getEmail());
 			retVal.getPonude().add(ponudaDTO);
 		}
 		

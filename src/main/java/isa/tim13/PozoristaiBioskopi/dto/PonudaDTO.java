@@ -19,6 +19,17 @@ public class PonudaDTO {
 	@JsonProperty("cena")
 	private double cena;
 	
+	@JsonProperty("autor")
+	private String autor;
+	
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
+
 	public PonudaDTO() {
 		
 	}

@@ -41,7 +41,7 @@
 			<b>Slika</b><br/><img height="300" width="400" id="slikaObjave"></img>
 			
 		</div>
-		<div id="ponude" >
+		<div id="ponude" style="overflow:auto">
 			<label style="color:  #87837e  ;">Ponude: </label><br/>
 			  <div id="dodavanjePonude">
                		<input style="width:322.467px;" type="text" name="naslovPonude" placeholder="Naslov ponude" size=10 required/><br/>

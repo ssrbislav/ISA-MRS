@@ -71,12 +71,15 @@ public class FanZonaController {
 	public ResponseEntity<String> dodajPonuduNaObjavu(HttpSession s,@RequestBody PonudaDTO ponuda){
 		try {
 			Korisnik kor = AuthService.korisnikProvera(s);
-			String idPonude = servis.dodajPonuduNaObjavu(kor,ponuda);
-			return new ResponseEntity<String>(idPonude,HttpStatus.OK);
+			String retVal = servis.dodajPonuduNaObjavu(objMapper,kor,ponuda);
+			return new ResponseEntity<String>(retVal,HttpStatus.OK);
 		} catch (NeovlascenPristupException e) {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		} catch (ObjavaNePostoji e) {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
+		} catch (JsonProcessingException e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<String>("Doslo je do greske prilikom baratanja s JSONOM",HttpStatus.BAD_REQUEST);
 		}
 	}
 	
