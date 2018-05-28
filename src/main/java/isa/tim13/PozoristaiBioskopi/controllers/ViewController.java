@@ -200,12 +200,14 @@ PozoristaIBioskopiService servis;
 	
 	@RequestMapping(value="/prikazObjave" ,method=RequestMethod.GET)
 	public String prikazObjave(HttpSession s,@RequestParam("id") int id) {
+		
 		try {
 			AuthService.korisnikProvera(s);
 		} catch (NeovlascenPristupException e) {
 			return "redirect:/prijava";
 		}
 		s.setAttribute("idObjave", id);
+		
 		return "prikazObjave";
 	}
 

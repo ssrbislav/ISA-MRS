@@ -33,6 +33,7 @@
  	<br/>  
 </div>
 <div id="prikazObjave">
+       <input type="hidden" name="idObjave"value="${idObjave}"/>
     	<div class="col-lg-5" >
 			<b>Naziv objave</b><br/><p id="nazivObjave"></p>
 			<b>Opis objave</b><br/><p id="opisObjave"></p>
@@ -42,7 +43,12 @@
 		</div>
 		<div id="ponude" >
 			<label style="color:  #87837e  ;">Ponude: </label><br/>
-                          		
+			  <div id="dodavanjePonude">
+               		<input style="width:322.467px;" type="text" name="naslovPonude" placeholder="Naslov ponude" size=10 required/><br/>
+			  		<input style="width:322.467px;" type="text" name="opisPonude" placeholder="Opis ponude" size=10 required/><br/>
+			  		<input style="width:322.467px;" type="number" name="cena" placeholder="Cena" size=10 required/><br/>
+			  		<input type="button" id="dodavanjePonudeDugme" value="Dodaj ponudu"/><br/><br/>
+			  </div>          		
 		</div>
    </div>
 </body>

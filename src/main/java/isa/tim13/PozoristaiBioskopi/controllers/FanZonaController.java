@@ -52,10 +52,10 @@ public class FanZonaController {
 	}
 	
 	@RequestMapping(value="/pribaviObjavu",method=RequestMethod.GET)
-	public ResponseEntity<String> pribaviObjavu(HttpSession s){
+	public ResponseEntity<String> pribaviObjavu(HttpSession s,@RequestParam("id") int id){
 		try {
-			AuthService.korisnikProvera(s);
-			String retVal = servis.pribaviObjavu(objMapper,(int)s.getAttribute("idObjave"));
+			Korisnik kor = AuthService.korisnikProvera(s);
+			String retVal = servis.pribaviObjavu(kor,objMapper,id);
 			return new ResponseEntity<String>(retVal,HttpStatus.OK);
 		} catch (NeovlascenPristupException e) {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
@@ -71,8 +71,8 @@ public class FanZonaController {
 	public ResponseEntity<String> dodajPonuduNaObjavu(HttpSession s,@RequestBody PonudaDTO ponuda){
 		try {
 			Korisnik kor = AuthService.korisnikProvera(s);
-			servis.dodajPonuduNaObjavu(kor,ponuda);
-			return new ResponseEntity<String>("Ponuda uspesno dodata",HttpStatus.OK);
+			String idPonude = servis.dodajPonuduNaObjavu(kor,ponuda);
+			return new ResponseEntity<String>(idPonude,HttpStatus.OK);
 		} catch (NeovlascenPristupException e) {
 			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		} catch (ObjavaNePostoji e) {

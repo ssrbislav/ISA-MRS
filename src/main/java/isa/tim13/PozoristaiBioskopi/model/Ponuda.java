@@ -7,8 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name = "ponuda", uniqueConstraints = { @UniqueConstraint(columnNames =  { "autor_id", "objava_id" })})
 public class Ponuda {
 	
 	
@@ -20,6 +25,7 @@ public class Ponuda {
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Korisnik autor;
 	
+	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Objava objava;
 	

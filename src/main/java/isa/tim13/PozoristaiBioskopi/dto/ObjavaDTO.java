@@ -1,6 +1,7 @@
 package isa.tim13.PozoristaiBioskopi.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,6 +19,15 @@ public class ObjavaDTO {
 	@JsonProperty(value="putanjaDoSlike")
 	private String putanjaDoSlike;
 	
+	@JsonProperty("ponude")
+	private List<PonudaDTO> ponude;
+	
+	public List<PonudaDTO> getPonude() {
+		return ponude;
+	}
+	public void setPonude(List<PonudaDTO> ponude) {
+		this.ponude = ponude;
+	}
 	public String getPutanjaDoSlike() {
 		return putanjaDoSlike;
 	}

@@ -2,6 +2,7 @@ package isa.tim13.PozoristaiBioskopi.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
+import isa.tim13.PozoristaiBioskopi.dto.ObjavaiStatusDTO;
 import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
@@ -31,6 +33,7 @@ import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.repository.AdministratoriRepository;
 import isa.tim13.PozoristaiBioskopi.repository.ObjavaRepository;
+import isa.tim13.PozoristaiBioskopi.repository.PonudaRepository;
 import isa.tim13.PozoristaiBioskopi.repository.TematskiRekvizitRepository;
 
 @Service
@@ -42,6 +45,9 @@ public class FanZonaService {
 	
 	@Autowired
 	ObjavaRepository objavaRep;
+	
+	@Autowired
+	PonudaRepository ponudaRep;
 	
 	@Autowired
 	AdministratoriRepository adminRep;
@@ -213,24 +219,51 @@ public class FanZonaService {
 	}
 
 
-	public void dodajPonuduNaObjavu(Korisnik kor, PonudaDTO ponuda) throws ObjavaNePostoji {
+	public String dodajPonuduNaObjavu(Korisnik kor, PonudaDTO ponuda) throws ObjavaNePostoji, NeovlascenPristupException {
 		Objava objava = objavaRep.findById(ponuda.getIdObjave());
 		
 		if(objava==null) {
 			throw new ObjavaNePostoji();
 		}
 		
-		Ponuda pravaPonuda = new Ponuda();
-		pravaPonuda.setAutor(kor);
-		pravaPonuda.setNaslov(ponuda.getNaslov());
-		pravaPonuda.setOpis(ponuda.getOpis());
-		pravaPonuda.setCena(ponuda.getCena());
-		objava.getPonude().add(pravaPonuda);
-		objavaRep.save(objava);
+		if(kor.getId()==objava.getAutor().getId()) {
+			throw new NeovlascenPristupException();
+		}
+		
+		Ponuda pravaPonuda = pronadjiPonudu(kor.getId(),objava.getId());
+		if(pravaPonuda==null) {
+			pravaPonuda = new Ponuda();
+			podesiPonudu(kor,pravaPonuda,ponuda,objava);
+			objava.getPonude().add(pravaPonuda);
+			objavaRep.save(objava);
+			pravaPonuda = pronadjiPonudu(kor.getId(),objava.getId()); //da bih mogao dobiti id ponude :(
+		}
+		else {
+			podesiPonudu(kor,pravaPonuda,ponuda,objava);
+			ponudaRep.save(pravaPonuda);
+		}
+		
+		
+		return ""+pravaPonuda.getId();
 	}
 
 
-	public String pribaviObjavu(ObjectMapper objMapper, int idObjave) throws ObjavaNePostoji, NeovlascenPristupException, JsonProcessingException {
+	private void podesiPonudu(Korisnik kor,Ponuda pravaPonuda,PonudaDTO ponuda,Objava objava) {
+		pravaPonuda.setAutor(kor);
+		pravaPonuda.setObjava(objava);
+		pravaPonuda.setNaslov(ponuda.getNaslov());
+		pravaPonuda.setOpis(ponuda.getOpis());
+		pravaPonuda.setCena(ponuda.getCena());
+		
+	}
+
+
+	private Ponuda pronadjiPonudu(int idKorisnika, int idObjave) {
+		return ponudaRep.pronadjiPonudu(idKorisnika,idObjave);
+	}
+
+
+	public String pribaviObjavu(Korisnik kor,ObjectMapper objMapper, int idObjave) throws ObjavaNePostoji, NeovlascenPristupException, JsonProcessingException {
 		Objava obj = objavaRep.findById(idObjave);
 		if(obj==null) {
 			throw new ObjavaNePostoji();
@@ -244,8 +277,34 @@ public class FanZonaService {
 		retVal.setNaziv(obj.getNaziv());
 		retVal.setOpis(obj.getOpis());
 		retVal.setPutanjaDoSlike(obj.getPutanjaDoSlike());
+		pribaviPonude(retVal,obj);
+		ObjavaiStatusDTO celaVrednost = new ObjavaiStatusDTO();
+		celaVrednost.setObjava(retVal);
 		
-		return objMapper.writeValueAsString(retVal);
+		if(obj.getAutor().getId()==kor.getId()) {
+			celaVrednost.setDodavanjePonudeVidljivo(false);
+		}
+		else {
+			celaVrednost.setDodavanjePonudeVidljivo(true);
+		}
+		
+		return objMapper.writeValueAsString(celaVrednost);
+		
+	}
+
+
+	private void pribaviPonude(ObjavaDTO retVal, Objava obj) {
+		
+		retVal.setPonude(new ArrayList<PonudaDTO>());
+		for(Ponuda pon:obj.getPonude()) {
+			PonudaDTO ponudaDTO = new PonudaDTO();
+			
+			ponudaDTO.setCena(pon.getCena());
+			ponudaDTO.setNaslov(pon.getNaslov());
+			ponudaDTO.setOpis(pon.getOpis());
+			ponudaDTO.setIdPonude(pon.getId());
+			retVal.getPonude().add(ponudaDTO);
+		}
 		
 	}
 

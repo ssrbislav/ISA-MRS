@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PonudaDTO {
 	
+	@JsonProperty("idPonude")
+	private int idPonude;
+	
 	@JsonProperty("idObjave")
 	private int idObjave;
 	
@@ -20,6 +23,18 @@ public class PonudaDTO {
 		
 	}
 	
+	public int getIdPonude() {
+		return idPonude;
+	}
+
+
+
+	public void setIdPonude(int idPonude) {
+		this.idPonude = idPonude;
+	}
+
+
+
 	public int getIdObjave() {
 		return idObjave;
 	}
