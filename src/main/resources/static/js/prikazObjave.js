@@ -11,7 +11,7 @@ function dodajPonudu(ponuda){
 	var divHtml = "<b>"+ponuda["naslov"]+"</b><br/>";
 	var divHtml = divHtml + ponuda["opis"]+"<br/>";
 	var divHtml = divHtml + "<b>Autor:</b><br/>"+ponuda["autor"]+"<br/>";
-	var divHtml = divHtml + "<b>Cena:</b><br/>"+ponuda["cena"]+"<br/>";
+	var divHtml = divHtml + "<b>Cena:</b><br/>"+ponuda["cena"]+"<br/><br/><br/>";
 	newDiv.html(divHtml);	
 	$("#ponude").append(newDiv);
 }

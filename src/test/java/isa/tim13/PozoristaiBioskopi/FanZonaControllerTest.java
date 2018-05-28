@@ -3,11 +3,15 @@ package isa.tim13.PozoristaiBioskopi;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
@@ -30,13 +35,17 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
+import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
+import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Objava;
 import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.repository.AdministratoriRepository;
+import isa.tim13.PozoristaiBioskopi.repository.KorisnikRepository;
 import isa.tim13.PozoristaiBioskopi.repository.ObjavaRepository;
 import isa.tim13.PozoristaiBioskopi.repository.TematskiRekvizitRepository;
 
@@ -61,7 +70,13 @@ public class FanZonaControllerTest {
 	private AdministratoriRepository adminRep;
 	
 	@Autowired
+	private KorisnikRepository korRep;
+	
+	@Autowired
     MockHttpSession session;
+	
+	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 	
 	
 
@@ -70,6 +85,9 @@ public class FanZonaControllerTest {
 	
 	private RekvizitDTO rekvizit;
 	private Objava objava;
+	
+	private String korEmail;
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 	
 	@PostConstruct
 	public void setup() {
@@ -87,6 +105,15 @@ public class FanZonaControllerTest {
 		objava.setNaziv("Objava1");
 		objava.setStatus(StatusObjave.NEOBJAVLJEN);
 		objava.setOpis("Ovo je neki opis objave");
+		
+		Korisnik kor = new Korisnik();
+		korEmail = "kor@kor.com";
+		kor.setEmail(korEmail);
+		kor.setAktivan(true);
+		kor.setIme("Kor");
+		kor.setPrezime("Koric");
+		korRep.save(kor);
+		
 	}
 	
 	@Test
@@ -355,6 +382,110 @@ public class FanZonaControllerTest {
 				.param("donjaCena", 0.0+"")
 				.param("gornjaCena", 1000.0+"")).andExpect(status().isOk());
 	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	@Rollback(true)
+	public void dodajObjavuTest() throws JsonProcessingException, Exception {
+		
+		Object prethodniUlogovani = session.getAttribute("korisnik");
+		
+		session.setAttribute("korisnik", korRep.findById(2).get());
+		ObjavaDTO objavaDTO = new ObjavaDTO();
+		objavaDTO.setDatumIsteka(sdf.parse("24.04.2019."));
+		objavaDTO.setNaziv("Objava1");
+		objavaDTO.setOpis("Opis najjaci");
+		objavaDTO.setPutanjaDoSlike("");
+		objavaDTO.setPonude(new ArrayList<PonudaDTO>());
+		mockMvc.perform(fileUpload(URL_PREFIX+"/dodajObjavu")
+				.session(session).param("objava",TestUtil.toJson(objavaDTO))).andExpect(status().isOk());
+		
+		//sad ce da padne jer cemo da podesimo datum koji je istekao
+		objavaDTO.setDatumIsteka(sdf.parse("24.04.2017."));
+		mockMvc.perform(fileUpload(URL_PREFIX+"/dodajObjavu")
+				.session(session).param("objava",TestUtil.toJson(objavaDTO))).andExpect(status().isBadRequest());
+		
+		session.setAttribute("korisnik", prethodniUlogovani);
+	}
+	
+	
+	@Test
+	@Rollback(true)
+	public void pribaviObjavuTest() throws JsonProcessingException, Exception {
+		
+		Object prethodniUlogovani = session.getAttribute("korisnik");
+		
+		session.setAttribute("korisnik", korRep.findById(2).get());
+		
+		objava.setNaziv("KorisnikObjava");
+		objava.setAutor((Korisnik)session.getAttribute("korisnik"));
+		objava.setStatus(StatusObjave.OBJAVLJEN);
+		objavaRep.save(objava);
+		
+		mockMvc.perform(get(URL_PREFIX+"/pribaviObjavu")
+		.session(session)
+		.param("id", ""+(objavaRep.findByNaziv("KorisnikObjava").getId())))
+		.andExpect(status().isOk());
+		
+		mockMvc.perform(get(URL_PREFIX+"/pribaviObjavu")
+				.session(session)
+				.param("id", ""+(0))) //id koji sigurno ne postoji
+				.andExpect(status().isBadRequest());
+		
+		session.setAttribute("korisnik", prethodniUlogovani);
+	}
+	
+	@Test
+	@Rollback(true)
+	public void dodajPonuduNaObjavuTest() throws JsonProcessingException, Exception {
+		
+		Object prethodniUlogovani = session.getAttribute("korisnik");
+		
+		session.setAttribute("korisnik", korRep.findById(2).get());		
+		objava.setNaziv("KorisnikObjava2");
+		objava.setAutor((Korisnik)session.getAttribute("korisnik"));
+		objavaRep.save(objava);
+		
+		int idObjave = objavaRep.findByNaziv("KorisnikObjava2").getId();
+		PonudaDTO ponudaDTO = new PonudaDTO();
+		ponudaDTO.setCena(56);
+		ponudaDTO.setIdObjave(idObjave);
+		ponudaDTO.setNaslov("Ponudica");
+		ponudaDTO.setOpis("Ovo je neki opis");
+		//objava i ponuda ne smeju imati istog autora
+		mockMvc.perform(post(URL_PREFIX+"/dodajPonudu")
+				.session(session)
+				.contentType(contentType)
+				.content(TestUtil.toJson(ponudaDTO))).andExpect(status().isBadRequest());
+		
+		ponudaDTO.setIdObjave(0);//nepostojeca objava na koju treba da se nakaci ponuda
+		mockMvc.perform(post(URL_PREFIX+"/dodajPonudu")
+				.session(session)
+				.contentType(contentType)
+				.content(TestUtil.toJson(ponudaDTO))).andExpect(status().isBadRequest());
+		
+		//pravimo novog korisnika koji ce postaviti ponudu na objavu prvog i to uspesno
+		Korisnik kor2 = new Korisnik();
+		korEmail = "kor2@kor2.com";
+		kor2.setEmail(korEmail);
+		kor2.setAktivan(true);
+		kor2.setIme("Kor2");
+		kor2.setPrezime("Koric2");
+		korRep.save(kor2);
+		
+		//prebacujemo da je sad novi korisnik kor2 ulogovan
+		session.setAttribute("korisnik", korRep.findById(3).get());
+		
+		ponudaDTO.setIdObjave(idObjave);
+		mockMvc.perform(post(URL_PREFIX+"/dodajPonudu")
+				.session(session)
+				.contentType(contentType)
+				.content(TestUtil.toJson(ponudaDTO))).andExpect(status().isOk());
+		
+		
+		session.setAttribute("korisnik", prethodniUlogovani);
+	}
+	
 	
 	@After
 	public void obrisiSveTestFajlove() {
