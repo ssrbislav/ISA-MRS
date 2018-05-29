@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import isa.tim13.PozoristaiBioskopi.model.PredstavaProjekcija;
+import isa.tim13.PozoristaiBioskopi.model.Sala;
 import isa.tim13.PozoristaiBioskopi.model.Termin;
 import isa.tim13.PozoristaiBioskopi.repository.PredstavaProjekcijaRepository;
 import isa.tim13.PozoristaiBioskopi.repository.TerminRepository;
@@ -54,6 +55,7 @@ public class RezervacijaControllerTest {
 	private PredstavaProjekcija pp = new PredstavaProjekcija();
 	private Termin termin1 = new Termin();
 	private Termin termin2 = new Termin();
+	private Sala sala1 = new Sala();
 
 	@PostConstruct
 	public void setup() {
@@ -65,8 +67,12 @@ public class RezervacijaControllerTest {
 	public void before() {
 		ppRep.deleteAll();
 		terminRep.deleteAll();
+		sala1.setBrojKolona(3);
+		sala1.setBrojVrsta(4);
 		termin1.setDatum("1");
 		termin2.setDatum("1");
+		termin1.setSala(sala1);
+		termin2.setSala(sala1);
 		ArrayList<Termin> termini = new ArrayList<Termin>();
 		termini.add(termin1);
 		termini.add(termin2);
