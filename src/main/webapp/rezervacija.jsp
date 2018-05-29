@@ -6,7 +6,7 @@
 
 <head>
 	<title>Repertoar</title>
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="../css/style.css">
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
 	
@@ -72,7 +72,7 @@
 						<td>
 							<form action="/rezervacija/mesta" method="post" >
 								<input type="hidden" name="id" value ="${i.id}" ></input>
-								<button >Rezerviši</button>
+								<button >Odaberi mesto</button>
 							</form>
 						</td>
 					</tr>

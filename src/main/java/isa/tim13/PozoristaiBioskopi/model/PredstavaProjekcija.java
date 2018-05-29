@@ -43,7 +43,7 @@ public class PredstavaProjekcija {
     @Column(name="opis")
     private String opis;
     
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
     private List<Termin> termini;
    
  

@@ -137,7 +137,7 @@ public class ProfilControllerTest {
 		noviKorisnik.setRegistracioniLink("test");
 		noviKorisnik.setAktivan(false);
 		noviKorisnik.setLokacijaSlike("");
-		noviKorisnik.setBrojBodova(0.0);
+		noviKorisnik.setBrojBodova(0);
 		noviKorisnik.setIstorijatPoseta(new ArrayList<PredstavaProjekcija>());
 		noviKorisnik.setPrijatelji(new ArrayList<Korisnik>());
 		noviKorisnik.setZahtevi(new ArrayList<Korisnik>());
