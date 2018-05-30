@@ -7,6 +7,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ObjavaDTO {
 	
+	@JsonProperty("id")
+	private int id;
+	
+	
 	@JsonProperty(value="naziv")
 	private String naziv;
 	
@@ -22,6 +26,15 @@ public class ObjavaDTO {
 	@JsonProperty("ponude")
 	private List<PonudaDTO> ponude;
 	
+	@JsonProperty("autor")
+	private String autor;
+	
+	public String getAutor() {
+		return autor;
+	}
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
 	public List<PonudaDTO> getPonude() {
 		return ponude;
 	}
@@ -51,6 +64,13 @@ public class ObjavaDTO {
 	}
 	public void setDatumIsteka(Date datumIsteka) {
 		this.datumIsteka = datumIsteka;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

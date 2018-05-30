@@ -31,7 +31,6 @@ import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitVecPostojiException;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.Korisnik;
-import isa.tim13.PozoristaiBioskopi.model.Objava;
 import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
@@ -121,25 +120,25 @@ public class FanZonaController {
 	}
 	
 	@RequestMapping(value="/prikaziObjave",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Iterable<Objava> prikaziObjave(HttpSession s,@RequestParam(value="status")StatusObjave status){
+	public @ResponseBody Iterable<ObjavaDTO> prikaziObjave(HttpSession s,@RequestParam(value="status")StatusObjave status){
 		//samo objavljene oglase mogu videti drugi osim administratora fan zone
 		if(status!=StatusObjave.OBJAVLJEN) {
 			try {
 				AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
 			} catch (NeovlascenPristupException e) {
-				return new ArrayList<Objava>();
+				return new ArrayList<ObjavaDTO>();
 			}
 		}
 		return servis.prikaziObjave(status);
 	}
 	
 	@RequestMapping(value="/prikaziRazmatraneObjave",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Iterable<Objava> prikaziRazmatraneObjave(HttpSession s){
+	public @ResponseBody Iterable<ObjavaDTO> prikaziRazmatraneObjave(HttpSession s){
 		try {
 			FanZonaAdministrator admin = (FanZonaAdministrator)AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
 			return servis.prikaziRazmatraneObjave(admin);
 		} catch (NeovlascenPristupException e) {
-			return new ArrayList<Objava>();
+			return new ArrayList<ObjavaDTO>();
 		}
 	}
 	

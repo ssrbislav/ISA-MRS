@@ -36,7 +36,7 @@ function dodajPrikazObjave(objava){
 	
 	var divHtml ="<b>Naziv objave: </b>"+"<p id=\""+napraviId("nazivObjave",id)+"\">"+objava["naziv"]+"</p><input type=\"button\" value=\"Prihvati\" onclick=\""+"evaluirajObjavu("+id+",true)\"></input><br/><input type=\"button\" value=\"Odbij\" onclick=\""+"evaluirajObjavu("+id+",false)\"></input><br/>";
 	var divHtml = divHtml + "<b>Opis objave: <br/></b>"+"<p id=\""+napraviId("opisObjave",id)+"\">"+objava["opis"]+"</p>";
-	var divHtml = divHtml + "<b>Autor objave: <br/></b>"+"<p id=\""+napraviId("autorObjave",id)+"\">"+objava["autor"]["ime"]+" "+objava["autor"]["prezime"]+"</br>"+objava["autor"]["email"]+"</p>";
+	var divHtml = divHtml + "<b>Autor objave: <br/></b>"+"<p id=\""+napraviId("autorObjave",id)+"\">"+objava["autor"]+"</p>";
 	newDiv.html(divHtml);
 	 newDiv.append("<b>Slika objave: </b><br/>"+"<img width=\"225\" height=\"225\" id=\""+napraviId("putanja",id)+"\"src=\""+putanjaDoSlika+objava["putanjaDoSlike"]+"\"/>");
 	

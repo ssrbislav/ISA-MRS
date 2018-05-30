@@ -150,8 +150,8 @@ public class FanZonaService {
 		return rep.findByRazniKriterijumi(nazivRekvizita,gornjaCena);
 	}
 
-	public Iterable<Objava> prikaziObjave(StatusObjave status) {
-		return objavaRep.findByStatus(status);
+	public Iterable<ObjavaDTO> prikaziObjave(StatusObjave status) {
+		return vratiDTOObjave(objavaRep.findByStatus(status));
 	}
 	
 	//REQUIRES_NEW - metoda uvek pokrece novu transakciju, ako postoji tekuca transakcija ona se suspenduje
@@ -173,10 +173,34 @@ public class FanZonaService {
 		
 		
 	}
+	
+	public Iterable<ObjavaDTO> vratiDTOObjave(Iterable<Objava> objave){
+		ObjavaDTO objavica = null;
+		ArrayList<ObjavaDTO> objaveZaVracanje = new ArrayList<ObjavaDTO>();
+		for(Objava objava:objave) {
+			objavica = new ObjavaDTO();
+			objavica.setNaziv(objava.getNaziv());
+			objavica.setDatumIsteka(objava.getDatumIsteka());
+			
+			if(objava.getAutor()!=null) {
+				objavica.setAutor(objava.getAutor().getIme()+" "+objava.getAutor().getPrezime()+"<br/>"+objava.getAutor().getEmail());
+			}
+			else {
+				objavica.setAutor("Nepoznat");
+			}
+			
+			objavica.setOpis(objava.getOpis());
+			objavica.setPutanjaDoSlike(objava.getPutanjaDoSlike());
+			objavica.setId(objava.getId());
+			objaveZaVracanje.add(objavica);
+		}
+		return objaveZaVracanje;
+	}
 
-	public Iterable<Objava> prikaziRazmatraneObjave(FanZonaAdministrator admin) {
+	public Iterable<ObjavaDTO> prikaziRazmatraneObjave(FanZonaAdministrator admin) {
 		
-		return objavaRep.dobaviRazmatraneObjave(admin);
+		Iterable<Objava> objave =  objavaRep.dobaviRazmatraneObjave(admin);
+		return vratiDTOObjave(objave);
 	}
 	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, rollbackFor=Exception.class)
