@@ -41,6 +41,19 @@ public class AuthService {
 		throw new NeovlascenPristupException();
 	}
 	
+	public static Osoba osobaProvera(HttpSession s,Class<?>... args) throws NeovlascenPristupException {
+		Osoba o = (Osoba)s.getAttribute("korisnik");
+		if(o !=null) {
+			for(Class<?> cl:args) {
+				if(o.getClass().equals(cl)) {
+					return o;
+				}
+			
+			}
+		}
+		throw new NeovlascenPristupException();
+	}
+	
 	private static  boolean adminPravogTipa(Osoba o, TipAdministratora tip) {
 		if(o==null) {
 			return false;

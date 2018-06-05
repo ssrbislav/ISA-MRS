@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
+import isa.tim13.PozoristaiBioskopi.dto.TematskiRekvizitiDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
@@ -31,8 +32,8 @@ import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitVecPostojiException;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.Korisnik;
+import isa.tim13.PozoristaiBioskopi.model.Osoba;
 import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
-import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
 import isa.tim13.PozoristaiBioskopi.service.AuthService;
 import isa.tim13.PozoristaiBioskopi.service.FanZonaService;
@@ -115,8 +116,14 @@ public class FanZonaController {
 	
 	
 	@RequestMapping(value="/prikaziTematskeRekvizite",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Iterable<TematskiRekvizit> prikaziSveTematskeRekvizite(){
-		return servis.prikaziSveTematskeRekvizite();
+	public @ResponseBody TematskiRekvizitiDTO prikaziSveTematskeRekvizite(HttpSession s){
+		try {
+			Osoba o = AuthService.osobaProvera(s,FanZonaAdministrator.class,Korisnik.class);
+			return servis.prikaziSveTematskeRekvizite(o instanceof FanZonaAdministrator);
+		} catch (NeovlascenPristupException e) {
+			return new TematskiRekvizitiDTO();
+		}
+		
 	}
 	
 	@RequestMapping(value="/prikaziObjave",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
@@ -177,8 +184,15 @@ public class FanZonaController {
 	}
 	
 	@RequestMapping(value="/pretraziTematskeRekvizite",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Iterable<TematskiRekvizit> pretraziTematskeRekvizite(@RequestParam(value="nazivRekvizita") String nazivRekvizita,@RequestParam(value="gornjaCena", defaultValue = ""+Double.MAX_VALUE)double gornjaCena){
-		return servis.pretraziTematskeRekvizite(nazivRekvizita,gornjaCena);
+	public @ResponseBody TematskiRekvizitiDTO pretraziTematskeRekvizite(HttpSession s,@RequestParam(value="nazivRekvizita") String nazivRekvizita,@RequestParam(value="gornjaCena", defaultValue = ""+Double.MAX_VALUE)double gornjaCena){
+		Osoba o;
+		try {
+			o = AuthService.osobaProvera(s, FanZonaAdministrator.class,Korisnik.class);
+			return servis.pretraziTematskeRekvizite(nazivRekvizita,gornjaCena, o instanceof FanZonaAdministrator);
+		} catch (NeovlascenPristupException e) {
+			return new TematskiRekvizitiDTO();
+		}
+		
 	}
 	
 	

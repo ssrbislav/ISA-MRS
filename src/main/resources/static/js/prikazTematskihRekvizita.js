@@ -4,7 +4,7 @@ var modifikovanjeTematskihRekvizitaInfoPutanja = "/fanzona/modifikujTematskiRekv
 var modifikovanjeTematskihRekvizitaSlikaPutanja = "/fanzona/modifikujSlikuTematskogRekvizita";
 var brisanjeTematskihRekvizitaPutanja = "/fanzona/obrisiTematskiRekvizit"
 var pretragaTematskihRekvizitaPutanja = "/fanzona/pretraziTematskeRekvizite"
-
+var fanZonaAdmin = false;
 
 function formaNevalidna(){
 	for(var i=0;i<arguments.length;i++){
@@ -19,10 +19,18 @@ function formaNevalidna(){
 function prikaziDijalog(id){
 	$("#izmenaDijalog").show();
     $("div[role=dialog]").show();
+    
 	$("#izmenaIdRekvizita").text(id);
+	$("#izmenaNazivRekvizita").val($("#"+napraviId("nazivRekvizita",id)).text());
+	$("#izmenaOpisRekvizita").text($("#"+napraviId("opisRekvizita",id)).text());
+	$("#izmenaCenaRekvizita").val($("#"+napraviId("cenaRekvizita",id)).text());
+	$("#izmenaBrojaRekvizita").val($("#"+napraviId("broj",id)).text());
 	$("#izmenaDijalog").dialog({
-		
-	});
+		width : 400,
+		resizable : false,
+		position: { of: $("#"+id) }
+	}).prev(".ui-dialog-titlebar").css("background","green");
+	
 }
 
 function napraviId(text,id){
@@ -79,23 +87,35 @@ function promeniSliku(id){
 	});
 }
 
-function dodajPrikazRekvizita(rekvizit){
+function prikaziBrisanje(brisanje,adminFanZone){
+	if(adminFanZone){
+		return brisanje;
+	}
+	return "<br/>";
+}
+
+function dodajPrikazRekvizita(rekvizit,adminFanZone){
 	var id = rekvizit["id"];
 	var newDiv = $("<div id=\""+id+"\""+"></div>");
 	
-	var divHtml ="<b>Naziv rekvizita: </b>"+"<p id=\""+napraviId("nazivRekvizita",id)+"\">"+rekvizit["nazivRekvizita"]+"</p><input type=\"button\" value=\"Obrisi\" onclick=\""+"obrisiRekvizit("+id+")\"></input><br/>";
+	var divHtml ="<b>Naziv rekvizita: </b>"+"<p id=\""+napraviId("nazivRekvizita",id)+"\">"+rekvizit["nazivRekvizita"]+prikaziBrisanje("</p><input type=\"button\" value=\"Obrisi\" onclick=\""+"obrisiRekvizit("+id+")\"></input><br/>",adminFanZone);
 	var divHtml = divHtml + "<b>Opis rekvizita: <br/></b>"+"<p id=\""+napraviId("opisRekvizita",id)+"\">"+rekvizit["opisRekvizita"]+"</p>";
 	var divHtml = divHtml + "<b>Cena rekvizita: </b>"+"<p id=\""+napraviId("cenaRekvizita",id)+"\">"+rekvizit["cenaRekvizita"]+"</p>";
 	var divHtml = divHtml + "<b>Broj artikala: </b>"+"<p id=\""+napraviId("broj",id)+"\">"+rekvizit["broj"]+"</p>";
 	newDiv.html(divHtml);
-	newDiv.append($("<input type=\"button\" value=\"Izmeni podatke o rekvizitu\"></input><br/>").click(function(data){
+	if(adminFanZone){
+		newDiv.append($("<input type=\"button\" value=\"Izmeni podatke o rekvizitu\"></input><br/>").click(function(data){
 		prikaziDijalog(rekvizit["id"]);
 	}));
+	}
+	
 	 newDiv.append("<b>Slika rekvizita: </b><br/>"+"<img width=\"225\" height=\"225\" id=\""+napraviId("putanja",id)+"\"src=\""+putanjaDoSlika+rekvizit["putanjaDoSlike"]+"\"/>");
 	 
 	 
-	 newDiv.append("<br/><input type=\"file\" id = \""+napraviId("file",id)+"\"name=\"file\" accept=\"image/*\"></input>");
-	 newDiv.append("<input type=\"button\" value = \"Promeni sliku...\"id=\""+napraviId("promenaSlikeDugme",id)+"\" onclick=\""+"promeniSliku("+id+")\"></input><br/>");
+	 if(adminFanZone){
+		 newDiv.append("<br/><input type=\"file\" id = \""+napraviId("file",id)+"\"name=\"file\" accept=\"image/*\"></input>");
+		 newDiv.append("<input type=\"button\" value = \"Promeni sliku...\"id=\""+napraviId("promenaSlikeDugme",id)+"\" onclick=\""+"promeniSliku("+id+")\"></input><br/>");
+	 }
 
 	 $("#prikazRekvizita").append(newDiv);
 }
@@ -185,8 +205,9 @@ function pretraziTematskeRekvizite(){
 		data: allData,
 		success: function(data){
 			$("#prikazRekvizita").empty();
-			 for(var i=0;i<data.length;i++){
-				 dodajPrikazRekvizita(data[i]);
+			fanZonaAdmin = data["adminFanZone"];
+			 for(var i=0;i<data["rekviziti"].length;i++){
+				 dodajPrikazRekvizita(data["rekviziti"][i],fanZonaAdmin);
 			  }
 		},		   
 		error : function(xhr, textStatus, errorThrown) {
@@ -204,8 +225,12 @@ $(document).ready(function(){
 	$.ajax({ url:prikazTematskihRekvizitaPutanja,
 		   type: "GET",
 		   success: function(data){
-			  for(var i=0;i<data.length;i++){
-				  dodajPrikazRekvizita(data[i]);
+			 fanZonaAdmin = data["adminFanZone"];
+			 if(!fanZonaAdmin){
+					$("#dodavanjeRekvizitaOpcija").remove();
+				}
+			  for(var i=0;i<data["rekviziti"].length;i++){
+				  dodajPrikazRekvizita(data["rekviziti"][i],fanZonaAdmin);
 			  }
 		   },
 		  error : function(XMLHttpRequest, textStatus, errorThrown) {

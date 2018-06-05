@@ -21,8 +21,8 @@
       <a class="navbar-brand" href="#"></a>
     </div>
     <ul class="nav navbar-nav">
-		 <li><a href="/dodavanjeTematskihRekvizita" style="color: white;">Dodavanje tematskih rekvizita</a></li>
-         <li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
+		 <li id="dodavanjeRekvizitaOpcija"><a href="/dodavanjeTematskihRekvizita" style="color: white;">Dodavanje tematskih rekvizita</a></li>
+         <li id="profilOpcija"><a href="/profilKorisnika" style="color: white;">Profil</a></li>
         </ul>
     <ul class="nav navbar-nav pull-right">  
        <li><a href="/odjava" style="color: white;">Odjava</a></li>

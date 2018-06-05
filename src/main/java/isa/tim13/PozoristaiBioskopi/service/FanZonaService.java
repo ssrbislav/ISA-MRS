@@ -20,6 +20,7 @@ import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.ObjavaiStatusDTO;
 import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
+import isa.tim13.PozoristaiBioskopi.dto.TematskiRekvizitiDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
@@ -90,8 +91,11 @@ public class FanZonaService {
 	}
 
 
-	public Iterable<TematskiRekvizit> prikaziSveTematskeRekvizite() {
-		return rep.findAll();
+	public TematskiRekvizitiDTO prikaziSveTematskeRekvizite(boolean b) {
+		TematskiRekvizitiDTO povratnaVrednost = new TematskiRekvizitiDTO();
+		povratnaVrednost.setAdminFanZone(b);
+		povratnaVrednost.setRekviziti(rep.findAll());
+		return povratnaVrednost;
 	}
 
 	public void modifikujRekvizit(int id, RekvizitDTO rekvizit) throws RekvizitNePostoji, RekvizitVecPostojiException {
@@ -145,9 +149,13 @@ public class FanZonaService {
 		
 	}
 
-	public Iterable<TematskiRekvizit> pretraziTematskeRekvizite(String nazivRekvizita,
-			double gornjaCena) {
-		return rep.findByRazniKriterijumi(nazivRekvizita,gornjaCena);
+	public TematskiRekvizitiDTO pretraziTematskeRekvizite(String nazivRekvizita,
+			double gornjaCena,boolean b) {
+		
+		TematskiRekvizitiDTO povratnaVrednost = new TematskiRekvizitiDTO();
+		povratnaVrednost.setRekviziti(rep.findByRazniKriterijumi(nazivRekvizita,gornjaCena));
+		povratnaVrednost.setAdminFanZone(b);
+		return povratnaVrednost;
 	}
 
 	public Iterable<ObjavaDTO> prikaziObjave(StatusObjave status) {

@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
+import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
+import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
 import isa.tim13.PozoristaiBioskopi.model.TipInstitucijeKulture;
 import isa.tim13.PozoristaiBioskopi.service.AuthService;
@@ -131,7 +133,7 @@ PozoristaIBioskopiService servis;
 	@RequestMapping("/prikazTematskihRekvizita")
 	public String prikazTematskihRekvizita(HttpSession s) {
 		try {
-			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+			AuthService.osobaProvera(s,FanZonaAdministrator.class,Korisnik.class);
 		} catch (NeovlascenPristupException e) {
 			return "prijava";
 		}

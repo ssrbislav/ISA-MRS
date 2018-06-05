@@ -38,7 +38,7 @@
         <ul class="dropdown-menu">
           <li><a href="/dodavanjeObjava">Dodaj objavu</a></li>
           <li><a href="/pregledObjavljenihObjava">Prikaz objava</a></li>
-         
+         <li><a href="/prikazTematskihRekvizita">Prikaz zvanicnih rekvizita</a></li>
         </ul>
       </li>
       
