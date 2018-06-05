@@ -22,6 +22,7 @@ import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.dto.TematskiRekvizitiDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
+import isa.tim13.PozoristaiBioskopi.exceptions.NemaViseRekvizita;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeNeobjavljena;
@@ -341,6 +342,25 @@ public class FanZonaService {
 			ponudaDTO.setAutor(pon.getAutor().getIme()+" "+pon.getAutor().getPrezime()+"\n"+pon.getAutor().getEmail());
 			retVal.getPonude().add(ponudaDTO);
 		}
+		
+	}
+
+
+	public LinkedHashMap<String, String> rezervisanjeRekvizita(Korisnik kor, int id) throws RekvizitNePostoji, NemaViseRekvizita {
+		Optional<TematskiRekvizit> rek = rep.findById(id);
+		if(!rek.isPresent()) {
+			throw new RekvizitNePostoji();
+		}
+		int broj = rek.get().getBroj();
+		if(broj==0) {
+			throw new NemaViseRekvizita();
+		}
+		rek.get().setBroj(broj-1);
+		rep.save(rek.get());
+		LinkedHashMap<String,String> povratnaVrednost = new LinkedHashMap<String,String>();
+		povratnaVrednost.put("broj",""+rek.get().getBroj());
+		povratnaVrednost.put("poruka","Rekvizit uspesno rezervisan. ");
+		return povratnaVrednost;
 		
 	}
 

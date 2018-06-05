@@ -39,7 +39,7 @@ public class PozoristaIBioskopiController {
 	}
 	
 	@RequestMapping(value = "/registruj", method=RequestMethod.POST)
-	public @ResponseBody ResponseEntity<String> registrujInstituciju(@RequestParam(value="institucija") String kJson,@RequestParam(value="file",required=false) MultipartFile file,HttpSession s) {
+	public @ResponseBody ResponseEntity<String> registrujInstituciju(@RequestParam(value="institucija") String kJson,@RequestParam(value="file",required=false) MultipartFile file,HttpSession s) throws NeovlascenPristupException {
 		InstitucijaDTO k;
 		try {
 			AuthService.adminProvera(s, TipAdministratora.SISTEMSKI);
@@ -47,8 +47,6 @@ public class PozoristaIBioskopiController {
 			k = objMapper.readValue(kJson, InstitucijaDTO.class);
 			servis.dodajInstitucijuKulture(k,file);
 			return new ResponseEntity<String>("Uspesno registrovana nova institucija!",HttpStatus.CREATED);
-		} catch (NeovlascenPristupException e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.FORBIDDEN);
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			return new ResponseEntity<String>("Doslo je do greske prilikom baratanja s fajlom ili JSONOM.",HttpStatus.BAD_REQUEST);

@@ -456,7 +456,7 @@ public class FanZonaControllerTest {
 		mockMvc.perform(post(URL_PREFIX+"/dodajPonudu")
 				.session(session)
 				.contentType(contentType)
-				.content(TestUtil.toJson(ponudaDTO))).andExpect(status().isBadRequest());
+				.content(TestUtil.toJson(ponudaDTO))).andExpect(status().isForbidden());
 		
 		ponudaDTO.setIdObjave(0);//nepostojeca objava na koju treba da se nakaci ponuda
 		mockMvc.perform(post(URL_PREFIX+"/dodajPonudu")

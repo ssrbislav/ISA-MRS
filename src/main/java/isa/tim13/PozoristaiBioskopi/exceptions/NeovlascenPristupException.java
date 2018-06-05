@@ -1,5 +1,9 @@
 package isa.tim13.PozoristaiBioskopi.exceptions;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.FORBIDDEN,reason = "Nemate ovlascenja da pristupite ovom sadrzaju")
 public class NeovlascenPristupException extends Exception {
 
 	/**

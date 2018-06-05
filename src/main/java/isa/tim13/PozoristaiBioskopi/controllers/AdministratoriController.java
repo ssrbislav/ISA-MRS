@@ -1,7 +1,6 @@
 package isa.tim13.PozoristaiBioskopi.controllers;
 
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpSession;
@@ -36,41 +35,23 @@ public class AdministratoriController {
 	
 	
 	@RequestMapping(value="/pribaviOpcije",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody LinkedHashMap<String,String> pribaviOpcije(HttpSession s){
-			try {
-				Administrator a = AuthService.adminProvera(s);
-				return servis.pribaviOpcije(a);
-			} catch (NeovlascenPristupException e) {
-				return new LinkedHashMap<String,String>();
-			}
+	public @ResponseBody LinkedHashMap<String,String> pribaviOpcije(HttpSession s) throws NeovlascenPristupException{
+		 	Administrator a = AuthService.adminProvera(s);
+			return servis.pribaviOpcije(a);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> registrujAdministratora(@RequestBody AdministratorDTO dto,HttpSession s){
-		
-		try {
-			AuthService.adminProvera(s, TipAdministratora.SISTEMSKI);
-			servis.registrujAdministratora(dto);
-		} catch (InstitucijaNePostojiException e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
-		}
-		catch(OsobaVecPostojiException e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
-		} catch (NeovlascenPristupException e) {
-			return new ResponseEntity<String>(e.getMessage(),HttpStatus.FORBIDDEN);
-		}
+	public ResponseEntity<String> registrujAdministratora(@RequestBody AdministratorDTO dto,HttpSession s) throws NeovlascenPristupException, InstitucijaNePostojiException, OsobaVecPostojiException{
+		AuthService.adminProvera(s, TipAdministratora.SISTEMSKI);
+		servis.registrujAdministratora(dto);
 		
 		return new ResponseEntity<String>("Administrator uspesno registrovan. ",HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(method=RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody Iterable<Administrator> prikaziAdministratore(HttpSession s){
-		try {
-			AuthService.adminProvera(s, TipAdministratora.SISTEMSKI);
-			return servis.prikaziAdministratore();
-		} catch (NeovlascenPristupException e) {
-			return new ArrayList<Administrator>();
-		}
+	public @ResponseBody Iterable<Administrator> prikaziAdministratore(HttpSession s) throws NeovlascenPristupException{
+		AuthService.adminProvera(s, TipAdministratora.SISTEMSKI);
+		return servis.prikaziAdministratore();
 		
 	}
 	
