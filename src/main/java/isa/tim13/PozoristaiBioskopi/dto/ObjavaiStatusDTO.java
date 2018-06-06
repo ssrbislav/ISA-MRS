@@ -11,6 +11,17 @@ public class ObjavaiStatusDTO {
 	@JsonProperty("dodavanjePonudeVidljivo")
 	private boolean dodavanjePonudeVidljivo;
 	
+	@JsonProperty("prihvatanjePonudeVidljivo")
+	private boolean prihvatanjePonudeVidljivo;
+	
+	public boolean isPrihvatanjePonudeVidljivo() {
+		return prihvatanjePonudeVidljivo;
+	}
+
+	public void setPrihvatanjePonudeVidljivo(boolean prihvatanjePonudeVidljivo) {
+		this.prihvatanjePonudeVidljivo = prihvatanjePonudeVidljivo;
+	}
+
 	public ObjavaiStatusDTO() {
 		
 	}

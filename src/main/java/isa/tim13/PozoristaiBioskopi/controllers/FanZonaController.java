@@ -48,6 +48,12 @@ public class FanZonaController {
 		objMapper = new ObjectMapper();
 	}
 	
+	@RequestMapping(value="/prihvatiPonudu",method=RequestMethod.PUT)
+	public ResponseEntity<String> prihvatiPonudu(HttpSession s,@RequestParam("id") int id) throws NeovlascenPristupException{
+		Korisnik kor = AuthService.korisnikProvera(s);
+		servis.prihvatiPonudu(kor,id);
+		return new ResponseEntity<String>("Ponuda prihvacena. Svi ucesnici ce biti obavesteni.",HttpStatus.OK);
+	}
 	
 	@RequestMapping(value="/rezervisanjeRekvizita",method=RequestMethod.PUT,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody LinkedHashMap<String,String> rezervisanjeRekvizita(HttpSession s,@RequestParam("id") int id) throws RekvizitNePostoji, NemaViseRekvizita, NeovlascenPristupException{

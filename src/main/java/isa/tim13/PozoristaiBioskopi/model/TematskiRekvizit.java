@@ -1,10 +1,17 @@
 package isa.tim13.PozoristaiBioskopi.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class TematskiRekvizit {
@@ -34,6 +41,18 @@ public class TematskiRekvizit {
 	@Column(name="broj")
 	private int broj;
 	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY,mappedBy="rekvizit")
+	private List<RezervacijaRekvizita> rezervacije;
+	
+	public List<RezervacijaRekvizita> getRezervacije() {
+		return rezervacije;
+	}
+
+	public void setRezervacije(List<RezervacijaRekvizita> rezervacije) {
+		this.rezervacije = rezervacije;
+	}
+
 	public int getBroj() {
 		return broj;
 	}

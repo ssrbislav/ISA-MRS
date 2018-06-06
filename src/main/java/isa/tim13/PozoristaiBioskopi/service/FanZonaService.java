@@ -32,6 +32,8 @@ import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Objava;
 import isa.tim13.PozoristaiBioskopi.model.Ponuda;
+import isa.tim13.PozoristaiBioskopi.model.PonudaNotifikacija;
+import isa.tim13.PozoristaiBioskopi.model.RezervacijaRekvizita;
 import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.repository.AdministratoriRepository;
@@ -260,7 +262,7 @@ public class FanZonaService {
 			throw new ObjavaNePostoji();
 		}
 		
-		if(kor.getId()==objava.getAutor().getId()) {
+		if(kor.getId()==objava.getAutor().getId() || objava.getStatus()==StatusObjave.ARHIVIRAN) {
 			throw new NeovlascenPristupException();
 		}
 		
@@ -304,7 +306,8 @@ public class FanZonaService {
 		if(obj==null) {
 			throw new ObjavaNePostoji();
 		}
-		if(obj.getStatus()!=StatusObjave.OBJAVLJEN) {
+		//dozvoljavamo pregled arhiviranih objava
+		if(obj.getStatus()!=StatusObjave.OBJAVLJEN && obj.getStatus()!=StatusObjave.ARHIVIRAN) {
 			throw new NeovlascenPristupException();
 		}
 		
@@ -317,12 +320,19 @@ public class FanZonaService {
 		ObjavaiStatusDTO celaVrednost = new ObjavaiStatusDTO();
 		celaVrednost.setObjava(retVal);
 		
-		if(obj.getAutor().getId()==kor.getId()) {
+		boolean jeAutor = obj.getAutor().getId()==kor.getId();
+		
+		if(jeAutor) {
 			celaVrednost.setDodavanjePonudeVidljivo(false);
+			if(obj.getStatus()!=StatusObjave.ARHIVIRAN) {
+				celaVrednost.setPrihvatanjePonudeVidljivo(true);
+			}
 		}
 		else {
 			celaVrednost.setDodavanjePonudeVidljivo(true);
 		}
+		
+		
 		
 		return objMapper.writeValueAsString(celaVrednost);
 		
@@ -347,6 +357,7 @@ public class FanZonaService {
 
 
 	public LinkedHashMap<String, String> rezervisanjeRekvizita(Korisnik kor, int id) throws RekvizitNePostoji, NemaViseRekvizita {
+		
 		Optional<TematskiRekvizit> rek = rep.findById(id);
 		if(!rek.isPresent()) {
 			throw new RekvizitNePostoji();
@@ -355,12 +366,48 @@ public class FanZonaService {
 		if(broj==0) {
 			throw new NemaViseRekvizita();
 		}
+		
+		RezervacijaRekvizita rezervacija = new RezervacijaRekvizita();
+		rezervacija.setNarucilac(kor);
+		rezervacija.setRekvizit(rek.get());
 		rek.get().setBroj(broj-1);
+		
 		rep.save(rek.get());
+		rep.save(rezervacija);
+		
 		LinkedHashMap<String,String> povratnaVrednost = new LinkedHashMap<String,String>();
 		povratnaVrednost.put("broj",""+rek.get().getBroj());
 		povratnaVrednost.put("poruka","Rekvizit uspesno rezervisan. ");
 		return povratnaVrednost;
+		
+	}
+	
+	public void obavestiKorisnikaOPonudi(Ponuda pon,boolean prihvacena) {
+		PonudaNotifikacija notifikacija = new PonudaNotifikacija();
+		notifikacija.setPrihvacena(prihvacena);
+		notifikacija.setPonuda(pon);
+		ponudaRep.save(notifikacija);
+	}
+
+	public void prihvatiPonudu(Korisnik kor, int id) throws NeovlascenPristupException {
+		
+		Ponuda prihvacenaPonuda = ponudaRep.findById(id);
+		Objava obj = prihvacenaPonuda.getObjava();
+		//ako nije autor objave ne moze da prihvati ponudu
+		if(kor.getId()!=obj.getAutor().getId()) {
+			throw new NeovlascenPristupException();
+		}
+		
+		for(Ponuda p:obj.getPonude()) {
+			if(p.getId()==prihvacenaPonuda.getId()) {
+				obavestiKorisnikaOPonudi(p,true);
+			}
+			else {
+				obavestiKorisnikaOPonudi(p,false);
+			}
+		}
+		obj.setStatus(StatusObjave.ARHIVIRAN);
+		objavaRep.save(obj);
 		
 	}
 

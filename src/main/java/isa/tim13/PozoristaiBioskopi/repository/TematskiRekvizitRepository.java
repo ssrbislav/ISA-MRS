@@ -7,12 +7,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import isa.tim13.PozoristaiBioskopi.model.RezervacijaRekvizita;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 
 @Repository
 public interface TematskiRekvizitRepository extends CrudRepository<TematskiRekvizit, Integer> {
 	
 	TematskiRekvizit findByNazivRekvizita(String naziv);
+	
+	void save(RezervacijaRekvizita rezervacija);
 	
 	
 	@Query(value="select r from TematskiRekvizit r where lower(r.nazivRekvizita) like lower(concat('%',:nazivRekvizita,'%'))  and r.cenaRekvizita <= :gornjaCena",nativeQuery=false)
