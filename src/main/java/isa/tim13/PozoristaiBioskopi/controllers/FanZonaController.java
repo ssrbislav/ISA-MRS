@@ -2,11 +2,14 @@ package isa.tim13.PozoristaiBioskopi.controllers;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -116,9 +119,14 @@ public class FanZonaController {
 	
 	@RequestMapping(value="/evaluirajObjavu",method=RequestMethod.PUT)
 	public ResponseEntity<String> evaluirajObjavu(HttpSession s,@RequestParam(value="id")int id,@RequestParam("prihvacena")boolean prihvacena) throws NeovlascenPristupException{
-		FanZonaAdministrator admin = (FanZonaAdministrator)AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
-		servis.evaluirajObjavu(admin,id,prihvacena);
-		return new ResponseEntity<String>("Objava evaluirana.",HttpStatus.OK);
+		try{
+			FanZonaAdministrator admin = (FanZonaAdministrator)AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+			servis.evaluirajObjavu(admin,id,prihvacena);
+			return new ResponseEntity<String>("Objava evaluirana.",HttpStatus.OK);
+		}
+		catch (ObjectOptimisticLockingFailureException e) {
+			return new ResponseEntity<String>("Objava vec evuluirana",HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	
@@ -147,9 +155,15 @@ public class FanZonaController {
 	
 	@RequestMapping(value="/preuzmiObjavu",method=RequestMethod.PUT)
 	public ResponseEntity<String> preuzmiObjavuNaUvid(HttpSession s,@RequestParam(value="id")int id) throws ObjavaNePostoji, ObjavaNijeNeobjavljena, NeovlascenPristupException{
-		FanZonaAdministrator admin = (FanZonaAdministrator)AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
-		servis.preuzmiObjavu(admin,id);
-		return new ResponseEntity<String>("Objava preuzeta na uvid!",HttpStatus.OK);	
+		try {
+			FanZonaAdministrator admin = (FanZonaAdministrator)AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+			servis.preuzmiObjavu(admin,id);
+			return new ResponseEntity<String>("Objava preuzeta na uvid!",HttpStatus.OK);
+		}
+		catch(ObjectOptimisticLockingFailureException e) {
+			System.out.println(e.getClass());
+			return new ResponseEntity<String>("Drugi administrator je u medjuvremenu preuzeo objavu!",HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	

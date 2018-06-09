@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -183,7 +184,12 @@ public class FanZonaService {
 			throw new ObjavaNijeNeobjavljena();
 		}
 		
-		
+		try {
+			TimeUnit.SECONDS.sleep(5);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		obj.setStatus(StatusObjave.U_RAZMATRANJU);
 		obj.setAdmin(admin);
 		objavaRep.save(obj);

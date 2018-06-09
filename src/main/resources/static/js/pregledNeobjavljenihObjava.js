@@ -22,7 +22,7 @@ function preuzmiObjavu(id){
 		   },
 		  error : function(xhr, textStatus, errorThrown) {
 			  var err = xhr["responseText"];
-				alert(err);
+				alert(err["message"]);
 		}
 		   
 	});
