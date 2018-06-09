@@ -18,11 +18,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
+import isa.tim13.PozoristaiBioskopi.dto.PonudaNotifikacijaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.dto.TematskiRekvizitiDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NemaViseRekvizita;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
+import isa.tim13.PozoristaiBioskopi.exceptions.NotifikacijaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeNeobjavljena;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitNePostoji;
@@ -46,6 +48,19 @@ public class FanZonaController {
 	
 	static {
 		objMapper = new ObjectMapper();
+	}
+	
+	@RequestMapping(value="/obrisiObavestenje",method=RequestMethod.PUT)
+	public ResponseEntity<String> obrisiObavestenje(HttpSession s,@RequestParam("id") int id) throws NeovlascenPristupException, NotifikacijaNePostoji{
+		AuthService.korisnikProvera(s);
+		servis.obrisiObavestenje(id);
+		return new ResponseEntity<String>("Uklonjeno obavestenje",HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/pribaviObavestenja",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody Iterable<PonudaNotifikacijaDTO> pribaviObavestenja(HttpSession s) throws NeovlascenPristupException{
+		Korisnik kor = AuthService.korisnikProvera(s);
+		return servis.pribaviObavestenja(kor);
 	}
 	
 	@RequestMapping(value="/prihvatiPonudu",method=RequestMethod.PUT)

@@ -90,3 +90,13 @@ h1, input {
 #ponude {
     overflow-y: auto;
 }
+
+.notifikacijaPonude{
+	border-style: solid;
+	border-color: #29927d;
+    border-width: 2px;
+}
+
+.notifikacijaObrisiDugme {
+	
+}

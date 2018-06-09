@@ -12,6 +12,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script src="/js/profilKorisnika.js"></script>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,6 +40,13 @@
           <li><a href="/dodavanjeObjava">Dodaj objavu</a></li>
           <li><a href="/pregledObjavljenihObjava">Prikaz objava</a></li>
          <li><a href="/prikazTematskihRekvizita">Prikaz zvanicnih rekvizita</a></li>
+        </ul>
+      </li>
+      <li id="notifikacijeLi" class="dropdown">
+      	<a id="notifikacijeToggle" class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Notifikacije
+        <span class="caret"></span></a>
+        <ul id="notifikacije" class="dropdown-menu">
+          
         </ul>
       </li>
       

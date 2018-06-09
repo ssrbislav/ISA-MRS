@@ -2,6 +2,7 @@ package isa.tim13.PozoristaiBioskopi.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -19,11 +20,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.ObjavaiStatusDTO;
 import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
+import isa.tim13.PozoristaiBioskopi.dto.PonudaNotifikacijaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
 import isa.tim13.PozoristaiBioskopi.dto.TematskiRekvizitiDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NemaViseRekvizita;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
+import isa.tim13.PozoristaiBioskopi.exceptions.NotifikacijaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeNeobjavljena;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitNePostoji;
@@ -38,6 +41,7 @@ import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.repository.AdministratoriRepository;
 import isa.tim13.PozoristaiBioskopi.repository.ObjavaRepository;
+import isa.tim13.PozoristaiBioskopi.repository.PonudaNotifikacijaRepository;
 import isa.tim13.PozoristaiBioskopi.repository.PonudaRepository;
 import isa.tim13.PozoristaiBioskopi.repository.TematskiRekvizitRepository;
 
@@ -59,6 +63,9 @@ public class FanZonaService {
 	
 	@Autowired 
 	SlikeService slikeServis;
+	
+	@Autowired
+	PonudaNotifikacijaRepository notifikacijaRep;
 	
 	
 	
@@ -386,7 +393,8 @@ public class FanZonaService {
 		PonudaNotifikacija notifikacija = new PonudaNotifikacija();
 		notifikacija.setPrihvacena(prihvacena);
 		notifikacija.setPonuda(pon);
-		ponudaRep.save(notifikacija);
+		notifikacija.setDatum(new Date());
+		notifikacijaRep.save(notifikacija);
 	}
 
 	public void prihvatiPonudu(Korisnik kor, int id) throws NeovlascenPristupException {
@@ -408,6 +416,34 @@ public class FanZonaService {
 		}
 		obj.setStatus(StatusObjave.ARHIVIRAN);
 		objavaRep.save(obj);
+		
+	}
+
+
+	public Iterable<PonudaNotifikacijaDTO> pribaviObavestenja(Korisnik kor) {
+		ArrayList<PonudaNotifikacijaDTO> povratnaVrednost = new ArrayList<PonudaNotifikacijaDTO>();
+		Iterable<PonudaNotifikacija> obavestenja = notifikacijaRep.dobaviObavestenjaKorisnika(kor.getId());
+		PonudaNotifikacijaDTO nDTO;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy. hh:mm");
+		for(PonudaNotifikacija not:obavestenja) {
+			nDTO = new PonudaNotifikacijaDTO();
+			nDTO.setId(not.getId());
+			nDTO.setImeObjave(not.getPonuda().getObjava().getNaziv());
+			nDTO.setImePonude(not.getPonuda().getNaslov());
+			nDTO.setPrihvacena(not.isPrihvacena());
+			nDTO.setDatum(sdf.format(not.getDatum()));
+			povratnaVrednost.add(nDTO);
+		}
+		return povratnaVrednost;
+	}
+
+
+	public void obrisiObavestenje(int id) throws NotifikacijaNePostoji {
+		PonudaNotifikacija notifikacija = notifikacijaRep.findById(id);
+		if(notifikacija==null) {
+			throw new NotifikacijaNePostoji();
+		}
+		notifikacijaRep.delete(notifikacija);
 		
 	}
 

@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import isa.tim13.PozoristaiBioskopi.model.Ponuda;
-import isa.tim13.PozoristaiBioskopi.model.PonudaNotifikacija;
 
 @Repository
 public interface PonudaRepository extends CrudRepository<Ponuda,Integer>{
@@ -16,7 +15,6 @@ public interface PonudaRepository extends CrudRepository<Ponuda,Integer>{
 	
 	Ponuda findById(int id);
 
-	void save(PonudaNotifikacija notifikacija);
     
 	
 

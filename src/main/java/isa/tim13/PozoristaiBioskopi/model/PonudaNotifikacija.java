@@ -1,5 +1,7 @@
 package isa.tim13.PozoristaiBioskopi.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,6 +23,18 @@ public class PonudaNotifikacija {
 	
 	@Column(name="prihvacena")
 	private boolean prihvacena;
+	
+	@Column(name="datum")
+	private Date datum;
+	
+
+	public Date getDatum() {
+		return datum;
+	}
+
+	public void setDatum(Date datum) {
+		this.datum = datum;
+	}
 
 	public Ponuda getPonuda() {
 		return ponuda;
