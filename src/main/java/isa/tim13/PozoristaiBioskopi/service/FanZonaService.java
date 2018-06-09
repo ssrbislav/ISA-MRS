@@ -6,8 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,8 +108,8 @@ public class FanZonaService {
 	}
 
 	public void modifikujRekvizit(int id, RekvizitDTO rekvizit) throws RekvizitNePostoji, RekvizitVecPostojiException {
-		Optional<TematskiRekvizit> rekvizitIzBaze = rep.findById(id);
-		if(rekvizitIzBaze.isPresent()==false) {
+		TematskiRekvizit rekvizitIzBaze = rep.findById(id);
+		if(rekvizitIzBaze==null) {
 			throw new RekvizitNePostoji();
 		}
 		TematskiRekvizit test = rep.findByNazivRekvizita(rekvizit.getNazivRekvizita());
@@ -120,21 +118,21 @@ public class FanZonaService {
 		if(test!=null && test.getId()!=id) {
 			throw new RekvizitVecPostojiException();
 		}
-		rekvizitIzBaze.get().setCenaRekvizita(rekvizit.getCenaRekvizita());
-		rekvizitIzBaze.get().setOpisRekvizita(rekvizit.getOpisRekvizita());
-		rekvizitIzBaze.get().setNazivRekvizita(rekvizit.getNazivRekvizita());
-		rekvizitIzBaze.get().setBroj(rekvizit.getBroj());
-		rep.save(rekvizitIzBaze.get());
+		rekvizitIzBaze.setCenaRekvizita(rekvizit.getCenaRekvizita());
+		rekvizitIzBaze.setOpisRekvizita(rekvizit.getOpisRekvizita());
+		rekvizitIzBaze.setNazivRekvizita(rekvizit.getNazivRekvizita());
+		rekvizitIzBaze.setBroj(rekvizit.getBroj());
+		rep.save(rekvizitIzBaze);
 		
 	}
 
 	public String modifikujSlikuRekvizita(int id, MultipartFile file) throws RekvizitNePostoji, IOException {
-		Optional<TematskiRekvizit> rekvizitIzBaze = rep.findById(id);
-		if(rekvizitIzBaze.isPresent()==false) {
+		TematskiRekvizit rekvizitIzBaze = rep.findById(id);
+		if(rekvizitIzBaze==null) {
 			throw new RekvizitNePostoji();
 		}
 		
-		TematskiRekvizit rek = rekvizitIzBaze.get();
+		TematskiRekvizit rek = rekvizitIzBaze;
 		
 		StringBuilder putanjaDoSlikeRekvizita = new StringBuilder(PUTANJA_PREFIKS+(rek.getNazivRekvizita().replaceAll("\\W", "_")));
 		String novaPutanja = slikeServis.pribaviKonacnuPutanju(putanjaDoSlikeRekvizita, file);
@@ -150,12 +148,12 @@ public class FanZonaService {
 	}
 
 	public void brisanjeTematskogRekvizita(int id) throws RekvizitNePostoji {
-		Optional<TematskiRekvizit> rekvizitIzBaze = rep.findById(id);
-		if(rekvizitIzBaze.isPresent()==false) {
+		TematskiRekvizit rekvizitIzBaze = rep.findById(id);
+		if(rekvizitIzBaze==null) {
 			throw new RekvizitNePostoji();
 		}
 		
-		slikeServis.obrisiStaruSliku(rekvizitIzBaze.get().getPutanjaDoSlike());
+		slikeServis.obrisiStaruSliku(rekvizitIzBaze.getPutanjaDoSlike());
 		rep.deleteById(id);
 		
 	}
@@ -184,12 +182,6 @@ public class FanZonaService {
 			throw new ObjavaNijeNeobjavljena();
 		}
 		
-		try {
-			TimeUnit.SECONDS.sleep(5);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		obj.setStatus(StatusObjave.U_RAZMATRANJU);
 		obj.setAdmin(admin);
 		objavaRep.save(obj);
@@ -368,28 +360,28 @@ public class FanZonaService {
 		
 	}
 
-
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW ,rollbackFor=Exception.class)
 	public LinkedHashMap<String, String> rezervisanjeRekvizita(Korisnik kor, int id) throws RekvizitNePostoji, NemaViseRekvizita {
 		
-		Optional<TematskiRekvizit> rek = rep.findById(id);
-		if(!rek.isPresent()) {
+		TematskiRekvizit rek = rep.findById(id);
+		if(rek==null) {
 			throw new RekvizitNePostoji();
 		}
-		int broj = rek.get().getBroj();
+		int broj = rek.getBroj();
 		if(broj==0) {
 			throw new NemaViseRekvizita();
 		}
 		
 		RezervacijaRekvizita rezervacija = new RezervacijaRekvizita();
 		rezervacija.setNarucilac(kor);
-		rezervacija.setRekvizit(rek.get());
-		rek.get().setBroj(broj-1);
+		rezervacija.setRekvizit(rek);
+		rek.setBroj(broj-1);
 		
-		rep.save(rek.get());
+		rep.save(rek);
 		rep.save(rezervacija);
 		
 		LinkedHashMap<String,String> povratnaVrednost = new LinkedHashMap<String,String>();
-		povratnaVrednost.put("broj",""+rek.get().getBroj());
+		povratnaVrednost.put("broj",""+rek.getBroj());
 		povratnaVrednost.put("poruka","Rekvizit uspesno rezervisan. ");
 		return povratnaVrednost;
 		
