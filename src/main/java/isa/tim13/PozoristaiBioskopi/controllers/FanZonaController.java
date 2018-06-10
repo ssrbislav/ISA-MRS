@@ -30,6 +30,8 @@ import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.NotifikacijaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeNeobjavljena;
+import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeObjavljena;
+import isa.tim13.PozoristaiBioskopi.exceptions.PonudaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitVecPostojiException;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
@@ -55,8 +57,8 @@ public class FanZonaController {
 	
 	@RequestMapping(value="/obrisiObavestenje",method=RequestMethod.PUT)
 	public ResponseEntity<String> obrisiObavestenje(HttpSession s,@RequestParam("id") int id) throws NeovlascenPristupException, NotifikacijaNePostoji{
-		AuthService.korisnikProvera(s);
-		servis.obrisiObavestenje(id);
+		Korisnik kor = AuthService.korisnikProvera(s);
+		servis.obrisiObavestenje(kor,id);
 		return new ResponseEntity<String>("Uklonjeno obavestenje",HttpStatus.OK);
 	}
 	
@@ -67,7 +69,7 @@ public class FanZonaController {
 	}
 	
 	@RequestMapping(value="/prihvatiPonudu",method=RequestMethod.PUT)
-	public ResponseEntity<String> prihvatiPonudu(HttpSession s,@RequestParam("id") int id) throws NeovlascenPristupException{
+	public ResponseEntity<String> prihvatiPonudu(HttpSession s,@RequestParam("id") int id) throws NeovlascenPristupException, ObjavaNijeObjavljena, PonudaNePostoji{
 		Korisnik kor = AuthService.korisnikProvera(s);
 		servis.prihvatiPonudu(kor,id);
 		return new ResponseEntity<String>("Ponuda prihvacena. Svi ucesnici ce biti obavesteni.",HttpStatus.OK);

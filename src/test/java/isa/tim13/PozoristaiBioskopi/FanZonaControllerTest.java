@@ -42,11 +42,15 @@ import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Objava;
+import isa.tim13.PozoristaiBioskopi.model.Ponuda;
+import isa.tim13.PozoristaiBioskopi.model.PonudaNotifikacija;
 import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
 import isa.tim13.PozoristaiBioskopi.repository.AdministratoriRepository;
 import isa.tim13.PozoristaiBioskopi.repository.KorisnikRepository;
 import isa.tim13.PozoristaiBioskopi.repository.ObjavaRepository;
+import isa.tim13.PozoristaiBioskopi.repository.PonudaNotifikacijaRepository;
+import isa.tim13.PozoristaiBioskopi.repository.PonudaRepository;
 import isa.tim13.PozoristaiBioskopi.repository.TematskiRekvizitRepository;
 
 @RunWith(SpringRunner.class)
@@ -73,12 +77,18 @@ public class FanZonaControllerTest {
 	private KorisnikRepository korRep;
 	
 	@Autowired
+	PonudaRepository ponudaRep;
+	
+	@Autowired
+	PonudaNotifikacijaRepository notifikacijaRep;
+	
+	@Autowired
     MockHttpSession session;
 	
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 	
-	
+	private InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -186,7 +196,6 @@ public class FanZonaControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void dodavanjeTematskogRekvizitaTest1() throws JsonProcessingException, Exception {
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
 		rekvizit.setNazivRekvizita("Test1");
 		rekvizit.setCenaRekvizita(50);
 		rekvizit.setBroj(5);
@@ -206,7 +215,6 @@ public class FanZonaControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void dodavanjeTematskogRekvizitaTest2() throws JsonProcessingException, Exception {
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
 		rekvizit.setNazivRekvizita("Test2");
 		rekvizit.setCenaRekvizita(50);
 		rekvizit.setBroj(5);
@@ -233,7 +241,6 @@ public class FanZonaControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void dodavanjeTematskogRekvizitaTest3() throws JsonProcessingException, Exception {
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
 		rekvizit.setNazivRekvizita("Test3");
 		rekvizit.setCenaRekvizita(50);
 		rekvizit.setBroj(5);
@@ -269,7 +276,6 @@ public class FanZonaControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void modifikovanjeRekvizitaInfoTest1() throws JsonProcessingException, Exception {
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
 		String naziv = "Test5";
 		rekvizit.setNazivRekvizita(naziv);
 		rekvizit.setCenaRekvizita(50);
@@ -321,7 +327,6 @@ public class FanZonaControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void modifikovanjeRekvizitaSlikaTest() throws JsonProcessingException, Exception {
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
 		String naziv = "Test6";
 		rekvizit.setNazivRekvizita(naziv);
 		rekvizit.setCenaRekvizita(50);
@@ -348,7 +353,6 @@ public class FanZonaControllerTest {
 	@Transactional
 	@Rollback(true)
 	public void brisanjeTematskogRekvizita() throws JsonProcessingException, Exception {
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("static/images/index.png");
 		String naziv = "Test7";
 		rekvizit.setNazivRekvizita(naziv);
 		rekvizit.setOpisRekvizita("Opis rekvizita test 7");
@@ -482,6 +486,131 @@ public class FanZonaControllerTest {
 				.contentType(contentType)
 				.content(TestUtil.toJson(ponudaDTO))).andExpect(status().isOk());
 		
+		
+		session.setAttribute("korisnik", prethodniUlogovani);
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	@Rollback(true)
+	public void rezervisanjeRekvizitaTest() throws JsonProcessingException, Exception {
+		Object prethodniUlogovani = session.getAttribute("korisnik");
+		//logujemo se kao admin
+		session.setAttribute("korisnik", adminRep.findById(1).get());
+		
+		String naziv = "Test8";
+		rekvizit.setNazivRekvizita(naziv);
+		rekvizit.setCenaRekvizita(50);
+		rekvizit.setBroj(1);
+		rekvizit.setOpisRekvizita("Opis rekvizita test 8");
+		MockMultipartFile mockFile = new MockMultipartFile("file", "test.jpg", "image/jpg", inputStream);
+		
+		mockMvc.perform(fileUpload(URL_PREFIX+"/dodajTematskiRekvizit")
+                .file(mockFile)
+                .session(session)
+                .param("rekvizit", TestUtil.toJson(rekvizit)));
+		
+		TematskiRekvizit tRekvizit = rep.findByNazivRekvizita(naziv);
+		//prebacujemo se na korisnika
+		session.setAttribute("korisnik", korRep.findById(2).get());
+		
+		mockMvc.perform(put(URL_PREFIX+"/rezervisanjeRekvizita")
+				.session(session)
+				.param("id", ""+tRekvizit.getId())).andExpect(status().isOk());
+		
+		//rezervisanje nepostojeceg id ne bi trebalo da uspe
+		mockMvc.perform(put(URL_PREFIX+"/rezervisanjeRekvizita")
+				.session(session)
+				.param("id", ""+0)).andExpect(status().isBadRequest());
+		
+		//da vidimo hoce li uspeti da rezervise rekvizite ako vise nisu dostupni
+		mockMvc.perform(put(URL_PREFIX+"/rezervisanjeRekvizita")
+				.session(session)
+				.param("id", ""+tRekvizit.getId())).andExpect(status().isBadRequest());
+		
+		session.setAttribute("korisnik", prethodniUlogovani);
+		
+	}
+	
+	@Test
+	@Rollback(true)
+	public void prihvatiPonuduTest() throws JsonProcessingException, Exception {
+		Object prethodniUlogovani = session.getAttribute("korisnik");
+		
+		String nazivObjave = "KorisnikObjava3";
+		session.setAttribute("korisnik", korRep.findById(2).get());
+		
+		objava.setNaziv(nazivObjave);
+		objava.setStatus(StatusObjave.OBJAVLJEN);
+		objava.setAutor((Korisnik)session.getAttribute("korisnik"));
+		objavaRep.save(objava);
+		
+		int idObjave = objavaRep.findByNaziv(nazivObjave).getId();
+		PonudaDTO ponudaDTO = new PonudaDTO();
+		ponudaDTO.setCena(56);
+		ponudaDTO.setIdObjave(idObjave);
+		ponudaDTO.setNaslov("Ponudica hehe");
+		ponudaDTO.setOpis("Ovo je neki opis");
+		
+		//pravimo novog korisnika koji ce postaviti ponudu na objavu prvog i to uspesno
+		Korisnik kor2 = new Korisnik();
+		korEmail = "kor3@kor3.com";
+		kor2.setEmail(korEmail);
+		kor2.setAktivan(true);
+		kor2.setIme("Kor2");
+		kor2.setPrezime("Koric2");
+		korRep.save(kor2);
+		
+		//prebacujemo da je sad novi korisnik kor2 ulogovan
+		session.setAttribute("korisnik", korRep.findByEmail(korEmail));
+		
+		ponudaDTO.setIdObjave(idObjave);
+		mockMvc.perform(post(URL_PREFIX+"/dodajPonudu")
+				.session(session)
+				.contentType(contentType)
+				.content(TestUtil.toJson(ponudaDTO)));
+		
+		session.setAttribute("korisnik", korRep.findById(2).get());
+		Ponuda p = ponudaRep.pronadjiPonudu(korRep.findByEmail(korEmail).getId(),idObjave);
+		mockMvc.perform(put(URL_PREFIX+"/prihvatiPonudu")
+				.session(session)
+				.param("id",""+p.getId())).andExpect(status().isOk());
+		
+		mockMvc.perform(put(URL_PREFIX+"/prihvatiPonudu")
+				.session(session)
+				.param("id",""+0)).andExpect(status().isBadRequest());
+		
+		session.setAttribute("korisnik", prethodniUlogovani);
+	}
+	
+	@Test
+	@Rollback(true)
+	public void pribaviObavestenjaTest() throws Exception {
+		Object prethodniUlogovani = session.getAttribute("korisnik");
+		mockMvc.perform(get(URL_PREFIX+"/pribaviObavestenja")
+				.session(session)).andExpect(status().isForbidden());
+		
+		session.setAttribute("korisnik", korRep.findById(2).get());
+		
+		mockMvc.perform(get(URL_PREFIX+"/pribaviObavestenja")
+				.session(session)).andExpect(status().isOk());
+		session.setAttribute("korisnik", prethodniUlogovani);
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void obrisiObavestenjeTest() throws Exception {
+		Object prethodniUlogovani = session.getAttribute("korisnik");
+		session.setAttribute("korisnik", korRep.findById(2).get());
+		mockMvc.perform(put(URL_PREFIX+"/obrisiObavestenje")
+				.session(session).param("id", ""+0)).andExpect(status().isBadRequest());
+		
+		for(PonudaNotifikacija not:notifikacijaRep.findAll()) {
+			session.setAttribute("korisnik", not.getPonuda().getAutor());
+			mockMvc.perform(put(URL_PREFIX+"/obrisiObavestenje")
+				.session(session).param("id", ""+not.getId())).andExpect(status().isOk());
+		}
 		
 		session.setAttribute("korisnik", prethodniUlogovani);
 	}

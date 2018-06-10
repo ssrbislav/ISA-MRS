@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +29,8 @@ import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.NotifikacijaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeNeobjavljena;
+import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeObjavljena;
+import isa.tim13.PozoristaiBioskopi.exceptions.PonudaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.RekvizitVecPostojiException;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
@@ -258,8 +261,8 @@ public class FanZonaService {
 		objavaRep.save(punaObjava);
 		
 	}
-
-
+	//izolacija Isolation.READ_COMMITTED ne moze da cita podatke koji nisu komitovani od strane drugih
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW ,rollbackFor=Exception.class,isolation=Isolation.READ_COMMITTED)
 	public String dodajPonuduNaObjavu(ObjectMapper objMapper,Korisnik kor, PonudaDTO ponuda) throws ObjavaNePostoji, NeovlascenPristupException, JsonProcessingException {
 		Objava objava = objavaRep.findById(ponuda.getIdObjave());
 		
@@ -334,7 +337,9 @@ public class FanZonaService {
 			}
 		}
 		else {
-			celaVrednost.setDodavanjePonudeVidljivo(true);
+			if(obj.getStatus()!=StatusObjave.ARHIVIRAN) {
+				celaVrednost.setDodavanjePonudeVidljivo(true);
+			}
 		}
 		
 		
@@ -387,6 +392,7 @@ public class FanZonaService {
 		
 	}
 	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED ,rollbackFor=Exception.class)
 	public void obavestiKorisnikaOPonudi(Ponuda pon,boolean prihvacena) {
 		PonudaNotifikacija notifikacija = new PonudaNotifikacija();
 		notifikacija.setPrihvacena(prihvacena);
@@ -394,14 +400,24 @@ public class FanZonaService {
 		notifikacija.setDatum(new Date());
 		notifikacijaRep.save(notifikacija);
 	}
-
-	public void prihvatiPonudu(Korisnik kor, int id) throws NeovlascenPristupException {
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW ,rollbackFor=Exception.class)
+	public void prihvatiPonudu(Korisnik kor, int id) throws NeovlascenPristupException, ObjavaNijeObjavljena, PonudaNePostoji {
 		
 		Ponuda prihvacenaPonuda = ponudaRep.findById(id);
+		
+		if(prihvacenaPonuda==null) {
+			throw new PonudaNePostoji();
+		}
+		
 		Objava obj = prihvacenaPonuda.getObjava();
 		//ako nije autor objave ne moze da prihvati ponudu
 		if(kor.getId()!=obj.getAutor().getId()) {
 			throw new NeovlascenPristupException();
+		}
+		
+		if(obj.getStatus()!=StatusObjave.OBJAVLJEN) {
+			throw new ObjavaNijeObjavljena();
 		}
 		
 		for(Ponuda p:obj.getPonude()) {
@@ -436,11 +452,16 @@ public class FanZonaService {
 	}
 
 
-	public void obrisiObavestenje(int id) throws NotifikacijaNePostoji {
+	public void obrisiObavestenje(Korisnik kor, int id) throws NotifikacijaNePostoji, NeovlascenPristupException {
 		PonudaNotifikacija notifikacija = notifikacijaRep.findById(id);
 		if(notifikacija==null) {
 			throw new NotifikacijaNePostoji();
 		}
+		
+		if(kor.getId()!=notifikacija.getPonuda().getAutor().getId()) {
+			throw new NeovlascenPristupException();
+		}
+		
 		notifikacijaRep.delete(notifikacija);
 		
 	}
