@@ -6,11 +6,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
+import isa.tim13.PozoristaiBioskopi.exceptions.NijePromenjenaLozinka;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
@@ -48,14 +50,16 @@ PozoristaIBioskopiService servis;
 
 	// strana za profil
 	@RequestMapping("/profilKorisnika")
-	public String profil(HttpSession s) {
+	public String profil(HttpSession s) throws NijePromenjenaLozinka {
 		if(s.getAttribute("korisnik") instanceof Administrator) {
+			AuthService.fanAdminPromenaLozinkeProvera(s);
 			return "profilAdministratora";
 		}
 		return "profilKorisnika";
 	}
 
 	// strana za profil
+	@ExceptionHandler({NijePromenjenaLozinka.class})
 	@RequestMapping("/izmenaLozinke")
 	public String lozinka() {
 		return "izmenaLozinke";
@@ -131,9 +135,10 @@ PozoristaIBioskopiService servis;
 	}
 	
 	@RequestMapping("/prikazTematskihRekvizita")
-	public String prikazTematskihRekvizita(HttpSession s) {
+	public String prikazTematskihRekvizita(HttpSession s) throws NijePromenjenaLozinka {
 		try {
 			AuthService.osobaProvera(s,FanZonaAdministrator.class,Korisnik.class);
+			AuthService.fanAdminPromenaLozinkeProvera(s);
 		} catch (NeovlascenPristupException e) {
 			return "prijava";
 		}
@@ -141,9 +146,10 @@ PozoristaIBioskopiService servis;
 	}
 	
 	@RequestMapping("/dodavanjeTematskihRekvizita")
-	public String dodavanjeTematskihRekvizita(HttpSession s) {
+	public String dodavanjeTematskihRekvizita(HttpSession s) throws NijePromenjenaLozinka {
 		try {
 			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+			AuthService.fanAdminPromenaLozinkeProvera(s);
 		} catch (NeovlascenPristupException e) {
 			return "prijava";
 		}
@@ -161,9 +167,10 @@ PozoristaIBioskopiService servis;
 	}
 	
 	@RequestMapping("/pregledNeobjavljenihObjava")
-	public String pregledNeobjavljenihObjava(HttpSession s) {
+	public String pregledNeobjavljenihObjava(HttpSession s) throws NijePromenjenaLozinka {
 		try {
 			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+			AuthService.fanAdminPromenaLozinkeProvera(s);
 		} catch (NeovlascenPristupException e) {
 			return "prijava";
 		}
@@ -171,9 +178,10 @@ PozoristaIBioskopiService servis;
 	}
 	
 	@RequestMapping("/pregledRazmatranihObjava")
-	public String pregledRazmatranihObjava(HttpSession s) {
+	public String pregledRazmatranihObjava(HttpSession s) throws NijePromenjenaLozinka {
 		try {
 			AuthService.adminProvera(s, TipAdministratora.FAN_ZONA);
+			AuthService.fanAdminPromenaLozinkeProvera(s);
 		} catch (NeovlascenPristupException e) {
 			return "prijava";
 		}

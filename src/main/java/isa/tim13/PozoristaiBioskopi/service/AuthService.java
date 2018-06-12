@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import javax.servlet.http.HttpSession;
 
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
+import isa.tim13.PozoristaiBioskopi.exceptions.NijePromenjenaLozinka;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
 import isa.tim13.PozoristaiBioskopi.model.InstitucionalniAdministrator;
@@ -68,5 +69,16 @@ public class AuthService {
 		}
 		
 		throw new NeovlascenPristupException();
+	}
+	
+	//ukoliko je administrator fan zone a nije promenio lozinku baca izuzetak
+	public static void fanAdminPromenaLozinkeProvera(HttpSession s) throws NijePromenjenaLozinka {
+		Osoba o = (Osoba)s.getAttribute("korisnik");
+		if(o instanceof FanZonaAdministrator) {
+			if(!((FanZonaAdministrator)o).isPromenioSifru()) {
+				throw new NijePromenjenaLozinka();
+			}
+		}
+		
 	}
 }
