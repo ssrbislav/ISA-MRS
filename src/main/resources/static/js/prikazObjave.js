@@ -62,6 +62,18 @@ function ponudaFormaUJSON(idObjave,naslov,opis,cena){
 	});
 }
 
+//ukoliko je korisnik vlasnik neke od ponuda, podesava stranicu tako da modifikuje postojecu ponudu
+function podesiModifikaciju(sviPodaci){
+	
+	if(sviPodaci["korisnikovaPonuda"]!=null){
+		
+		$("input[name=naslovPonude]").val(sviPodaci["korisnikovaPonuda"]["naslov"]);
+		$("input[name=opisPonude]").val(sviPodaci["korisnikovaPonuda"]["opis"]);
+		$("input[name=cena]").val(sviPodaci["korisnikovaPonuda"]["cena"]);
+		$("#dodavanjePonudeDugme").val("Izmeni ponudu");
+	}
+}
+
 $(document).ready(function(){
 	podaci = {}
 	podaci["id"] = $("input[name=idObjave]").val();
@@ -71,6 +83,7 @@ $(document).ready(function(){
 		   success: function(data){
 			  sviPodaci = JSON.parse(data);
 			  podaci = sviPodaci["objava"];
+			  podesiModifikaciju(sviPodaci);
 			  if(sviPodaci["dodavanjePonudeVidljivo"]!=true){
 				  $("#dodavanjePonude").attr("style","display: none;");
 			  }
@@ -114,6 +127,7 @@ $(document).ready(function(){
 				  $("#"+napraviId("ponuda",idPonude)).remove();
 					
 				   dodajPonudu(ponuda,prihvatanjePonudeVidljivo);
+				   $("#dodavanjePonudeDugme").val("Izmeni ponudu");
 			   },
 			  error : function(xhr, textStatus, errorThrown) {
 				  alert(xhr["responseText"]["message"]);

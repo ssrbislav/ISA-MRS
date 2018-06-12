@@ -14,6 +14,18 @@ public class ObjavaiStatusDTO {
 	@JsonProperty("prihvatanjePonudeVidljivo")
 	private boolean prihvatanjePonudeVidljivo;
 	
+	@JsonProperty("korisnikovaPonuda")
+	private PonudaDTO korisnikovaPonuda;//ako na stranicu ulazi korisnik koji je vec dao ponudu
+	
+	
+	public PonudaDTO getKorisnikovaPonuda() {
+		return korisnikovaPonuda;
+	}
+
+	public void setKorisnikovaPonuda(PonudaDTO korisnikovaPonuda) {
+		this.korisnikovaPonuda = korisnikovaPonuda;
+	}
+
 	public boolean isPrihvatanjePonudeVidljivo() {
 		return prihvatanjePonudeVidljivo;
 	}

@@ -324,9 +324,12 @@ public class FanZonaService {
 		retVal.setNaziv(obj.getNaziv());
 		retVal.setOpis(obj.getOpis());
 		retVal.setPutanjaDoSlike(obj.getPutanjaDoSlike());
-		pribaviPonude(retVal,obj);
+		
+		PonudaDTO korisnikovaPonuda = pribaviPonude(retVal,obj,kor);
+		
 		ObjavaiStatusDTO celaVrednost = new ObjavaiStatusDTO();
 		celaVrednost.setObjava(retVal);
+		celaVrednost.setKorisnikovaPonuda(korisnikovaPonuda);
 		
 		boolean jeAutor = obj.getAutor().getId()==kor.getId();
 		
@@ -348,9 +351,11 @@ public class FanZonaService {
 		
 	}
 
-
-	private void pribaviPonude(ObjavaDTO retVal, Objava obj) {
-		
+	
+	//Pribavlja sve ponude za objavu(DTO) i vraca i DTO objekat koji predstavlja ponudu koju je korisnik ponudio
+	//Ako nije nista ponudio vraca null
+	private PonudaDTO pribaviPonude(ObjavaDTO retVal, Objava obj,Korisnik kor) {
+		PonudaDTO korisnikovaPonuda = null;
 		retVal.setPonude(new ArrayList<PonudaDTO>());
 		for(Ponuda pon:obj.getPonude()) {
 			PonudaDTO ponudaDTO = new PonudaDTO();
@@ -361,7 +366,12 @@ public class FanZonaService {
 			ponudaDTO.setIdPonude(pon.getId());
 			ponudaDTO.setAutor(pon.getAutor().getIme()+" "+pon.getAutor().getPrezime()+"\n"+pon.getAutor().getEmail());
 			retVal.getPonude().add(ponudaDTO);
+			//ako postoji njegova ponuda u ovoj objavi, kacicemo je za DTO kao takvu
+			if(pon.getAutor().getId()==kor.getId()) {
+				korisnikovaPonuda = ponudaDTO;
+			}
 		}
+		return korisnikovaPonuda;
 		
 	}
 
