@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import isa.tim13.PozoristaiBioskopi.dto.AdministratorDTO;
+import isa.tim13.PozoristaiBioskopi.dto.BodovnaSkalaDTO;
+import isa.tim13.PozoristaiBioskopi.exceptions.BodovnaSkalaNevalidna;
 import isa.tim13.PozoristaiBioskopi.exceptions.InstitucijaNePostojiException;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.OsobaVecPostojiException;
@@ -32,7 +34,18 @@ public class AdministratoriController {
 	@Autowired
 	AdministratoriService servis; 
 	
+	@RequestMapping(value="/dobaviBodovnuSkalu",method=RequestMethod.GET)
+	public @ResponseBody BodovnaSkalaDTO dobaviBodovnuSkalu(HttpSession s) throws NeovlascenPristupException {
+		AuthService.adminProvera(s, TipAdministratora.SISTEMSKI);
+		return servis.dobaviBodovnuSkalu();
+	}
 	
+	@RequestMapping(value="/promeniBodovnuSkalu",method=RequestMethod.PUT,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> promeniBodovnuSkalu(HttpSession s,@RequestBody BodovnaSkalaDTO bDTO) throws NeovlascenPristupException, BodovnaSkalaNevalidna{
+		AuthService.adminProvera(s, TipAdministratora.SISTEMSKI);
+		servis.promeniBodovnuSkalu(bDTO);
+		return new ResponseEntity<String>("Bodovna skala podesena.",HttpStatus.OK);
+	}
 	
 	@RequestMapping(value="/pribaviOpcije",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody LinkedHashMap<String,String> pribaviOpcije(HttpSession s) throws NeovlascenPristupException{

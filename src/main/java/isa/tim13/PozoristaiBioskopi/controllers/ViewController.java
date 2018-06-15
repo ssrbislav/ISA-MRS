@@ -134,6 +134,16 @@ PozoristaIBioskopiService servis;
 		return "registracijaInstitucija";
 	}
 	
+	@RequestMapping("/bodovnaSkala")
+	public String bodovnaSkala(HttpSession s) {
+		try {
+			AuthService.adminProvera(s, TipAdministratora.SISTEMSKI);
+		} catch (NeovlascenPristupException e) {
+			return "prijava";
+		}
+		return "bodovnaSkala";
+	}
+	
 	@RequestMapping("/prikazTematskihRekvizita")
 	public String prikazTematskihRekvizita(HttpSession s) throws NijePromenjenaLozinka {
 		try {
