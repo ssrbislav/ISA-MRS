@@ -208,6 +208,16 @@ PozoristaIBioskopiService servis;
 		return "dodavanjeObjava";
 	}
 	
+	@RequestMapping("/rezervacijeRekvizita")
+	public String rezervacijeRekvizita(HttpSession s) {
+		try {
+			AuthService.korisnikProvera(s);
+		} catch (NeovlascenPristupException e) {
+			return "prijava";
+		}
+		return "rezervacijeRekvizita";
+	}
+	
 	@RequestMapping("/pregledObjavljenihObjava")
 	public String pregledObjavljenihObjava(HttpSession s) {
 		try {

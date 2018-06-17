@@ -100,3 +100,24 @@ h1, input {
 .notifikacijaObrisiDugme {
 	
 }
+
+#prikazRezervacija{
+	display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.rezRekvizita{
+	border-style: solid;
+	border-color: #29927d;
+    border-width: 2px;
+    margin-bottom:30px;
+}
+
+.rezRekvLabela{
+	font-size: 20px;
+	border-style: solid;
+	border-color: #29927d;
+    border-width: 2px;
+}

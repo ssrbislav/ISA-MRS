@@ -40,6 +40,7 @@
           <li><a href="/dodavanjeObjava">Dodaj objavu</a></li>
           <li><a href="/pregledObjavljenihObjava">Prikaz objava</a></li>
          <li><a href="/prikazTematskihRekvizita">Prikaz zvanicnih rekvizita</a></li>
+          <li><a href="/rezervacijeRekvizita">Moje rezervacije</a></li>
         </ul>
       </li>
       <li id="notifikacijeLi" class="dropdown">
