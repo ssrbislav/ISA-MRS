@@ -49,6 +49,7 @@ public class KorisniciService {
 
 	public TipClana dobaviTipClana(Korisnik kor) {
 		BodovnaSkala skala = skalaRep.dobaviSkalu();
+		if(skala==null) { return TipClana.NISTA;}
 		if(kor.getBrojBodova() < skala.getBronzaBodovi()) {
 			return TipClana.NISTA;
 		}
