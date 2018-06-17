@@ -1,5 +1,7 @@
 var notifikacijePutanja = "/fanzona/pribaviObavestenja";
 var obrisiNotifikacijuPutanja = "/fanzona/obrisiObavestenje";
+var dobaviBedzPutanja = "/profil/dobaviBedz";
+var putanjaDoSlika = "/upravljanjeSlikama?putanjaDoSlike=";
 var brojNotifikacija = 0;
 
 function vratiPrihvacena(prihvacena){
@@ -78,4 +80,20 @@ $(document).ready(function(){
 		}
 		   
 	});
+	
+	$.ajax({ url:dobaviBedzPutanja,
+		   type: "GET",
+		   success: function(data){
+			 if(data!=""){
+				 var img = $("<img></img>");
+				 img.attr("src",putanjaDoSlika+data);
+				 $(".col-lg-5").append(img);
+			 }
+			 
+		   },
+		  error : function(XMLHttpRequest, textStatus, errorThrown) {
+		}
+		   
+	});
+	
 });

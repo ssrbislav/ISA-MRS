@@ -22,6 +22,7 @@ import isa.tim13.PozoristaiBioskopi.dto.ObjavaiStatusDTO;
 import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.PonudaNotifikacijaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
+import isa.tim13.PozoristaiBioskopi.dto.RezervacijaRekvizitaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.TematskiRekvizitiDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NemaViseRekvizita;
@@ -474,6 +475,30 @@ public class FanZonaService {
 		
 		notifikacijaRep.delete(notifikacija);
 		
+	}
+
+
+	public LinkedHashMap<Integer,RezervacijaRekvizitaDTO> pribaviRezervacijeRekvizita(Korisnik kor) {
+		
+		Iterable<RezervacijaRekvizita> rezervacije =  rep.pribaviRezervacijeRekvizita(kor.getId());
+		LinkedHashMap<Integer,RezervacijaRekvizitaDTO> povratnaVrednost = new LinkedHashMap<Integer,RezervacijaRekvizitaDTO>();
+		for(RezervacijaRekvizita rez:rezervacije) {
+			
+			if(povratnaVrednost.containsKey(rez.getRekvizit().getId())) {
+				povratnaVrednost.get(rez.getRekvizit().getId()).uvecajBrojRekvizita();
+				povratnaVrednost.get(rez.getRekvizit().getId()).uvecajUkupnuCenu(rez.getRekvizit().getCenaRekvizita());
+			}
+			else {
+				RezervacijaRekvizitaDTO rezervacijaDTO = new RezervacijaRekvizitaDTO();
+				rezervacijaDTO.setBrojRekvizita(1);
+				rezervacijaDTO.setNazivRekvizita(rez.getRekvizit().getNazivRekvizita());
+				rezervacijaDTO.setPutanjaDoSlike(rez.getRekvizit().getPutanjaDoSlike());
+				rezervacijaDTO.setUkupnaCena(rez.getRekvizit().getCenaRekvizita());
+				povratnaVrednost.put(rez.getRekvizit().getId(), rezervacijaDTO);
+			}
+			
+		}
+		return povratnaVrednost;
 	}
 
 }

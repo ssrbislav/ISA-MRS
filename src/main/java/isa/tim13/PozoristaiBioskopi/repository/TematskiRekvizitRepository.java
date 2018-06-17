@@ -25,4 +25,7 @@ public interface TematskiRekvizitRepository extends CrudRepository<TematskiRekvi
 	
 	@Query(value="select r from TematskiRekvizit r where lower(r.nazivRekvizita) like lower(concat('%',:nazivRekvizita,'%'))  and r.cenaRekvizita <= :gornjaCena",nativeQuery=false)
 	Iterable<TematskiRekvizit> findByRazniKriterijumi(@Param("nazivRekvizita")String nazivRekvizita, @Param("gornjaCena")double gornjaCena);
+	
+	@Query(value="select r from RezervacijaRekvizita r where r.narucilac.id = :id",nativeQuery=false)
+	Iterable<RezervacijaRekvizita> pribaviRezervacijeRekvizita(@Param("id") int id);
 }

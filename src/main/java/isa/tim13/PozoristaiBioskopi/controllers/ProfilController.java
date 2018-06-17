@@ -10,10 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.model.FanZonaAdministrator;
+import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Osoba;
+import isa.tim13.PozoristaiBioskopi.service.AuthService;
 import isa.tim13.PozoristaiBioskopi.service.KorisniciService;
 import isa.tim13.PozoristaiBioskopi.service.ProfilSlikeService;
 
@@ -27,6 +31,13 @@ public class ProfilController {
 	
 	@Autowired
 	private ProfilSlikeService servis;
+	
+	//dobavice putanju do slike bedza koji govori koji je tip korisnika u pitanju(bronzani,srebrni,zlatni)
+	@RequestMapping(value="/dobaviBedz",method=RequestMethod.GET)
+	public @ResponseBody String dobaviBedz(HttpSession s) throws NeovlascenPristupException {
+		Korisnik kor = AuthService.korisnikProvera(s);
+		return korisniciServis.dobaviBedz(kor);
+	}
 
 	@RequestMapping(value = "/izmenaLozinke", method = RequestMethod.POST)
 	public String izmeniLozinku( HttpServletRequest request, HttpSession session,

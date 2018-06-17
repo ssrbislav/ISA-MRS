@@ -23,6 +23,7 @@ import isa.tim13.PozoristaiBioskopi.dto.ObjavaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.PonudaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.PonudaNotifikacijaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.RekvizitDTO;
+import isa.tim13.PozoristaiBioskopi.dto.RezervacijaRekvizitaDTO;
 import isa.tim13.PozoristaiBioskopi.dto.TematskiRekvizitiDTO;
 import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NemaViseRekvizita;
@@ -53,6 +54,12 @@ public class FanZonaController {
 	
 	static {
 		objMapper = new ObjectMapper();
+	}
+	
+	@RequestMapping(value="/pribaviRezervacijeRekvizita",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody LinkedHashMap<Integer,RezervacijaRekvizitaDTO> pribaviRezervacijeRekvizita(HttpSession s) throws NeovlascenPristupException{
+		Korisnik kor = AuthService.korisnikProvera(s);
+		return servis.pribaviRezervacijeRekvizita(kor);
 	}
 	
 	@RequestMapping(value="/obrisiObavestenje",method=RequestMethod.PUT)
