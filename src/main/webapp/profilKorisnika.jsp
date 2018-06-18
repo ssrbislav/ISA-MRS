@@ -30,7 +30,7 @@
       <li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
       <li><a href="/pozorista" style="color: white;">Pozorista</a></li>
       <li><a href="/bioskopi" style="color: white;">Bioskopi</a></li>
-      <li><a href="#" style="color: white;">Prijatelji</a></li>
+      <li><a href="prijatelji" style="color: white;">Prijatelji</a></li>
       <li><a href="/rezervacije" style="color: white;">Rezervacije</a></li>
       
        <li class="dropdown">

@@ -6,7 +6,7 @@
 <html>
 <head>
 	
-	<title>Bioskopi</title>
+	<title>Prijatelji</title>
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
@@ -50,8 +50,9 @@
   </div>
 </nav>
 
+
 		</div>
-		<div class="col-lg-4 " >
+		<div class="col-lg-5 " >
 		<br>
 		<br>
 		<input class="form-control" id="pretraga" type="text" placeholder="Pretrazite"></input>
@@ -59,25 +60,28 @@
 			<thead style="background:    #eae5e0  ;">
 			 	
                        <tr>
-                       <th scope="col" data-field="ime" data-sortable="true"><center>Ime</center></th>
-                       <th scope="col" data-field="grad" data-sortable="true"><center>Grad</center></th>
-                       <th scope="col" data-field="rejting" data-sortable="true"><center>Rejting (0-5)</center></th>
-                       <th scope="col" data-field="repertoar" data-sortable="true"><center>Repertoar</center></th>
+                       <th></th>
+                       <th scope="col" data-field="grad" data-sortable="true"><center>Ime</center></th>
+                       <th scope="col" data-field="rejting" data-sortable="true"><center>Prezime</center></th>
+                       <th scope="col" data-field="repertoar" data-sortable="true"><center>Email</center></th>
+                       <th></th>
                        
                        </tr>
                        </thead>
                         <tbody style="background:  white;" id="tabela">
                        
-                  <c:forEach var = "i" items= "${institucijePrikaz}">
+                  <c:forEach var = "i" items= "${korisnik.prijatelji}">
          					
           						<tr style ="width: 250px; height: 20px;">
-          						<td>  ${i.naziv}</td> 
-          						<td>  ${i.grad}</td> 
-          						<td>  ${i.rejting}</td>
+          						<td>  <img src="/upravljanjeSlikama?putanjaDoSlike=${i.lokacijaSlike}" height= "50px" width= "50px"> </img></td>
+        						
+          						<td>  ${i.ime}</td> 
+          						<td>  ${i.prezime}</td> 
+          						<td>  ${i.email}</td>
           						<td>  
-          						<form  action = "/repertoarC"  method="post"> 
+          						<form  action = "/prijatelji/brisanje"  method="post"> 
 	          						<input type ="hidden" name ="id" value="${i.id}" ></input>
-	          						<button style="align:center;">Repertoar</button>
+	          						<button style="align:center;">Ukloni prijatelja</button>
           						</form>
           						
           						</td>

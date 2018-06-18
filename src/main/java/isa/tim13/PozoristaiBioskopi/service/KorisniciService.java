@@ -1,6 +1,7 @@
 package isa.tim13.PozoristaiBioskopi.service;
 
 import java.util.LinkedHashMap;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,9 @@ public class KorisniciService {
 	public Osoba pronadjiKorisnikaPoEmailu(String email) {
 		return rep.findByEmail(email);
 	}
-	
+	public Optional<Osoba> pronadjiPoId(int id) {
+		return rep.findById(id);
+	}
 	public Korisnik pronadjiNeaktivnogKorisnika(String registracioniLink) {
 		return rep.findByRegistracioniLink(registracioniLink);
 	}

@@ -113,7 +113,10 @@ PozoristaIBioskopiService servis;
 			sesion.invalidate();
 			return "prijava";
 		}
-	
+		@RequestMapping("/prijatelji")
+		public String listaPrijatelja(HttpSession sesion) {
+			return "prijatelji";
+		}
 	@RequestMapping("/projekcija")
 	public String projekcija() {
 		return "projekcija";

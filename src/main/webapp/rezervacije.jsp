@@ -6,7 +6,7 @@
 <html>
 <head>
 	
-	<title>Bioskopi</title>
+	<title>Rezervacije</title>
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
@@ -32,7 +32,7 @@
       <li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
       <li><a href="/pozorista" style="color: white;">Pozorista</a></li>
       <li><a href="/bioskopi" style="color: white;">Bioskopi</a></li>
-      <li><a href="#" style="color: white;">Prijatelji</a></li>
+      <li><a href="/prijatelji" style="color: white;">Prijatelji</a></li>
       <li><a href="rezervacije" style="color: white;">Rezervacije</a></li>
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Podesavanja
