@@ -1,7 +1,9 @@
 package isa.tim13.PozoristaiBioskopi;
 
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
@@ -20,12 +22,15 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import isa.tim13.PozoristaiBioskopi.dto.AdministratorDTO;
+import isa.tim13.PozoristaiBioskopi.dto.BodovnaSkalaDTO;
 import isa.tim13.PozoristaiBioskopi.model.Administrator;
 import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
 import isa.tim13.PozoristaiBioskopi.model.InstitucionalniAdministrator;
@@ -64,6 +69,8 @@ public class AdministratoriControllerTest {
 	private InstitucijaKultureRepository instRepo;
 	
     private String emailAdmina = null;
+    
+    private ObjectMapper objMapper = null;
 
 	@PostConstruct
 	public void setup() {
@@ -74,6 +81,7 @@ public class AdministratoriControllerTest {
 		a.setPrezime("Testic");
 		a.setEmail("majic@majic.com");
 		session.setAttribute("korisnik", a);
+		objMapper = new ObjectMapper();
 		
 	}
 	
@@ -218,6 +226,49 @@ public class AdministratoriControllerTest {
 	@Rollback(true)
 	public void prikazAdminaTest() throws Exception {
 		mockMvc.perform(get(URL_PREFIX).session(session)).andExpect(status().isOk());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void bodovnaSkalaTest() throws Exception {
+		MvcResult rezultat = mockMvc.perform(get(URL_PREFIX+"/dobaviBodovnuSkalu")
+				.session(session)).andExpect(status().isOk()).andReturn();
+		
+		String sadrzaj  = rezultat.getResponse().getContentAsString();
+		BodovnaSkalaDTO dto = objMapper.readValue(sadrzaj, BodovnaSkalaDTO.class);
+		assertEquals(0,dto.getBronzaBodovi());
+		assertEquals(0,dto.getSrebroBodovi());
+		assertEquals(0,dto.getZlatoBodovi());
+		
+		BodovnaSkalaDTO dto2 = new BodovnaSkalaDTO();
+		dto2.setBronzaBodovi(50);
+		mockMvc.perform(put(URL_PREFIX+"/promeniBodovnuSkalu")
+				.session(session).content(TestUtil.toJson(dto2)).contentType(contentType)).andExpect(status().isBadRequest());
+		
+		int bronza = 50;
+		int srebro = 60;
+		int zlato = 100;
+		
+		dto2.setBronzaBodovi(bronza);
+		dto2.setSrebroBodovi(srebro);
+		dto2.setZlatoBodovi(zlato);
+		
+		mockMvc.perform(put(URL_PREFIX+"/promeniBodovnuSkalu")
+				.session(session).content(TestUtil.toJson(dto2))
+				.contentType(contentType)).andExpect(status().isOk());
+		
+		rezultat = mockMvc.perform(get(URL_PREFIX+"/dobaviBodovnuSkalu")
+				.session(session)).andExpect(status().isOk()).andReturn();
+		
+		sadrzaj  = rezultat.getResponse().getContentAsString();
+		dto = objMapper.readValue(sadrzaj, BodovnaSkalaDTO.class);
+		
+		assertEquals(bronza,dto.getBronzaBodovi());
+		assertEquals(srebro,dto.getSrebroBodovi());
+		assertEquals(zlato,dto.getZlatoBodovi());
+		
+		
 	}
 	
 	

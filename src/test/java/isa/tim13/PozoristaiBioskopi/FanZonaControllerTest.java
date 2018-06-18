@@ -615,6 +615,24 @@ public class FanZonaControllerTest {
 		session.setAttribute("korisnik", prethodniUlogovani);
 	}
 	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void pribaviRezervacijeRekvizitaTest() throws Exception {
+		
+		Object prethodniUlogovani = session.getAttribute("korisnik");
+		
+		mockMvc.perform(get(URL_PREFIX+"/pribaviRezervacijeRekvizita")
+				.session(session)).andExpect(status().isForbidden());
+		session.setAttribute("korisnik", korRep.findById(2).get());
+		
+		mockMvc.perform(get(URL_PREFIX+"/pribaviRezervacijeRekvizita")
+				.session(session)).andExpect(status().isOk());
+		
+		session.setAttribute("korisnik", prethodniUlogovani);
+	}
+	
+	
 	
 	@After
 	public void obrisiSveTestFajlove() {
