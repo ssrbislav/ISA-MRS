@@ -136,8 +136,8 @@ function dodajPrikazRekvizita(rekvizit,adminFanZone){
 	 
 	 
 	 if(adminFanZone){
-		 newDiv.append("<br/><input type=\"file\" id = \""+napraviId("file",id)+"\"name=\"file\" accept=\"image/*\"></input>");
-		 newDiv.append("<input type=\"button\" class=\"filestyle\" data-buttonText=\"Odaberi sliku...\" id=\""+napraviId("promenaSlikeDugme",id)+"\" onclick=\""+"promeniSliku("+id+")\"></input><br/>");
+		 newDiv.append("<br/><input type=\"file\" class=\"filestyle\" data-buttonText=\"Odaberi sliku...\" id = \""+napraviId("file",id)+"\"name=\"file\" accept=\"image/*\"></input>");
+		 newDiv.append("<input type=\"button\" value=\"Promeni sliku\"id=\""+napraviId("promenaSlikeDugme",id)+"\" onclick=\""+"promeniSliku("+id+")\"></input><br/>");
 	 }
 
 	 $("#prikazRekvizita").append(newDiv);
@@ -255,6 +255,7 @@ $(document).ready(function(){
 			  for(var i=0;i<data["rekviziti"].length;i++){
 				  dodajPrikazRekvizita(data["rekviziti"][i],fanZonaAdmin);
 			  }
+			  jQuery.getScript("js/bootstrap-filestyle.min.js");
 		   },
 		  error : function(XMLHttpRequest, textStatus, errorThrown) {
 		}

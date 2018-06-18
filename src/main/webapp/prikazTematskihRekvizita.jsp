@@ -14,7 +14,6 @@
 <body>
 
 <script type="text/javascript" src="js/prikazTematskihRekvizita.js"></script>
-<script type="text/javascript" src="js/bootstrap-filestyle.min.js"> </script>
 
 <nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
