@@ -36,7 +36,7 @@
        <input type="hidden" name="idObjave"value="${idObjave}"/>
     	<div class="col-lg-5" >
 			<b>Naziv objave</b><br/><p id="nazivObjave"></p>
-			<b>Opis objave</b><br/><p id="opisObjave"></p>
+			<b>Opis objave</b><br/><div class="vrlo_dugacak_tekst"><p id="opisObjave"></p></div>
 			<b>Datum isteka</b><br/><p id="datumIsteka"></p>
 			<b>Slika</b><br/><img height="300" width="400" id="slikaObjave"></img>
 			

@@ -11,6 +11,7 @@
 </head>
 <body>
 <script type="text/javascript" src="js/dodavanjeTematskihRekvizita.js"></script>
+<script type="text/javascript" src="js/bootstrap-filestyle.min.js"> </script>
 
 <nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
@@ -30,10 +31,10 @@
 <div style="margin: 0 auto; width: 250px;">
    <label style="color:  #87837e  ;">Popunite podatke za dodavanje novog rekvizita: </label><br/>
 	<input style="width:322.467px;" type="text" name="nazivRekvizita" placeholder="Naziv" size=20 required/><br/>
-	<textarea style="width:322.467px;" name="opisRekvizita" maxlength=1000 placeholder="Opis" required></textarea><br/>
+	<textarea style="width:322.467px;" name="opisRekvizita" maxlength=1500 placeholder="Opis" required></textarea><br/>
 	<input type="number" style="width:322.467px;" name="cenaRekvizita" placeholder="Cena" size=20 required/><br/>
 	<input type="number" style="width:322.467px;" name="broj" size=20 placeholder="Broj" required/><br/>
-	<input type="file" name="file" style="width:322.467px;" value="Odaberi sliku..." id="slikaRekvizita" accept="image/*"><br/>
+	<input type="file" name="file" style="width:322.467px;" class="filestyle" data-buttonText="Odaberi sliku..." id="slikaRekvizita" accept="image/*"><br/>
 	<input type="button" id="dodavanjeRekvizitaDugme" value="Dodaj rekvizit"/><br/>
 </div>
 </body>

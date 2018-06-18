@@ -26,7 +26,7 @@ public class Objava {
 	
 	@Column(name="naziv")
 	private String naziv;
-	@Column(name="opis")
+	@Column(name="opis",length=1500)
 	private String opis;
 	
 	@Column(name="putanja_do_slike")

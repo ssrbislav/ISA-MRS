@@ -154,7 +154,7 @@ $(document).ready(function(){
 			dataType: "text",
 			data: adminFormaUJSON(ime,prezime,lozinka,email,tip_administratora,id_institucije),
 			error : function(xhr, textStatus, errorThrown) {
-				var err = xhr["responseText"];
+				var err = JSON.parse(xhr["responseText"])["message"];
 				alert(err);
 			}
 			

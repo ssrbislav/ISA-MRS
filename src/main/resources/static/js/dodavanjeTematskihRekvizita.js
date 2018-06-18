@@ -63,7 +63,7 @@ $(document).ready(function(){
 			cache: false,
 			processData: false,
 			error : function(xhr, textStatus, errorThrown) {
-				var err = xhr["responseText"];
+				var err = JSON.parse(xhr["responseText"])["message"];
 				alert(err);
 			}
 			

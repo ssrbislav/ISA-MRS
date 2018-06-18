@@ -91,7 +91,7 @@ $(document).ready(function(){
 			  $("#nazivObjave").text(podaci["naziv"]);
 			  $("#opisObjave").text(podaci["opis"]);
 			  $("#slikaObjave").attr("src",putanjaDoSlika+podaci["putanjaDoSlike"]);
-			  $("#datumIsteka").text(new Date(podaci["datumIsteka"]));
+			  $("#datumIsteka").text(new Date(podaci["datumIsteka"]).toLocaleString("sr-SR"));
 			  for(var i=0;i<podaci["ponude"].length;i++){
 				  dodajPonudu(podaci["ponude"][i],prihvatanjePonudeVidljivo);
 			  }

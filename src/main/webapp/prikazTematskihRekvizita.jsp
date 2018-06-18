@@ -14,6 +14,7 @@
 <body>
 
 <script type="text/javascript" src="js/prikazTematskihRekvizita.js"></script>
+<script type="text/javascript" src="js/bootstrap-filestyle.min.js"> </script>
 
 <nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
@@ -36,7 +37,7 @@
    <label style="color:  #87837e  ;">Popunite podatke za izmenu rekvizita: </label><br/>
    		<b>Id: </b><p id="izmenaIdRekvizita"></p><br/>
 		<input style="width:322.467px;" type="text" id="izmenaNazivRekvizita" placeholder="naziv" size=10 required/><br/>
-		<textarea style="width:322.467px;" id="izmenaOpisRekvizita" maxlength=1000 placeholder="opis" required></textarea><br/>
+		<textarea style="width:322.467px;" id="izmenaOpisRekvizita" maxlength=1500 placeholder="opis" required></textarea><br/>
 		<input type="number" style="width:322.467px;" id="izmenaCenaRekvizita" placeholder="cena" size=10 required/><br/>
 		<input type="number" style="width:322.467px;" id="izmenaBrojaRekvizita" placeholder="broj" size=10 required/><br/>
 		<input type="button" id="izmenaRekvizitaDugme" value="Izmeni rekvizit"/><br/>

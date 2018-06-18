@@ -32,7 +32,7 @@ public class TematskiRekvizit {
 	@Column(name="putanja_do_slike")
 	private String putanjaDoSlike;
 	
-	@Column(name="opis")
+	@Column(name="opis",length=1500)
 	private String opisRekvizita;
 	
 	@Column(name="cena")

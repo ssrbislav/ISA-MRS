@@ -11,6 +11,7 @@
 </head>
 <body>
 <script type="text/javascript" src="js/dodavanjeObjava.js"></script>
+<script type="text/javascript" src="js/bootstrap-filestyle.min.js"> </script>
 
 <nav class="navbar navbar-default" style= "background: #29927d;">
   <div class="container-fluid">
@@ -29,9 +30,9 @@
 <div style="margin: 0 auto; width: 250px;">
    <label style="color:  #87837e  ;">Popunite podatke za dodavanje nove objave: </label><br/>
 	<input style="width:322.467px;" type="text" name="nazivObjave" placeholder="Naziv" size=20 required/><br/>
-	<textarea style="width:322.467px;" name="opisObjave" maxlength=1000 placeholder="Opis" required></textarea><br/>
+	<textarea style="width:322.467px;" name="opisObjave" maxlength=1500 placeholder="Opis" required></textarea><br/>
 	<input style="width:322.467px;" type="date" name="datumIstekaObjave" size=20 required/><br/>
-	<input type="file" name="file" style="width:322.467px;" value="Odaberi sliku..." id="slikaObjave" accept="image/*"><br/>
+	<input type="file" name="file" class="filestyle" data-buttonText="Odaberi sliku..." style="width:322.467px;" id="slikaObjave" accept="image/*"><br/>
 	<input type="button" id="dodavanjeObjavaDugme" value="Dodaj objavu"/><br/>
 </div>
 </body>

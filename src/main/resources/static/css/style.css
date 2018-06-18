@@ -82,6 +82,7 @@ h1, input {
 }
 
 .rekvizitiGrid {
+  margin-top:15px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 10px;
@@ -113,6 +114,30 @@ h1, input {
 	border-color: #29927d;
     border-width: 2px;
     margin-bottom:30px;
+}
+
+.elemOkvir{
+	border-style: solid;
+	border-color: #29927d;
+    border-width: 2px;
+}
+
+.dugacak_tekst {
+	max-height: 7em;
+    line-height: 1em;
+    overflow: auto;
+}
+
+.vrlo_dugacak_tekst {
+	max-height: 10em;
+    line-height: 1em;
+    overflow: auto;
+}
+
+.centrirana_slika {
+    border: none;
+    display: block;
+    margin: 0 auto;
 }
 
 .rezRekvLabela{

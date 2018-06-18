@@ -119,10 +119,10 @@ function prikaziBrisanjeIliRezervisanje(id,adminFanZone){
 
 function dodajPrikazRekvizita(rekvizit,adminFanZone){
 	var id = rekvizit["id"];
-	var newDiv = $("<div id=\""+id+"\""+"></div>");
+	var newDiv = $("<div class=\"elemOkvir\" id=\""+id+"\""+"></div>");
 	
 	var divHtml ="<b>Naziv rekvizita: </b>"+"<p id=\""+napraviId("nazivRekvizita",id)+"\">"+rekvizit["nazivRekvizita"]+prikaziBrisanjeIliRezervisanje(id,adminFanZone);
-	var divHtml = divHtml + "<b>Opis rekvizita: <br/></b>"+"<p id=\""+napraviId("opisRekvizita",id)+"\">"+rekvizit["opisRekvizita"]+"</p>";
+	var divHtml = divHtml + "<b>Opis rekvizita: <br/></b>"+"<div class=\"dugacak_tekst\"><p id=\""+napraviId("opisRekvizita",id)+"\">"+rekvizit["opisRekvizita"]+"</p></div>";
 	var divHtml = divHtml + "<b>Cena rekvizita: </b>"+"<p id=\""+napraviId("cenaRekvizita",id)+"\">"+rekvizit["cenaRekvizita"]+"</p>";
 	var divHtml = divHtml + "<b>Broj artikala: </b>"+"<p id=\""+napraviId("broj",id)+"\">"+rekvizit["broj"]+"</p>";
 	newDiv.html(divHtml);
@@ -132,12 +132,12 @@ function dodajPrikazRekvizita(rekvizit,adminFanZone){
 	}));
 	}
 	
-	 newDiv.append("<b>Slika rekvizita: </b><br/>"+"<img width=\"225\" height=\"225\" id=\""+napraviId("putanja",id)+"\"src=\""+putanjaDoSlika+rekvizit["putanjaDoSlike"]+"\"/>");
+	 newDiv.append("<b>Slika rekvizita: </b><br/>"+"<img class =\"centrirana_slika\"width=\"225\" height=\"225\" id=\""+napraviId("putanja",id)+"\"src=\""+putanjaDoSlika+rekvizit["putanjaDoSlike"]+"\"/>");
 	 
 	 
 	 if(adminFanZone){
 		 newDiv.append("<br/><input type=\"file\" id = \""+napraviId("file",id)+"\"name=\"file\" accept=\"image/*\"></input>");
-		 newDiv.append("<input type=\"button\" value = \"Promeni sliku...\"id=\""+napraviId("promenaSlikeDugme",id)+"\" onclick=\""+"promeniSliku("+id+")\"></input><br/>");
+		 newDiv.append("<input type=\"button\" class=\"filestyle\" data-buttonText=\"Odaberi sliku...\" id=\""+napraviId("promenaSlikeDugme",id)+"\" onclick=\""+"promeniSliku("+id+")\"></input><br/>");
 	 }
 
 	 $("#prikazRekvizita").append(newDiv);
