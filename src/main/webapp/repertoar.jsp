@@ -13,7 +13,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -51,7 +50,20 @@
 	 <div class="col-lg-5" >
 		<img src="/upravljanjeSlikama?putanjaDoSlike=${institucija.lokacijaSlike}"  style="width: 200px; height: 200px;"></img>
 		<br>
-		<h3>${institucija.naziv}</h3> 
+		<h3>${institucija.naziv}</h3>
+		<div id="map" style="width:300px;height:200px"> 
+			
+		</div>
+		
+		<script>
+			var address = "${institucija.adresa},${institucija.grad}"
+		</script>
+		<script src="js/googleMape.js">
+	      </script>
+		<script async defer
+    		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoUahpwSrzAa1feDRvcETVcdmqB_LbN3Q&callback=prikaziLokaciju">
+    </script>
+    
 	</div>
 	<div class="col-lg-4" >
 		<br>
