@@ -6,10 +6,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.net.URLEncoder;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 
+import org.hibernate.type.LocalDateTimeType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,8 +73,10 @@ public class RezervacijaControllerTest {
 		terminRep.deleteAll();
 		sala1.setBrojKolona(3);
 		sala1.setBrojVrsta(4);
-		termin1.setDatum("1");
-		termin2.setDatum("1");
+		termin1.setVreme(LocalTime.parse("12:30"));
+		termin2.setVreme(LocalTime.now());
+		termin1.setDatum(LocalDate.parse("2017-11-12"));
+		termin2.setDatum(LocalDate.now());
 		termin1.setSala(sala1);
 		termin2.setSala(sala1);
 		ArrayList<Termin> termini = new ArrayList<Termin>();

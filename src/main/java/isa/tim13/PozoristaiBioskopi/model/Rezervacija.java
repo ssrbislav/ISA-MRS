@@ -1,6 +1,5 @@
 package isa.tim13.PozoristaiBioskopi.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -21,16 +21,20 @@ public class Rezervacija {
 	@Column(name="id", updatable=false, nullable=false)
 	private int id;
 	
-	@OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true, fetch=FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.DETACH, orphanRemoval = false, fetch=FetchType.LAZY)
 	private Termin termin;
 	
 	@Column(name="ukupnaCena")
 	private double ukupnaCena;
 
+	
+	@OneToOne(cascade = CascadeType.DETACH, orphanRemoval = false, fetch=FetchType.LAZY)
+	private Korisnik korisnik;
+
 	@Column(name="bodovi")
 	private int bodovi;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL,  fetch=FetchType.LAZY)
 	private List<Karta> karte;
 
 	public int getId() {
@@ -49,6 +53,14 @@ public class Rezervacija {
 		return bodovi;
 	}
 
+	public Korisnik getKorisnik() {
+		return korisnik;
+	}
+	public void setKorisnik(Korisnik k) {
+		
+		this.korisnik=k;
+	}
+	
 	public List<Karta> getKarte() {
 		return karte;
 	}

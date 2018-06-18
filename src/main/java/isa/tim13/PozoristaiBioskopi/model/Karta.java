@@ -18,14 +18,18 @@ public class Karta {
 	@Column(name="id", updatable=false, nullable=false)
 	private int id;
 	
-	@ManyToOne(cascade = CascadeType.ALL,  fetch=FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.DETACH,  fetch=FetchType.EAGER)
 	private Rezervacija rezervacija;
 	
 	@Column(name="sediste")
 	private int [] sediste;
 	
-	@OneToOne(cascade = CascadeType.ALL,  fetch=FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.DETACH,  fetch=FetchType.EAGER)
 	private Korisnik osoba;
+	
+	@Column(name = "linkZaOtkazivanje")
+	private String linkZaOtkazivanje;
+
 	
 	public int getId() {
 		return id;
@@ -57,7 +61,14 @@ public class Karta {
 	public void setOsoba(Korisnik osoba) {
 		this.osoba = osoba;
 	}
-
+	
+	public String getLinkZaOtkazivanje() {
+		return linkZaOtkazivanje;
+	}
+	
+	public void setLinkZaOtkazivanje(String linkZaOtkazivanje) {
+		this.linkZaOtkazivanje = linkZaOtkazivanje;
+	}
 	public Karta() {
 		super();
 		// TODO Auto-generated constructor stub

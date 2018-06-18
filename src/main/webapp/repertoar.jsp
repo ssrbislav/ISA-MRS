@@ -30,7 +30,7 @@
       <li><a href="/pozorista" style="color: white;">Pozorista</a></li>
       <li><a href="/bioskopi" style="color: white;">Bioskopi</a></li>
       <li><a href="#" style="color: white;">Prijatelji</a></li>
-      <li><a href="#" style="color: white;">Rezervacije</a></li>
+      <li><a href="/rezervacije" style="color: white;">Rezervacije</a></li>
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Podesavanja
         <span class="caret"></span></a>

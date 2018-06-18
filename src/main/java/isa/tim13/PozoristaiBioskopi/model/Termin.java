@@ -1,5 +1,8 @@
 package isa.tim13.PozoristaiBioskopi.model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -17,16 +21,20 @@ public class Termin {
 	@Column(name="id", updatable=false, nullable=false)
 	private int id;
 	
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	private PredstavaProjekcija predProj;
+	
 	@Column(name="vreme")
-	private String vreme;
+	private LocalTime vreme;
 	
 	@Column(name="datum")
-	private String datum;
+	private LocalDate datum; 
 	
 	@Column(name="cena")
 	private double cena;
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = false, fetch=FetchType.LAZY)
 	private Sala sala;
 	
 	@Column(name="mesta")
@@ -43,20 +51,22 @@ public class Termin {
 		return id;
 	}
 
-	public String getVreme() {
+	public LocalTime getVreme() {
 		return vreme;
 	}
 
-	public void setVreme(String vreme) {
+	public void setVreme(LocalTime vreme) {
 		this.vreme = vreme;
 	}
-	public String getDatum() {
+	
+	public LocalDate getDatum() {
 		return datum;
 	}
 
-	public void setDatum(String datum) {
+	public void setDatum(LocalDate datum) {
 		this.datum = datum;
 	}
+
 	public Sala getSala() {
 		return sala;
 	}
@@ -71,6 +81,13 @@ public class Termin {
 
 	public void setMesta(boolean [][] mesta) {
 		this.mesta = mesta;
+	}
+	public PredstavaProjekcija getpredProj() {
+		return predProj;
+	}
+
+	public void setpredProj(PredstavaProjekcija predProj) {
+		this.predProj = predProj;
 	}
 	
 	public Termin() {}

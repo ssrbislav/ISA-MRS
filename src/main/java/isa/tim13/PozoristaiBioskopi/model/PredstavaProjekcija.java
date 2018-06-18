@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -18,6 +19,10 @@ public class PredstavaProjekcija {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
 	private int id;
+    
+    
+    @ManyToOne(cascade = CascadeType.DETACH, fetch=FetchType.LAZY)
+    private InstitucijaKulture institucija;
     
     @Column(name="naziv")
     private String naziv;
@@ -43,7 +48,7 @@ public class PredstavaProjekcija {
     @Column(name="opis")
     private String opis;
     
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.DETACH, orphanRemoval = true, fetch=FetchType.EAGER)
     private List<Termin> termini;
    
  
@@ -125,6 +130,15 @@ public class PredstavaProjekcija {
 	public void setPopust(int popust) {
 		this.popust=  popust;
 	}
+	
+	public InstitucijaKulture getInstitucija() {
+		return institucija;
+	}
+
+	public void setInstitucija(InstitucijaKulture institucija) {
+		this.institucija=  institucija;
+	}
+	
     public PredstavaProjekcija() {}
     
     

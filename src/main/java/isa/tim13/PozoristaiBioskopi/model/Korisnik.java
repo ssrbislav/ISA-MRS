@@ -18,13 +18,13 @@ public class Korisnik extends Osoba implements Serializable {
 	@Column(name = "brojBodova")
 	int brojBodova;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToMany(cascade = { CascadeType.MERGE,CascadeType.PERSIST } ,fetch=FetchType.LAZY)
 	List<Korisnik> prijatelji;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
 	List<Korisnik> zahtevi;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+	@ManyToMany(cascade = { CascadeType.MERGE,CascadeType.PERSIST }, fetch=FetchType.LAZY)
 	List<PredstavaProjekcija> istorijatPoseta;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)

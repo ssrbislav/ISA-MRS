@@ -3,6 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <head>
 	<title>Repertoar</title>
@@ -28,7 +29,7 @@
       <li><a href="/pozorista" style="color: white;">Pozorista</a></li>
       <li><a href="/bioskopi" style="color: white;">Bioskopi</a></li>
       <li><a href="#" style="color: white;">Prijatelji</a></li>
-      <li><a href="#" style="color: white;">Rezervacije</a></li>
+      <li><a href="/rezervacije" style="color: white;">Rezervacije</a></li>
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Podesavanja
         <span class="caret"></span></a>
@@ -63,11 +64,11 @@
 		<br>
 		<h3>Termini za odabran datum </h3> 
 		<table class="table">
-                <tbody style="background:  white;"" id="tabela">   
+                <tbody style="background:  white;" id="tabela">   
                 <c:forEach var = "i" items= "${predstavaZaRezervaciju.termini}">
 					<tr class="${i.datum}">
 						<td>
-						Vreme: ${i.vreme} <br> Sala: ${i.sala.oznakaSale}  <br> Cena: ${i.cena} rsd   
+						Vreme: ${i.vreme}<br> Sala: ${i.sala.oznakaSale}  <br> Cena: ${i.cena} rsd   
 						</td>
 						<td>
 							<form action="/rezervacija/mesta" method="post" >

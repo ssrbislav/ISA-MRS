@@ -123,7 +123,11 @@ PozoristaIBioskopiService servis;
 	public String predstava() {
 		return "predstava";
 	}
-
+	@RequestMapping("/rezervacije")
+	public String rezervacije(HttpSession s) {
+		s.removeAttribute("Poruka");
+		return "rezervacije";
+	}
 	@RequestMapping("/registracijaInstitucija")
 	public String registracijaInstitucija(HttpSession s) {
 		try {
