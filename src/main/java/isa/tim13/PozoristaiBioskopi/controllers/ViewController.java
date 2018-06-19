@@ -2,6 +2,7 @@ package isa.tim13.PozoristaiBioskopi.controllers;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,7 +127,12 @@ PozoristaIBioskopiService servis;
 			return "prijava";
 		}
 		@RequestMapping("/prijatelji")
-		public String listaPrijatelja(HttpSession sesion) {
+		public String listaPrijatelja(HttpSession sesion, HttpServletRequest request) {
+			String poruka = (String) sesion.getAttribute("PrijateljPoruka");
+			if(poruka!=null && !poruka.equals("")) {
+				request.setAttribute("PrijateljPoruka", poruka);
+				sesion.removeAttribute("PrijateljPoruka");
+			}
 			return "prijatelji";
 		}
 	@RequestMapping("/projekcija")

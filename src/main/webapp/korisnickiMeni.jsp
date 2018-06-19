@@ -8,7 +8,7 @@
       <li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
       <li><a href="/pozorista" style="color: white;">Pozorista</a></li>
       <li><a href="/bioskopi" style="color: white;">Bioskopi</a></li>
-      <li><a href="prijatelji" style="color: white;">Prijatelji</a></li>
+      <li><a href="/prijatelji" style="color: white;">Prijatelji</a></li>
       <li><a href="/rezervacije" style="color: white;">Rezervacije</a></li>
       
        <li class="dropdown">
@@ -32,12 +32,12 @@
       	<a id="notifikacijeToggle" class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Zahtevi za prijateljstvo
         <span class="caret"></span></a>
         <ul id="notifikacije" class="dropdown-menu">
-                  
+
                   <c:forEach var = "i" items= "${korisnik.zahtevi}">
          					
-          					<li>${i.ime} ${i.prezime} <div class="col-lg-12"><form style="display: inline-block;" method="post" action="/prijatelji/prihvatiZahtev"><input type="hidden" value="${i.id} "/><input type="submit" value="&#10003;"/> </form> <form style="display: inline-block;" method="post" action="/prijatelji/odbiZahtev"><input type="hidden" value="${i.id} "> </input><input type="submit" value="&times;"/> </form></div> </li>
+          					<li>${i.ime} ${i.prezime} <div class="col-lg-12"><form style="display: inline-block;" method="post" action="/prijatelji/prihvatiZahtev"><input type="hidden" name="id" value="${i.id} "/><input type="hidden" name="from" value="${pageContext.request.requestURI}"/><input type="submit" value="&#10003;"/> </form> <form style="display: inline-block;" method="post" action="/prijatelji/odbijZahtev"><input type="hidden" name="id" value="${i.id} "/><input type="hidden" name="from" value="${pageContext.request.requestURI}"/><input type="submit" value="&times;"/> </form></div> </li>
                       
-     			 </c:forEach>
+     			 </c:forEach> 
         </ul>
       </li>
       <li class="dropdown">

@@ -37,7 +37,7 @@ public class PrijateljiController {
 		korisniciServis.dodajKorisnika(prijatelj);
 		sesion.setAttribute("korisnik", ulogovan);
 
-		return "../prijatelji";
+		return "redirect:/prijatelji";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/pretragaPrijatelja", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -75,7 +75,38 @@ public class PrijateljiController {
 			}else {
 				prijatelj.getZahtevi().add(ulogovan);
 				korisniciServis.dodajKorisnika(prijatelj);
+				session.setAttribute("PrijateljPoruka", "Uspesno ste poslali zahtev za prijateljstvo.");
 			}
 			return "redirect:/prijatelji";
+	}
+	@RequestMapping(method = RequestMethod.POST, path = "/prihvatiZahtev")
+	public String prihvatiZahtev(HttpSession session, @RequestParam("id") int ID, @RequestParam("from") String from) {
+		
+		Korisnik ulogovan =(Korisnik) korisniciServis.pronadjiKorisnikaPoEmailu(((Korisnik)session.getAttribute("korisnik")).getEmail());
+		
+		Korisnik prijatelj =(Korisnik) korisniciServis.pronadjiPoId(ID).get();
+		
+		ulogovan.getPrijatelji().add(prijatelj);
+		prijatelj.getPrijatelji().add(ulogovan);
+		ulogovan.getZahtevi().remove(prijatelj);
+		
+		korisniciServis.dodajKorisnika(prijatelj);
+		korisniciServis.dodajKorisnika(ulogovan);
+		session.setAttribute("korisnik", (Korisnik) korisniciServis.pronadjiPoId(ulogovan.getId()).get());
+		return "redirect:"+from.split("\\.")[0];
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, path = "/odbijZahtev")
+	public String odbijZahtev(HttpSession session, @RequestParam("id") int ID, @RequestParam("from") String from) {
+		
+		Korisnik ulogovan =(Korisnik) korisniciServis.pronadjiKorisnikaPoEmailu(((Korisnik)session.getAttribute("korisnik")).getEmail());
+		
+		Korisnik prijatelj =(Korisnik) korisniciServis.pronadjiPoId(ID).get();
+		
+		ulogovan.getZahtevi().remove(prijatelj);
+		
+		korisniciServis.dodajKorisnika(ulogovan);
+		session.setAttribute("korisnik", (Korisnik) korisniciServis.pronadjiPoId(ulogovan.getId()).get());
+		return "redirect:"+from.split("\\.")[0];
 	}
 }
