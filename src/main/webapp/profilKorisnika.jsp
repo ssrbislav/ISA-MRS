@@ -44,13 +44,24 @@
         </ul>
       </li>
       <li id="notifikacijeLi" class="dropdown">
-      	<a id="notifikacijeToggle" class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Notifikacije
+      	<a id="notifikacijeToggle" class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Obavestenja
         <span class="caret"></span></a>
         <ul id="notifikacije" class="dropdown-menu">
           
         </ul>
       </li>
-      
+       <li id="notifikacijeLi" class="dropdown">
+      	<a id="notifikacijeToggle" class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Zahtevi za prijateljstvo
+        <span class="caret"></span></a>
+        <ul id="notifikacije" class="dropdown-menu">
+                  
+                  <c:forEach var = "i" items= "${korisnik.zahtevi}">
+         					
+          					<li>${i.ime} ${i.prezime} <div class="col-lg-12"><form style="display: inline-block;" method="post" action="/prijatelji/prihvatiZahtev"><input type="hidden" value="${i.id} "/><input type="submit" value="&#10003;"/> </form> <form style="display: inline-block;" method="post" action="/prijatelji/odbiZahtev"><input type="hidden" value="${i.id} "> </input><input type="submit" value="&times;"/> </form></div> </li>
+                      
+     			 </c:forEach>
+        </ul>
+      </li>
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Podesavanja
         <span class="caret"></span></a>

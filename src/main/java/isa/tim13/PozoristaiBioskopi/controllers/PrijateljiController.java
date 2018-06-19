@@ -64,6 +64,18 @@ public class PrijateljiController {
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/dodavanje")
 	public String dodajPrijatelja(HttpSession session, @RequestParam("id") int ID) {
+			Korisnik ulogovan =(Korisnik) korisniciServis.pronadjiKorisnikaPoEmailu(((Korisnik)session.getAttribute("korisnik")).getEmail());
+			
+			Korisnik prijatelj =(Korisnik) korisniciServis.pronadjiPoId(ID).get();
+			
+			if (prijatelj.getZahtevi().contains(ulogovan) || ulogovan.getPrijatelji().contains(prijatelj)) {
+				session.setAttribute("PrijateljPoruka", "Osoba vec postoji u listi prijatelja ili ste joj poslali zahtev.");
+				
+				
+			}else {
+				prijatelj.getZahtevi().add(ulogovan);
+				korisniciServis.dodajKorisnika(prijatelj);
+			}
 			return "redirect:/prijatelji";
 	}
 }
