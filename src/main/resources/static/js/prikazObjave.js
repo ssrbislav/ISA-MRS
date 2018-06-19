@@ -33,11 +33,11 @@ function dodajPrihvatanje(prihvatanjePonudeVidljivo,id){
 
 function dodajPonudu(ponuda,prihvatanjePonudeVidljivo){
 	var id = ponuda["idPonude"];
-	var newDiv = $("<div id="+"\""+napraviId("ponuda",id)+"\""+"></div>");
+	var newDiv = $("<div class=\"ponudaOkvir\" id="+"\""+napraviId("ponuda",id)+"\""+"></div>");
 	var divHtml = "<b>"+ponuda["naslov"]+"</b><br/>"+dodajPrihvatanje(prihvatanjePonudeVidljivo,id);
 	var divHtml = divHtml + ponuda["opis"]+"<br/>";
 	var divHtml = divHtml + "<b>Autor:</b><br/>"+ponuda["autor"]+"<br/>";
-	var divHtml = divHtml + "<b>Cena:</b><br/>"+ponuda["cena"]+"<br/><br/><br/>";
+	var divHtml = divHtml + "<b>Cena:</b><br/>"+ponuda["cena"]+"<br/>";
 	newDiv.html(divHtml);	
 	$("#ponude").append(newDiv);
 }

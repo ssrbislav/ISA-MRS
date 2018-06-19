@@ -39,6 +39,18 @@ public abstract class Osoba {
 	
 	@Column(name = "registracioniLink")
 	private String registracioniLink;
+	
+	//za admina fan zone(ili institucije ako Srbislav odluci, mora ovde da se stavi inace kod registracije korisnika puca)
+	@Column
+	private boolean promenioSifru;
+	
+	public boolean isPromenioSifru() {
+		return promenioSifru;
+	}
+
+	public void setPromenioSifru(boolean promenioSifru) {
+		this.promenioSifru = promenioSifru;
+	}
 
 	public Integer getId() {
 		return id;

@@ -90,6 +90,8 @@ h1, input {
 
 #ponude {
     overflow-y: auto;
+    max-height:600px;
+    margin-bottom:30px;
 }
 
 .notifikacijaPonude{
@@ -122,6 +124,14 @@ h1, input {
     border-width: 2px;
 }
 
+.ponudaOkvir{
+	border-style: solid;
+	border-color: #29927d;
+    border-width: 2px;
+    max-width:350px;
+    margin-bottom:10px;
+}
+
 .dugacak_tekst {
 	max-height: 7em;
     line-height: 1em;
@@ -146,4 +156,5 @@ h1, input {
 	border-color: #29927d;
     border-width: 2px;
 }
+
 
