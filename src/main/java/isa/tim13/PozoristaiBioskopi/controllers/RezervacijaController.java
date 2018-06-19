@@ -96,7 +96,7 @@ public class RezervacijaController {
 		sesion.setAttribute("predstavaZaRezervaciju", predstava);
 		sesion.setAttribute("datumiPrikazivanja", datumiPrikazivanja);
 
-		return "../rezervacija";
+		return "redirect:/rezervacija";
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/mesta")

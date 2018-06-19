@@ -60,7 +60,7 @@ public class OtkazivanjeRezervacijeController {
 			sesion.setAttribute("korisnik", ulogovan);
 
 		} else {
-			sesion.setAttribute("Poruka", "Nemozete otkazati rezervaciju predstave/projekcije koja pocinje za manje od 30min.");
+			sesion.setAttribute("Poruka", "Ne mozete otkazati rezervaciju predstave/projekcije koja pocinje za manje od 30min.");
 
 		}
 

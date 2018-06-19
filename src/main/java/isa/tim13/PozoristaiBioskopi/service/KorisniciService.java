@@ -1,5 +1,6 @@
 package isa.tim13.PozoristaiBioskopi.service;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
@@ -34,7 +35,16 @@ public class KorisniciService {
 	public void dodajKorisnika(Osoba kor) {
 		rep.save(kor);
 	}
-	
+	public ArrayList<Korisnik> pronadjiSveKorisnike() {
+		Iterable<Osoba> osobe = rep.findAll();
+		ArrayList<Korisnik> korisnici = new ArrayList<>();
+		for (Osoba osoba : osobe) {
+			if(osoba instanceof Korisnik) {
+				korisnici.add((Korisnik)osoba);
+			}
+		}
+		return korisnici;
+	}
 	public Osoba pronadjiKorisnikaPoEmailu(String email) {
 		return rep.findByEmail(email);
 	}

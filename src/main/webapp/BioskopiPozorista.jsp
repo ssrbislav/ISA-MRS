@@ -51,7 +51,7 @@
 </nav>
 
 		</div>
-		<div class="col-lg-4 " >
+		<div class="col-lg-5 " >
 		<br>
 		<br>
 		<input class="form-control" id="pretraga" type="text" placeholder="Pretrazite"></input>

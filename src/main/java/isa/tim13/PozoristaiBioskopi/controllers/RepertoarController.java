@@ -24,6 +24,6 @@ public class RepertoarController {
 			InstitucijaKulture institucija= servis.findById(ID).get();
 			
 			sesion.setAttribute("institucija", institucija);
-			return "repertoar";
+			return "redirect:/repertoar";
 	}
 }

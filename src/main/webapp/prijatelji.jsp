@@ -15,6 +15,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="js/pretragaPrijatelja.js"></script>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,9 +51,8 @@
   </div>
 </nav>
 
-
-		</div>
 		<div class="col-lg-5 " >
+		<h3>Vasi prijatelji</h3>
 		<br>
 		<br>
 		<input class="form-control" id="pretraga" type="text" placeholder="Pretrazite"></input>
@@ -91,6 +91,26 @@
      			 </c:forEach>
      			 </tbody>
      		</table>
+                          		
+		</div>
+	
+	<div class="col-lg-5 col-lg-offset-2"  >
+		<br>
+	
+		<table class="table">
+				<center><h3 >Pretraga prijatelja</h3></center></br>
+				<div class="col-md-10">
+					<input id="zaPretragu" class="form-control"></input>
+				</div>
+				<div class="col-md-2">
+					<button id="pretragaDugme">Pretrazi</button>
+				</div>
+				
+                <tbody style="background:  white;", id="tabelaPrijatelji">
+                     
+
+     			 </tbody>
+                </table>
                           		
 		</div>
 <script>

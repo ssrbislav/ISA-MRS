@@ -47,6 +47,18 @@ PozoristaIBioskopiService servis;
 	public String prijava() {
 		return "prijava";
 	}
+	
+	// strana za repertoar
+	@RequestMapping("/repertoar")
+	public String repertoar() {
+		return "repertoar";
+	}
+	
+	// strana za repertoar
+	@RequestMapping("/rezervacija")
+	public String rezervacija() {
+		return "rezervacija";
+	}
 
 	// strana za profil
 	@RequestMapping("/profilKorisnika")
