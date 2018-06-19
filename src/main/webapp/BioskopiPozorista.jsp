@@ -22,33 +22,7 @@
 
 <body style="background:   white ">
 
-	<nav class="navbar navbar-default" style= "background: #29927d;">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#"></a>
-    </div>
-    <ul class="nav navbar-nav">
-     
-      <li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
-      <li><a href="/pozorista" style="color: white;">Pozorista</a></li>
-      <li><a href="/bioskopi" style="color: white;">Bioskopi</a></li>
-      <li><a href="/prijatelji" style="color: white;">Prijatelji</a></li>
-      <li><a href="/rezervacije" style="color: white;">Rezervacije</a></li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Podesavanja
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="/izmenaLozinke">Izmena lozinke</a></li>
-          <li><a href="/izmenaPodataka">Izmena licnih podataka</a></li>
-         
-        </ul>
-      </li>
-    </ul>
-    <ul class="nav navbar-nav pull-right">  
-       <li><a href="/odjava" style="color: white;">Odjava</a></li>
-    </ul>
-  </div>
-</nav>
+	<%@include file="korisnickiMeni.jsp" %>
 
 		</div>
 		<div class="col-lg-5 " >

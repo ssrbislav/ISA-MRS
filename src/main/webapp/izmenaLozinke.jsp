@@ -19,21 +19,7 @@
 </head>
 <body >
 
-<nav class="navbar navbar-default" style= "background: #29927d;">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#"></a>
-    </div>
-    <ul class="nav navbar-nav">
-     
-      <li><a href="/profilKorisnika" style="color: white;">Profil</a></li>
-         
-    </ul>
-	<ul class="nav navbar-nav pull-right">  
-       <li><a href="/odjava" style="color: white;">Odjava</a></li>
-    </ul>
-  </div>
-</nav>
+<%@include file="korisnickiMeni.jsp" %>
 
 <form action="/profil/izmenaLozinke" method="post" id="izmenaLozinke" style="margin: 0 auto; width: 250px;">
 		<br>
