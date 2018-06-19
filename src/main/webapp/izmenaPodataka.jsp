@@ -19,7 +19,7 @@
 </head>
 <body >
 
-<%@include file="korisnickiMeni.jsp" %>
+<%@include file="pametniMeni.jsp" %>
 
 <form action="/profil/izmenaPodataka" method="post" id="izmenaPodataka" style="margin: 0 auto; width: 250px;">
 		<br>

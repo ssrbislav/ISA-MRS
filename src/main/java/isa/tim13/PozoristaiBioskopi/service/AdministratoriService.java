@@ -44,14 +44,17 @@ public class AdministratoriService {
 		fanZonaOpcije.put("Neobjavljene objave", "/pregledNeobjavljenihObjava");
 		fanZonaOpcije.put("Dodavanje rekvizita", "/dodavanjeTematskihRekvizita");
 		fanZonaOpcije.put("Prikaz rekvizita","/prikazTematskihRekvizita");
+		fanZonaOpcije.put("Profil","/profilKorisnika");
 		
 		
 		sistemskiOpcije = new LinkedHashMap<String,String>();
 		sistemskiOpcije.put("Registracija institucija", "/registracijaInstitucija");
 		sistemskiOpcije.put("Dodavanje admina", "/dodavanjeAdministratora");
 		sistemskiOpcije.put("Bodovna skala", "/bodovnaSkala");
+		sistemskiOpcije.put("Profil", "/profilKorisnika");
 		
 		institucionalniOpcije = new LinkedHashMap<String,String>();
+		institucionalniOpcije.put("Profil", "/profilKorisnika");
 	}
 	
 	public void registrujAdministratora(AdministratorDTO dto) throws InstitucijaNePostojiException, OsobaVecPostojiException {
