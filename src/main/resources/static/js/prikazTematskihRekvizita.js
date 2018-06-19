@@ -249,9 +249,6 @@ $(document).ready(function(){
 		   type: "GET",
 		   success: function(data){
 			 fanZonaAdmin = data["adminFanZone"];
-			 if(!fanZonaAdmin){
-					$("#dodavanjeRekvizitaOpcija").remove();
-				}
 			  for(var i=0;i<data["rekviziti"].length;i++){
 				  dodajPrikazRekvizita(data["rekviziti"][i],fanZonaAdmin);
 			  }
