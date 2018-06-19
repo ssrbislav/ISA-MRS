@@ -42,9 +42,9 @@ public abstract class Osoba {
 	
 	//za admina fan zone(ili institucije ako Srbislav odluci, mora ovde da se stavi inace kod registracije korisnika puca)
 	@Column
-	private boolean promenioSifru;
+	private Boolean promenioSifru;
 	
-	public boolean isPromenioSifru() {
+	public Boolean isPromenioSifru() {
 		return promenioSifru;
 	}
 
@@ -130,6 +130,7 @@ public abstract class Osoba {
 
 	public Osoba() {
 		super();
+		promenioSifru = false;
 	}
 	
 	
