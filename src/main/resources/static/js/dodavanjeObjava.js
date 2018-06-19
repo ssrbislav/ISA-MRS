@@ -19,13 +19,26 @@ function objavaFormaUJSON(nazivObjave,opisObjave,datumIstekaObjave){
 	});
 }
 
+function podesiDvocifreno(broj){
+	if(broj>9){
+		return ""+broj;
+	}
+	return "0"+broj;
+}
+
 $(document).ready(function(){
+	var danas = new Date();
+	document.getElementById('datumIstekaObjave').valueAsDate = danas;
+	document.getElementById('vremeIstekaObjave').value = podesiDvocifreno(danas.getHours())+":"+podesiDvocifreno(danas.getMinutes());
+	
 	$("#dodavanjeObjavaDugme").click(function(event){
 		
 		
 		var nazivObjave = $("input[name=nazivObjave]").val();
 		var opisObjave = $("textarea[name=opisObjave]").val();
 		var datumIstekaObjave = $("input[name=datumIstekaObjave]").val();
+		var vremeIstekaObjave = $("input[name=vremeIstekaObjave]").val();
+		datumIstekaObjave = new Date(datumIstekaObjave + " " + vremeIstekaObjave);
 		var slikaPodaci = $("input[name=file]")[0].files[0];
 		
 		

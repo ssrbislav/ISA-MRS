@@ -11,7 +11,9 @@ import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 
 @Repository
 public interface ObjavaRepository extends CrudRepository<Objava,Integer> {
-	Iterable<Objava> findByStatus(StatusObjave status);
+	
+	@Query(value="select obj from Objava obj where obj.status = :status and obj.datumIsteka > Now()",nativeQuery=false)
+	Iterable<Objava> pronadjiPoStatusu(@Param("status")StatusObjave status);
 	Objava findById(int id);
 	
 	Objava findByNaziv(String naziv);

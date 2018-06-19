@@ -448,6 +448,7 @@ public class FanZonaControllerTest {
 		session.setAttribute("korisnik", korRep.findById(2).get());		
 		objava.setNaziv("KorisnikObjava2");
 		objava.setAutor((Korisnik)session.getAttribute("korisnik"));
+		objava.setDatumIsteka(sdf.parse("21.12.2026."));
 		objavaRep.save(objava);
 		
 		int idObjave = objavaRep.findByNaziv("KorisnikObjava2").getId();
@@ -543,6 +544,7 @@ public class FanZonaControllerTest {
 		objava.setNaziv(nazivObjave);
 		objava.setStatus(StatusObjave.OBJAVLJEN);
 		objava.setAutor((Korisnik)session.getAttribute("korisnik"));
+		objava.setDatumIsteka(sdf.parse("21.12.2026."));
 		objavaRep.save(objava);
 		
 		int idObjave = objavaRep.findByNaziv(nazivObjave).getId();

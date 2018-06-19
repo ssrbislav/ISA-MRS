@@ -18,7 +18,7 @@ function prihvati(id){
 			  $(".prihvatanje").remove();
 		   },
 		  error : function(xhr, textStatus, errorThrown) {
-			  alert(xhr["responseText"]["message"]);
+			  alert(JSON.parse(xhr["responseText"])["message"]);
 		}
 		   
 	});
@@ -90,6 +90,7 @@ $(document).ready(function(){
 			  prihvatanjePonudeVidljivo = sviPodaci["prihvatanjePonudeVidljivo"];
 			  $("#nazivObjave").text(podaci["naziv"]);
 			  $("#opisObjave").text(podaci["opis"]);
+			  $("#autorObjave").text(podaci["autor"]);
 			  $("#slikaObjave").attr("src",putanjaDoSlika+podaci["putanjaDoSlike"]);
 			  $("#datumIsteka").text(new Date(podaci["datumIsteka"]).toLocaleString("sr-SR"));
 			  for(var i=0;i<podaci["ponude"].length;i++){
@@ -130,7 +131,7 @@ $(document).ready(function(){
 				   $("#dodavanjePonudeDugme").val("Izmeni ponudu");
 			   },
 			  error : function(xhr, textStatus, errorThrown) {
-				  alert(xhr["responseText"]["message"]);
+				  alert(JSON.parse(xhr["responseText"])["message"]);
 			}
 			   
 		});

@@ -31,7 +31,8 @@
    <label style="color:  #87837e  ;">Popunite podatke za dodavanje nove objave: </label><br/>
 	<input style="width:322.467px;" type="text" name="nazivObjave" placeholder="Naziv" size=20 required/><br/>
 	<textarea style="width:322.467px;" name="opisObjave" maxlength=1500 placeholder="Opis" required></textarea><br/>
-	<input style="width:322.467px;" type="date" name="datumIstekaObjave" size=20 required/><br/>
+	<input style="width:322.467px;" type="date" name="datumIstekaObjave" id="datumIstekaObjave" size=20 required/><br/>
+	<input style="width:322.467px;" type="time" name="vremeIstekaObjave" id="vremeIstekaObjave" size=20 required/><br/>
 	<input type="file" name="file" class="filestyle" data-buttonText="Odaberi sliku..." style="width:322.467px;" id="slikaObjave" accept="image/*"><br/>
 	<input type="button" id="dodavanjeObjavaDugme" value="Dodaj objavu"/><br/>
 </div>

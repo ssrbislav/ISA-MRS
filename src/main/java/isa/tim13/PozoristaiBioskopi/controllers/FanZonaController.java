@@ -29,6 +29,7 @@ import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NemaViseRekvizita;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.NotifikacijaNePostoji;
+import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaIstekla;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeNeobjavljena;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeObjavljena;
@@ -76,7 +77,7 @@ public class FanZonaController {
 	}
 	
 	@RequestMapping(value="/prihvatiPonudu",method=RequestMethod.PUT)
-	public ResponseEntity<String> prihvatiPonudu(HttpSession s,@RequestParam("id") int id) throws NeovlascenPristupException, ObjavaNijeObjavljena, PonudaNePostoji{
+	public ResponseEntity<String> prihvatiPonudu(HttpSession s,@RequestParam("id") int id) throws NeovlascenPristupException, ObjavaNijeObjavljena, PonudaNePostoji, ObjavaIstekla{
 		Korisnik kor = AuthService.korisnikProvera(s);
 		servis.prihvatiPonudu(kor,id);
 		return new ResponseEntity<String>("Ponuda prihvacena. Svi ucesnici ce biti obavesteni.",HttpStatus.OK);
@@ -102,7 +103,7 @@ public class FanZonaController {
 	}
 	
 	@RequestMapping(value="/dodajPonudu",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> dodajPonuduNaObjavu(HttpSession s,@RequestBody PonudaDTO ponuda) throws NeovlascenPristupException, ObjavaNePostoji{
+	public ResponseEntity<String> dodajPonuduNaObjavu(HttpSession s,@RequestBody PonudaDTO ponuda) throws NeovlascenPristupException, ObjavaNePostoji, ObjavaIstekla{
 		try {
 			Korisnik kor = AuthService.korisnikProvera(s);
 			String retVal = servis.dodajPonuduNaObjavu(objMapper,kor,ponuda);

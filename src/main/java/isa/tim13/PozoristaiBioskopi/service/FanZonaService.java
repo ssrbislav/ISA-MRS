@@ -28,6 +28,7 @@ import isa.tim13.PozoristaiBioskopi.exceptions.DatumIstekaNevalidan;
 import isa.tim13.PozoristaiBioskopi.exceptions.NemaViseRekvizita;
 import isa.tim13.PozoristaiBioskopi.exceptions.NeovlascenPristupException;
 import isa.tim13.PozoristaiBioskopi.exceptions.NotifikacijaNePostoji;
+import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaIstekla;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNePostoji;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeNeobjavljena;
 import isa.tim13.PozoristaiBioskopi.exceptions.ObjavaNijeObjavljena;
@@ -172,7 +173,7 @@ public class FanZonaService {
 	}
 
 	public Iterable<ObjavaDTO> prikaziObjave(StatusObjave status) {
-		return vratiDTOObjave(objavaRep.findByStatus(status));
+		return vratiDTOObjave(objavaRep.pronadjiPoStatusu(status));
 	}
 	
 	//REQUIRES_NEW - metoda uvek pokrece novu transakciju, ako postoji tekuca transakcija ona se suspenduje
@@ -262,15 +263,22 @@ public class FanZonaService {
 		objavaRep.save(punaObjava);
 		
 	}
+	
+	public void objavaIsteklaProvera(Objava objava) throws ObjavaIstekla {
+		if(objava.getDatumIsteka().before(new Date())) {
+			throw new ObjavaIstekla();
+		}
+	}
+	
 	//izolacija Isolation.READ_COMMITTED ne moze da cita podatke koji nisu komitovani od strane drugih
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW ,rollbackFor=Exception.class,isolation=Isolation.READ_COMMITTED)
-	public String dodajPonuduNaObjavu(ObjectMapper objMapper,Korisnik kor, PonudaDTO ponuda) throws ObjavaNePostoji, NeovlascenPristupException, JsonProcessingException {
+	public String dodajPonuduNaObjavu(ObjectMapper objMapper,Korisnik kor, PonudaDTO ponuda) throws ObjavaNePostoji, NeovlascenPristupException, JsonProcessingException, ObjavaIstekla {
 		Objava objava = objavaRep.findById(ponuda.getIdObjave());
-		
 		if(objava==null) {
 			throw new ObjavaNePostoji();
 		}
 		
+		objavaIsteklaProvera(objava);
 		if(kor.getId()==objava.getAutor().getId() || objava.getStatus()==StatusObjave.ARHIVIRAN) {
 			throw new NeovlascenPristupException();
 		}
@@ -321,6 +329,7 @@ public class FanZonaService {
 		}
 		
 		ObjavaDTO retVal = new ObjavaDTO();
+		retVal.setAutor(obj.getAutor().getIme()+" "+obj.getAutor().getPrezime()+" "+obj.getAutor().getEmail());
 		retVal.setDatumIsteka(obj.getDatumIsteka());
 		retVal.setNaziv(obj.getNaziv());
 		retVal.setOpis(obj.getOpis());
@@ -336,12 +345,12 @@ public class FanZonaService {
 		
 		if(jeAutor) {
 			celaVrednost.setDodavanjePonudeVidljivo(false);
-			if(obj.getStatus()!=StatusObjave.ARHIVIRAN) {
+			if(obj.getStatus()!=StatusObjave.ARHIVIRAN && !(obj.getDatumIsteka().before(new Date()))) {
 				celaVrednost.setPrihvatanjePonudeVidljivo(true);
 			}
 		}
 		else {
-			if(obj.getStatus()!=StatusObjave.ARHIVIRAN) {
+			if(obj.getStatus()!=StatusObjave.ARHIVIRAN && !(obj.getDatumIsteka().before(new Date()))) {
 				celaVrednost.setDodavanjePonudeVidljivo(true);
 			}
 		}
@@ -413,7 +422,7 @@ public class FanZonaService {
 	}
 	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW ,rollbackFor=Exception.class)
-	public void prihvatiPonudu(Korisnik kor, int id) throws NeovlascenPristupException, ObjavaNijeObjavljena, PonudaNePostoji {
+	public void prihvatiPonudu(Korisnik kor, int id) throws NeovlascenPristupException, ObjavaNijeObjavljena, PonudaNePostoji, ObjavaIstekla {
 		
 		Ponuda prihvacenaPonuda = ponudaRep.findById(id);
 		
@@ -430,6 +439,7 @@ public class FanZonaService {
 		if(obj.getStatus()!=StatusObjave.OBJAVLJEN) {
 			throw new ObjavaNijeObjavljena();
 		}
+		objavaIsteklaProvera(obj);
 		
 		for(Ponuda p:obj.getPonude()) {
 			if(p.getId()==prihvacenaPonuda.getId()) {
