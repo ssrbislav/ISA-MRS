@@ -22,6 +22,12 @@
 <body style="background:   white ">
 
 	<%@include file="korisnickiMeni.jsp" %>
+	<c:if test="${not empty PorukaRezervacija}">
+	    <script type="text/javascript">
+	    	alert("${PorukaRezervacija}")
+	    </script>
+	</c:if>
+	
 	<div class="container">
 	 <div class="col-lg-5" >
 		<img src="/upravljanjeSlikama?putanjaDoSlike=${predstavaZaRezervaciju.slika}"  style="width: 200px; height: 200px;"></img>

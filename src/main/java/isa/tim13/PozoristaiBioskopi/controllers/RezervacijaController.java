@@ -30,6 +30,7 @@ import isa.tim13.PozoristaiBioskopi.service.EmailService;
 import isa.tim13.PozoristaiBioskopi.service.KartaService;
 import isa.tim13.PozoristaiBioskopi.service.KorisniciService;
 import isa.tim13.PozoristaiBioskopi.service.PredstaveProjekcijeService;
+import isa.tim13.PozoristaiBioskopi.service.RezervacijaService;
 import isa.tim13.PozoristaiBioskopi.service.TerminiService;
 
 @Controller
@@ -38,15 +39,16 @@ import isa.tim13.PozoristaiBioskopi.service.TerminiService;
 public class RezervacijaController {
 
 	@Autowired
-	PredstaveProjekcijeService servis;
+	PredstaveProjekcijeService predstaveProjekcijeServis;
 	@Autowired
-	TerminiService servis1;
+	TerminiService terminiServis;
 	@Autowired
 	KorisniciService korisniciServis;
 	@Autowired
-	KartaService servisKarte;
+	KartaService karteServis;
+	@Autowired
+	RezervacijaService rezervacijaServis;
 	
-
 	@Autowired
 	private EmailService emailThread;
 
@@ -56,7 +58,7 @@ public class RezervacijaController {
 	@RequestMapping(method = RequestMethod.POST, path = "/termin")
 	public String repertoar(HttpSession sesion, @RequestParam("id") int ID) {
 
-		PredstavaProjekcija predstava = servis.findById(ID).get();
+		PredstavaProjekcija predstava = predstaveProjekcijeServis.findById(ID).get();
 
 		ArrayList<LocalDate> datumiPrikazivanja = new ArrayList<LocalDate>();
 		ArrayList<Termin> prosliTermini = new ArrayList<Termin>();
@@ -102,7 +104,7 @@ public class RezervacijaController {
 	@RequestMapping(method = RequestMethod.POST, path = "/mesta")
 	public String odabirMesta(HttpSession session, @RequestParam("id") int ID) {
 
-		Termin zakazanTermin = servis1.findById(ID).get();
+		Termin zakazanTermin = terminiServis.findById(ID).get();
 
 		Rezervacija r = new Rezervacija();
 		r.setTermin(zakazanTermin);
@@ -114,10 +116,10 @@ public class RezervacijaController {
 	@RequestMapping(method = RequestMethod.POST, path = "/zakazivanje")
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	@Lock(value = LockModeType.PESSIMISTIC_WRITE)
-	public String rezervacijaMesta(HttpSession sesion, @RequestParam("odabranaMesta") List<String> mesta) {
+	public String rezervacijaMesta(HttpSession sesion, @RequestParam("odabranaMesta") List<String> mesta){
 		Rezervacija r = (Rezervacija) sesion.getAttribute("rezervacija");
 		Termin t = r.getTermin();
-		Korisnik ulogovan = (Korisnik) sesion.getAttribute("korisnik");
+		Korisnik ulogovan = (Korisnik) korisniciServis.pronadjiKorisnikaPoEmailu(((Osoba)sesion.getAttribute("korisnik")).getEmail());
 		r.setKorisnik(ulogovan);
 		ArrayList<Karta> karte = new ArrayList<>();
 		String potvrdaZaMail = "Uspesno ste izvrsili rezervaciju:\n\n" + "Bioskop/Pozoriste: "
@@ -136,7 +138,12 @@ public class RezervacijaController {
 			String[] kordinate = sediste_korisnik[0].split("_");
 			int x = Integer.parseInt(kordinate[0]) - 1;
 			int y = Integer.parseInt(kordinate[1]) - 1;
-			t.getMesta()[x][y] = true;
+			if(t.getMesta()[x][y] == false) {
+				t.getMesta()[x][y] = true;
+			}else {
+				sesion.setAttribute("PorukaRezervacija", "Mesto zauzeto u medjuvremenu. Pokusajte ponovo.");
+				return "redirect:/rezervacija";
+			}
 
 			int[] koordinateMesta = { x, y + 1 };
 			k.setSediste(koordinateMesta);
@@ -169,7 +176,7 @@ public class RezervacijaController {
 		ulogovan.setBrojBodova(ulogovan.getBrojBodova() + mesta.size() * 5);
 
 		korisniciServis.dodajKorisnika(ulogovan);
-		servis1.dodajTermin(t);
+		terminiServis.dodajTermin(t);
 		mailPotvrdaRezervacije(ulogovan.getEmail(), potvrdaZaMail);
 		sesion.setAttribute("korisnik", (Korisnik)korisniciServis.pronadjiKorisnikaPoEmailu(ulogovan.getEmail()));
 		return "../repertoar";
@@ -191,13 +198,13 @@ public class RezervacijaController {
 		String naslov = "Rezervacija";
 		emailThread.setup(mailTo, naslov, poruka);
 		taskExecutor.execute(emailThread);
-
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/matrica")
 	@ResponseBody
 	public boolean[][] matricaTermina(HttpSession session) {
 		Rezervacija r = (Rezervacija) session.getAttribute("rezervacija");
+		r.setTermin(terminiServis.findById(r.getTermin().getId()).get());
 		return r.getTermin().getMesta();
 	}
 }

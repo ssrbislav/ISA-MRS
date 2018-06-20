@@ -23,13 +23,11 @@ import isa.tim13.PozoristaiBioskopi.model.TipInstitucijeKulture;
 import isa.tim13.PozoristaiBioskopi.service.AuthService;
 import isa.tim13.PozoristaiBioskopi.service.PozoristaIBioskopiService;
 
-
 @Controller
 public class ViewController {
-	
-	
-@Autowired  
-PozoristaIBioskopiService servis;
+
+	@Autowired
+	PozoristaIBioskopiService servis;
 
 	// Pocetna strana
 	@RequestMapping("/")
@@ -48,23 +46,28 @@ PozoristaIBioskopiService servis;
 	public String prijava() {
 		return "prijava";
 	}
-	
+
 	// strana za repertoar
 	@RequestMapping("/repertoar")
 	public String repertoar() {
 		return "repertoar";
 	}
-	
+
 	// strana za repertoar
 	@RequestMapping("/rezervacija")
-	public String rezervacija() {
+	public String rezervacija(HttpSession session, HttpServletRequest request) {
+		String poruka = (String) session.getAttribute("PorukaRezervacija");
+		if (poruka != null && !poruka.equals("")) {
+			request.setAttribute("PorukaRezervacija", poruka);
+			session.removeAttribute("PorukaRezervacija");
+		}
 		return "rezervacija";
 	}
 
 	// strana za profil
 	@RequestMapping("/profilKorisnika")
 	public String profil(HttpSession s) throws NijePromenjenaLozinka {
-		if(s.getAttribute("korisnik") instanceof Administrator) {
+		if (s.getAttribute("korisnik") instanceof Administrator) {
 			AuthService.fanAdminPromenaLozinkeProvera(s);
 			return "profilAdministratora";
 		}
@@ -72,69 +75,69 @@ PozoristaIBioskopiService servis;
 	}
 
 	// strana za profil
-	@ExceptionHandler({NijePromenjenaLozinka.class})
+	@ExceptionHandler({ NijePromenjenaLozinka.class })
 	@RequestMapping("/izmenaLozinke")
 	public String lozinka() {
 		return "izmenaLozinke";
 	}
-	
-	
+
 	// strana za profil
-		@RequestMapping("/izmenaPodataka")
-		public String izmenaPodataka() {
-			return "izmenaPodataka";
-			
-		}
-		
-		// spisak bioskopa
-		@RequestMapping("/bioskopi")
-		public String bioskopi(HttpSession sesion) {
-			
-			ArrayList<InstitucijaKulture> institucije = (ArrayList<InstitucijaKulture>) servis.prikaziInstitucije() ;
-			ArrayList<InstitucijaKulture> bioskopi = new ArrayList<InstitucijaKulture>() ;
-			
-			for (InstitucijaKulture i : institucije) {
-				if (i.getTip()==TipInstitucijeKulture.BIOSKOP) {
-					bioskopi.add(i);
-					
-				}
+	@RequestMapping("/izmenaPodataka")
+	public String izmenaPodataka() {
+		return "izmenaPodataka";
+
+	}
+
+	// spisak bioskopa
+	@RequestMapping("/bioskopi")
+	public String bioskopi(HttpSession sesion) {
+
+		ArrayList<InstitucijaKulture> institucije = (ArrayList<InstitucijaKulture>) servis.prikaziInstitucije();
+		ArrayList<InstitucijaKulture> bioskopi = new ArrayList<InstitucijaKulture>();
+
+		for (InstitucijaKulture i : institucije) {
+			if (i.getTip() == TipInstitucijeKulture.BIOSKOP) {
+				bioskopi.add(i);
+
 			}
-			sesion.setAttribute("institucijePrikaz", bioskopi);
-			return "BioskopiPozorista";
 		}
-		
-		
-		// spisak pozorista
-		@RequestMapping("/pozorista")
-		public String pozorista(HttpSession sesion) {
-			
-			ArrayList<InstitucijaKulture> institucije = (ArrayList<InstitucijaKulture>) servis.prikaziInstitucije() ;
-			ArrayList<InstitucijaKulture> pozorista = new ArrayList<InstitucijaKulture>() ;
-			
-			for (InstitucijaKulture i : institucije) {
-				if (i.getTip()==TipInstitucijeKulture.POZORISTE) {
-					pozorista.add(i);
-					
-				}
+		sesion.setAttribute("institucijePrikaz", bioskopi);
+		return "BioskopiPozorista";
+	}
+
+	// spisak pozorista
+	@RequestMapping("/pozorista")
+	public String pozorista(HttpSession sesion) {
+
+		ArrayList<InstitucijaKulture> institucije = (ArrayList<InstitucijaKulture>) servis.prikaziInstitucije();
+		ArrayList<InstitucijaKulture> pozorista = new ArrayList<InstitucijaKulture>();
+
+		for (InstitucijaKulture i : institucije) {
+			if (i.getTip() == TipInstitucijeKulture.POZORISTE) {
+				pozorista.add(i);
+
 			}
-			sesion.setAttribute("institucijePrikaz", pozorista);
-			return "BioskopiPozorista";
 		}
-		
-		@RequestMapping("/odjava")
-		public String odjava(HttpSession sesion) {
-			sesion.invalidate();
-			return "prijava";
+		sesion.setAttribute("institucijePrikaz", pozorista);
+		return "BioskopiPozorista";
+	}
+
+	@RequestMapping("/odjava")
+	public String odjava(HttpSession sesion) {
+		sesion.invalidate();
+		return "prijava";
+	}
+
+	@RequestMapping("/prijatelji")
+	public String listaPrijatelja(HttpSession sesion, HttpServletRequest request) {
+		String poruka = (String) sesion.getAttribute("PrijateljPoruka");
+		if (poruka != null && !poruka.equals("")) {
+			request.setAttribute("PrijateljPoruka", poruka);
+			sesion.removeAttribute("PrijateljPoruka");
 		}
-		@RequestMapping("/prijatelji")
-		public String listaPrijatelja(HttpSession sesion, HttpServletRequest request) {
-			String poruka = (String) sesion.getAttribute("PrijateljPoruka");
-			if(poruka!=null && !poruka.equals("")) {
-				request.setAttribute("PrijateljPoruka", poruka);
-				sesion.removeAttribute("PrijateljPoruka");
-			}
-			return "prijatelji";
-		}
+		return "prijatelji";
+	}
+
 	@RequestMapping("/projekcija")
 	public String projekcija() {
 		return "projekcija";
@@ -144,11 +147,13 @@ PozoristaIBioskopiService servis;
 	public String predstava() {
 		return "predstava";
 	}
+
 	@RequestMapping("/rezervacije")
 	public String rezervacije(HttpSession s) {
 		s.removeAttribute("Poruka");
 		return "rezervacije";
 	}
+
 	@RequestMapping("/registracijaInstitucija")
 	public String registracijaInstitucija(HttpSession s) {
 		try {
@@ -158,7 +163,7 @@ PozoristaIBioskopiService servis;
 		}
 		return "registracijaInstitucija";
 	}
-	
+
 	@RequestMapping("/bodovnaSkala")
 	public String bodovnaSkala(HttpSession s) {
 		try {
@@ -168,18 +173,18 @@ PozoristaIBioskopiService servis;
 		}
 		return "bodovnaSkala";
 	}
-	
+
 	@RequestMapping("/prikazTematskihRekvizita")
 	public String prikazTematskihRekvizita(HttpSession s) throws NijePromenjenaLozinka {
 		try {
-			AuthService.osobaProvera(s,FanZonaAdministrator.class,Korisnik.class);
+			AuthService.osobaProvera(s, FanZonaAdministrator.class, Korisnik.class);
 			AuthService.fanAdminPromenaLozinkeProvera(s);
 		} catch (NeovlascenPristupException e) {
 			return "prijava";
 		}
 		return "prikazTematskihRekvizita";
 	}
-	
+
 	@RequestMapping("/dodavanjeTematskihRekvizita")
 	public String dodavanjeTematskihRekvizita(HttpSession s) throws NijePromenjenaLozinka {
 		try {
@@ -200,7 +205,7 @@ PozoristaIBioskopiService servis;
 		}
 		return "dodavanjeAdministratora";
 	}
-	
+
 	@RequestMapping("/pregledNeobjavljenihObjava")
 	public String pregledNeobjavljenihObjava(HttpSession s) throws NijePromenjenaLozinka {
 		try {
@@ -211,7 +216,7 @@ PozoristaIBioskopiService servis;
 		}
 		return "pregledNeobjavljenihObjava";
 	}
-	
+
 	@RequestMapping("/pregledRazmatranihObjava")
 	public String pregledRazmatranihObjava(HttpSession s) throws NijePromenjenaLozinka {
 		try {
@@ -222,7 +227,7 @@ PozoristaIBioskopiService servis;
 		}
 		return "pregledRazmatranihObjava";
 	}
-	
+
 	@RequestMapping("/dodavanjeObjava")
 	public String dodavanjeObjava(HttpSession s) {
 		try {
@@ -232,7 +237,7 @@ PozoristaIBioskopiService servis;
 		}
 		return "dodavanjeObjava";
 	}
-	
+
 	@RequestMapping("/rezervacijeRekvizita")
 	public String rezervacijeRekvizita(HttpSession s) {
 		try {
@@ -242,7 +247,7 @@ PozoristaIBioskopiService servis;
 		}
 		return "rezervacijeRekvizita";
 	}
-	
+
 	@RequestMapping("/pregledObjavljenihObjava")
 	public String pregledObjavljenihObjava(HttpSession s) {
 		try {
@@ -252,17 +257,17 @@ PozoristaIBioskopiService servis;
 		}
 		return "pregledObjavljenihObjava";
 	}
-	
-	@RequestMapping(value="/prikazObjave" ,method=RequestMethod.GET)
-	public String prikazObjave(HttpSession s,@RequestParam("id") int id) {
-		
+
+	@RequestMapping(value = "/prikazObjave", method = RequestMethod.GET)
+	public String prikazObjave(HttpSession s, @RequestParam("id") int id) {
+
 		try {
 			AuthService.korisnikProvera(s);
 		} catch (NeovlascenPristupException e) {
 			return "redirect:/prijava";
 		}
 		s.setAttribute("idObjave", id);
-		
+
 		return "prikazObjave";
 	}
 

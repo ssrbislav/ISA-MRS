@@ -48,7 +48,7 @@ public class PrijateljiController {
 		Korisnik ulogovan = (Korisnik)session.getAttribute("korisnik");
 		for (Korisnik korisnik : korisnici) {
 			if(korisnik.getIme().toLowerCase().contains(zaPretragu.toLowerCase()) ||  korisnik.getPrezime().toLowerCase().contains(zaPretragu.toLowerCase())) {
-				if(!ulogovan.getEmail().equalsIgnoreCase(korisnik.getEmail())) {
+				if(!ulogovan.getEmail().equalsIgnoreCase(korisnik.getEmail()) && korisnik.getAktivan()) {
 					PrijateljDTO prijatelj = new PrijateljDTO();
 					prijatelj.setId(korisnik.getId());
 					prijatelj.setEmail(korisnik.getEmail());
@@ -68,8 +68,8 @@ public class PrijateljiController {
 			
 			Korisnik prijatelj =(Korisnik) korisniciServis.pronadjiPoId(ID).get();
 			
-			if (prijatelj.getZahtevi().contains(ulogovan) || ulogovan.getPrijatelji().contains(prijatelj)) {
-				session.setAttribute("PrijateljPoruka", "Osoba vec postoji u listi prijatelja ili ste joj poslali zahtev.");
+			if (prijatelj.getZahtevi().contains(ulogovan) || ulogovan.getPrijatelji().contains(prijatelj) || ulogovan.getZahtevi().contains(prijatelj)) {
+				session.setAttribute("PrijateljPoruka", "Osoba vec postoji u listi prijatelja ili ste poslali/primili zahtev.");
 				
 				
 			}else {

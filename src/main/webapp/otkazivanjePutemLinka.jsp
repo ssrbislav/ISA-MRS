@@ -7,7 +7,6 @@
 <title>Otkazivanje</title>
 </head>
 <body>
-<%@include file="korisnickiMeni.jsp" %>
 <h3>${otkazivanjePoruka}</h3></br>
 
 <a href="/prijava">prijava</a>

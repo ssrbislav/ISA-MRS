@@ -31,7 +31,7 @@
        <li id="notifikacijeLi" class="dropdown">
       	<a id="notifikacijeToggle" class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Zahtevi za prijateljstvo
         <span class="caret"></span></a>
-        <ul id="notifikacije" class="dropdown-menu">
+        <ul id="zahtevi" class="dropdown-menu">
 
                   <c:forEach var = "i" items= "${korisnik.zahtevi}">
          					

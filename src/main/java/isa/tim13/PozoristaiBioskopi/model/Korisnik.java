@@ -27,11 +27,11 @@ public class Korisnik extends Osoba implements Serializable {
 	@ManyToMany(cascade = { CascadeType.MERGE,CascadeType.PERSIST }, fetch=FetchType.LAZY)
 	List<PredstavaProjekcija> istorijatPoseta;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.LAZY, mappedBy="korisnik")
 	List<Rezervacija> rezervacije;
 	
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER, mappedBy="osoba")
 	List<Karta> karte;
 
 

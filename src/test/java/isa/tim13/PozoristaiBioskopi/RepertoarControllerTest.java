@@ -74,9 +74,9 @@ public class RepertoarControllerTest {
 	public void repertoarTest() throws Exception {
 		repozitorijum.save(institucija);
 		mockMvc.perform(post(URL_PREFIX).contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.content(buildUrlEncodedFormEntity("id", "1"))
+				.content(buildUrlEncodedFormEntity("id", institucija.getId()+""))
 				.session(session))
-				.andExpect(status().isOk());
+				.andExpect(status().isMovedTemporarily());
 		assertNotNull(session.getAttribute("institucija"));
 	}
 	

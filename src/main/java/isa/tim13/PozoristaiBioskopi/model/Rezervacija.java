@@ -34,7 +34,7 @@ public class Rezervacija {
 	@Column(name="bodovi")
 	private int bodovi;
 	
-	@OneToMany(cascade = CascadeType.ALL,  fetch=FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL,  fetch=FetchType.LAZY, mappedBy="rezervacija")
 	private List<Karta> karte;
 
 	public int getId() {

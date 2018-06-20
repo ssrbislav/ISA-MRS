@@ -1,7 +1,5 @@
 package isa.tim13.PozoristaiBioskopi.controllers;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

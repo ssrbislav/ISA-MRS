@@ -64,7 +64,7 @@
 						
 						<td>
 							<c:forEach var ="j" items = "${i.karte}">
-								${j.sediste[0]}|${j.sediste[1]}  
+								${j.sediste[0]+1}|${j.sediste[1]}  
 							</c:forEach>
 						</td>
 						<td>
@@ -114,7 +114,7 @@
 						<td>  ${i.rezervacija.termin.datum}</td>
 						<td>  ${i.rezervacija.termin.vreme}</td>
 						<td>${i.rezervacija.termin.sala.oznakaSale }</td>
-						<td>  ${i.sediste[0]}|${i.sediste[1]}</td>
+						<td>  ${i.sediste[0]+1}|${i.sediste[1]}</td>
 					</tr>
 					</c:if>
      			 </c:forEach>

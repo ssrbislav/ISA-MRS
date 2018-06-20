@@ -17,29 +17,28 @@ import javax.persistence.OneToOne;
 public class Termin {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id", updatable=false, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
 	private int id;
-	
-	
-	@ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+
+	@ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
 	private PredstavaProjekcija predProj;
-	
-	@Column(name="vreme")
+
+	@Column(name = "vreme")
 	private LocalTime vreme;
-	
-	@Column(name="datum")
-	private LocalDate datum; 
-	
-	@Column(name="cena")
+
+	@Column(name = "datum")
+	private LocalDate datum;
+
+	@Column(name = "cena")
 	private double cena;
-	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = false, fetch=FetchType.LAZY)
+
+	@OneToOne(cascade = CascadeType.MERGE, orphanRemoval = false, fetch = FetchType.LAZY)
 	private Sala sala;
-	
-	@Column(name="mesta")
-	private boolean [][] mesta;
-	
+
+	@Column(name = "mesta")
+	private boolean[][] mesta;
+
 	public double getCena() {
 		return cena;
 	}
@@ -47,6 +46,7 @@ public class Termin {
 	public void setCena(double cena) {
 		this.cena = cena;
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -58,7 +58,7 @@ public class Termin {
 	public void setVreme(LocalTime vreme) {
 		this.vreme = vreme;
 	}
-	
+
 	public LocalDate getDatum() {
 		return datum;
 	}
@@ -74,14 +74,15 @@ public class Termin {
 	public void setSala(Sala sala) {
 		this.sala = sala;
 	}
-	
-	public boolean [][] getMesta() {
+
+	public boolean[][] getMesta() {
 		return mesta;
 	}
 
-	public void setMesta(boolean [][] mesta) {
+	public void setMesta(boolean[][] mesta) {
 		this.mesta = mesta;
 	}
+
 	public PredstavaProjekcija getpredProj() {
 		return predProj;
 	}
@@ -89,7 +90,8 @@ public class Termin {
 	public void setpredProj(PredstavaProjekcija predProj) {
 		this.predProj = predProj;
 	}
-	
-	public Termin() {}
-		
+
+	public Termin() {
+	}
+
 }
