@@ -2,7 +2,9 @@ package isa.tim13.PozoristaiBioskopi.repository;
 
 
 
+
 import javax.persistence.LockModeType;
+
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,7 +19,6 @@ public interface TematskiRekvizitRepository extends CrudRepository<TematskiRekvi
 	
 	TematskiRekvizit findByNazivRekvizita(String naziv);
 	
-	@Lock(value = LockModeType.PESSIMISTIC_READ)
 	TematskiRekvizit findById(int id);
 	
 	void save(RezervacijaRekvizita rezervacija);
@@ -28,4 +29,8 @@ public interface TematskiRekvizitRepository extends CrudRepository<TematskiRekvi
 	
 	@Query(value="select r from RezervacijaRekvizita r where r.narucilac.id = :id",nativeQuery=false)
 	Iterable<RezervacijaRekvizita> pribaviRezervacijeRekvizita(@Param("id") int id);
+	
+	@Query(value="select r from TematskiRekvizit r where r.id = :id",nativeQuery=false)
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	TematskiRekvizit pronadjiPoIdLock(@Param("id")int id);
 }

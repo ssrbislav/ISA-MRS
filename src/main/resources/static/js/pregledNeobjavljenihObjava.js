@@ -21,8 +21,17 @@ function preuzmiObjavu(id){
 			  
 		   },
 		  error : function(xhr, textStatus, errorThrown) {
-			  var err = xhr["responseText"];
-				alert(err["message"]);
+			  try{
+				  var msg = JSON.parse(xhr["responseText"])["message"];
+				  alert(msg);
+			  }
+			  catch(err){
+				  alert(xhr["responseText"]);
+			  }
+			  
+			
+			  
+			  
 		}
 		   
 	});

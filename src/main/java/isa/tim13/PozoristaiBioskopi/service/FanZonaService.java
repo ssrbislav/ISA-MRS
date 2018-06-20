@@ -43,6 +43,7 @@ import isa.tim13.PozoristaiBioskopi.model.PonudaNotifikacija;
 import isa.tim13.PozoristaiBioskopi.model.RezervacijaRekvizita;
 import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TematskiRekvizit;
+import isa.tim13.PozoristaiBioskopi.model.ZakljucaniObjekti;
 import isa.tim13.PozoristaiBioskopi.repository.AdministratoriRepository;
 import isa.tim13.PozoristaiBioskopi.repository.ObjavaRepository;
 import isa.tim13.PozoristaiBioskopi.repository.PonudaNotifikacijaRepository;
@@ -71,7 +72,7 @@ public class FanZonaService {
 	@Autowired
 	PonudaNotifikacijaRepository notifikacijaRep;
 	
-	
+	ZakljucaniObjekti objekti = new ZakljucaniObjekti();
 	
 	
 	private static final String PUTANJA_PREFIKS = "slike/";
@@ -189,6 +190,7 @@ public class FanZonaService {
 		
 		obj.setStatus(StatusObjave.U_RAZMATRANJU);
 		obj.setAdmin(admin);
+
 		objavaRep.save(obj);
 		
 		
@@ -387,12 +389,13 @@ public class FanZonaService {
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW ,rollbackFor=Exception.class)
 	public LinkedHashMap<String, String> rezervisanjeRekvizita(Korisnik kor, int id) throws RekvizitNePostoji, NemaViseRekvizita {
-		
 		TematskiRekvizit rek = rep.findById(id);
 		if(rek==null) {
 			throw new RekvizitNePostoji();
 		}
 		int broj = rek.getBroj();
+		rek.setBroj(broj-1);
+		
 		if(broj==0) {
 			throw new NemaViseRekvizita();
 		}
@@ -400,8 +403,7 @@ public class FanZonaService {
 		RezervacijaRekvizita rezervacija = new RezervacijaRekvizita();
 		rezervacija.setNarucilac(kor);
 		rezervacija.setRekvizit(rek);
-		rek.setBroj(broj-1);
-		
+
 		rep.save(rek);
 		rep.save(rezervacija);
 		

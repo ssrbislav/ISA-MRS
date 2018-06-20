@@ -41,6 +41,7 @@ import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.Osoba;
 import isa.tim13.PozoristaiBioskopi.model.StatusObjave;
 import isa.tim13.PozoristaiBioskopi.model.TipAdministratora;
+import isa.tim13.PozoristaiBioskopi.model.ZakljucaniObjekti;
 import isa.tim13.PozoristaiBioskopi.service.AuthService;
 import isa.tim13.PozoristaiBioskopi.service.FanZonaService;
 
@@ -52,6 +53,7 @@ public class FanZonaController {
 	FanZonaService servis;
 	
 	private static ObjectMapper objMapper;
+	ZakljucaniObjekti objekti = new ZakljucaniObjekti();
 	
 	static {
 		objMapper = new ObjectMapper();
@@ -85,8 +87,11 @@ public class FanZonaController {
 	
 	@RequestMapping(value="/rezervisanjeRekvizita",method=RequestMethod.PUT,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody LinkedHashMap<String,String> rezervisanjeRekvizita(HttpSession s,@RequestParam("id") int id) throws RekvizitNePostoji, NemaViseRekvizita, NeovlascenPristupException{
-		Korisnik kor = AuthService.korisnikProvera(s);
-	    return servis.rezervisanjeRekvizita(kor,id);
+		synchronized(objekti.dobaviObjekat(id)) {
+			Korisnik kor = AuthService.korisnikProvera(s);
+			return servis.rezervisanjeRekvizita(kor,id);
+		}
+		
 		
 	}
 	

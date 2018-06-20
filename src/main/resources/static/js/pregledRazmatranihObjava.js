@@ -22,7 +22,7 @@ function evaluirajObjavu(id,prihvacena){
 			  
 		   },
 		  error : function(xhr, textStatus, errorThrown) {
-			  var err = xhr["responseText"];
+			  var err = JSON.parse(xhr["responseText"]);
 				alert(err);
 		}
 		   
