@@ -1,6 +1,5 @@
 var notifikacijePutanja = "/fanzona/pribaviObavestenja";
 var obrisiNotifikacijuPutanja = "/fanzona/obrisiObavestenje";
-var dobaviBedzPutanja = "/profil/dobaviBedz";
 var putanjaDoSlika = "/upravljanjeSlikama?putanjaDoSlike=";
 var brojNotifikacija = 0;
 
@@ -40,7 +39,7 @@ function dodajNotifikaciju(notifikacija){
 	var novaNotifikacijaSadrzaj = "<div class=\"notifikacijaPonude\">";
 	novaNotifikacijaSadrzaj = novaNotifikacijaSadrzaj + 
 	"<p>"+"Vasa ponuda <b>"+notifikacija["imePonude"] +
-	"</b> na objavu <b>"+notifikacija["imeObjave"]+"</b> je <b>"+vratiPrihvacena(notifikacija["prihvacena"])+"</b></p>";
+	"</b> na objavu <a href=\"prikazObjave?id="+notifikacija["idObjave"]+"\"><b>"+notifikacija["imeObjave"]+"</b></a> je <b>"+vratiPrihvacena(notifikacija["prihvacena"])+"</b></p>";
 	novaNotifikacijaSadrzaj = novaNotifikacijaSadrzaj +"<i>"+notifikacija["datum"]+"</i>";
 	novaNotifikacijaSadrzaj = novaNotifikacijaSadrzaj + "&nbsp<button class = \"notifikacijaObrisiDugme\" text=\"Obrisi\" onclick=\""+"obrisiNotifikaciju("+notifikacija["id"]+")\">Obrisi</button>";
 	novaNotifikacijaSadrzaj = novaNotifikacijaSadrzaj + "</div>";
@@ -81,19 +80,6 @@ $(document).ready(function(){
 		   
 	});
 	
-	$.ajax({ url:dobaviBedzPutanja,
-		   type: "GET",
-		   success: function(data){
-			 if(data!=""){
-				 var img = $("<img></img>");
-				 img.attr("src",putanjaDoSlika+data);
-				 $(".col-lg-5").append(img);
-			 }
-			 
-		   },
-		  error : function(XMLHttpRequest, textStatus, errorThrown) {
-		}
-		   
-	});
+	
 	
 });

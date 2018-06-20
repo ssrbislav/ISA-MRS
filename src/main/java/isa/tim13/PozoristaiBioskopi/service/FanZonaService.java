@@ -72,7 +72,6 @@ public class FanZonaService {
 	@Autowired
 	PonudaNotifikacijaRepository notifikacijaRep;
 	
-	ZakljucaniObjekti objekti = new ZakljucaniObjekti();
 	
 	
 	private static final String PUTANJA_PREFIKS = "slike/";
@@ -469,6 +468,7 @@ public class FanZonaService {
 			nDTO.setImePonude(not.getPonuda().getNaslov());
 			nDTO.setPrihvacena(not.isPrihvacena());
 			nDTO.setDatum(sdf.format(not.getDatum()));
+			nDTO.setIdObjave(not.getPonuda().getObjava().getId());
 			povratnaVrednost.add(nDTO);
 		}
 		return povratnaVrednost;

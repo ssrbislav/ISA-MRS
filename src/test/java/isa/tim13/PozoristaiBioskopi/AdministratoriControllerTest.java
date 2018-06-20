@@ -1,6 +1,7 @@
 package isa.tim13.PozoristaiBioskopi;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -183,6 +184,16 @@ public class AdministratoriControllerTest {
 				.content(TestUtil.toJson(adDTO))).andExpect(status().isBadRequest());
 		
 		
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void pribaviOpcijeTest() throws Exception {
+		MvcResult rezultat = mockMvc.perform(get(URL_PREFIX+"/pribaviOpcije")
+				.session(session)).andExpect(status().isOk()).andReturn();
+		assertNotEquals(null,rezultat);
+		mockMvc.perform(get(URL_PREFIX+"/pribaviOpcije")).andExpect(status().isForbidden());
 	}
 	
 	@Test

@@ -12,15 +12,14 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-	<script type="text/javascript" src="/js/profilKorisnika.js"></script>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body style="background:   white ">
-
 	<%@include file="korisnickiMeni.jsp" %>
+	<script src="js/bedzevi.js"></script>
 	<div class="container">
 	 <div class="col-md-3" >
 		<img src="/upravljanjeSlikama?putanjaDoSlike=${korisnik.lokacijaSlike}"  style="width: 250px; height: 300px;"></img>

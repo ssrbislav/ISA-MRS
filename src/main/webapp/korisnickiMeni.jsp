@@ -28,8 +28,8 @@
           
         </ul>
       </li>
-       <li id="notifikacijeLi" class="dropdown">
-      	<a id="notifikacijeToggle" class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Zahtevi za prijateljstvo
+       <li id="zahteviLi" class="dropdown">
+      	<a id="zahteviToggle" class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Zahtevi za prijateljstvo
         <span class="caret"></span></a>
         <ul id="zahtevi" class="dropdown-menu">
 
@@ -56,3 +56,4 @@
     </ul>
   </div>
 </nav>
+<script type="text/javascript" src="/js/profilKorisnika.js"></script>
