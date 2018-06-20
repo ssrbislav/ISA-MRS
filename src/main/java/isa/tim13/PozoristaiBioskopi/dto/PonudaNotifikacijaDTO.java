@@ -14,6 +14,15 @@ public class PonudaNotifikacijaDTO {
 	private boolean prihvacena;
 	
 	@JsonProperty
+	private int idObjave;
+	
+	public int getIdObjave() {
+		return idObjave;
+	}
+	public void setIdObjave(int idObjave) {
+		this.idObjave = idObjave;
+	}
+	@JsonProperty
 	private String datum;
 	
 	public String getDatum() {
