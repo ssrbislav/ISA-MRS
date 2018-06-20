@@ -2,19 +2,18 @@ package isa.tim13.PozoristaiBioskopi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.net.URLEncoder;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 
-import org.hibernate.type.LocalDateTimeType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,8 +32,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import isa.tim13.PozoristaiBioskopi.controllers.RegistracioniController;
+import isa.tim13.PozoristaiBioskopi.controllers.OtkazivanjeRezervacijeController;
 import isa.tim13.PozoristaiBioskopi.controllers.RezervacijaController;
+import isa.tim13.PozoristaiBioskopi.model.InstitucijaKulture;
 import isa.tim13.PozoristaiBioskopi.model.Korisnik;
 import isa.tim13.PozoristaiBioskopi.model.PredstavaProjekcija;
 import isa.tim13.PozoristaiBioskopi.model.Rezervacija;
@@ -42,8 +42,8 @@ import isa.tim13.PozoristaiBioskopi.model.Sala;
 import isa.tim13.PozoristaiBioskopi.model.Termin;
 import isa.tim13.PozoristaiBioskopi.repository.KorisnikRepository;
 import isa.tim13.PozoristaiBioskopi.repository.PredstavaProjekcijaRepository;
+import isa.tim13.PozoristaiBioskopi.repository.RezervacijaRepository;
 import isa.tim13.PozoristaiBioskopi.repository.SalaRepository;
-import isa.tim13.PozoristaiBioskopi.repository.TerminRepository;
 import isa.tim13.PozoristaiBioskopi.service.EmailService;
 
 @RunWith(SpringRunner.class)
@@ -66,7 +66,7 @@ public class RezervacijaControllerTest {
 	PredstavaProjekcijaRepository predstavaProjekcijaRep;
 	
 	@Autowired
-	TerminRepository terminRep;
+	RezervacijaRepository rezervacijaRep;
 	
 	@Autowired
 	SalaRepository salaRep;
@@ -77,6 +77,10 @@ public class RezervacijaControllerTest {
 	@InjectMocks
 	@Autowired
 	private RezervacijaController rezervacijaController;
+	
+	@InjectMocks
+	@Autowired
+	private OtkazivanjeRezervacijeController otkazivanjeRezervacijeController;
 	
 	@Mock
 	private ThreadPoolTaskExecutor taskExecutor;
@@ -93,16 +97,15 @@ public class RezervacijaControllerTest {
 	@PostConstruct
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		doNothing().when(taskExecutor).execute(emailThread);
 	}
 	
 	@Before
 	public void before() {
 		MockitoAnnotations.initMocks(this);
-
-		predstavaProjekcijaRep.deleteAll();
-		terminRep.deleteAll();
+		doNothing().when(taskExecutor).execute(emailThread);
 		korisnikRep.deleteAll();
+		rezervacijaRep.deleteAll();
+		predstavaProjekcijaRep.deleteAll();
 		
 		korisnik = noviKorisnik();
 		korisnikRep.save(korisnik);
@@ -136,9 +139,9 @@ public class RezervacijaControllerTest {
 
 	@After
 	public void after() {
-		predstavaProjekcijaRep.deleteAll();
-		terminRep.deleteAll();
 		korisnikRep.deleteAll();
+		rezervacijaRep.deleteAll();
+		predstavaProjekcijaRep.deleteAll();
 	}
 	
 	@Test
@@ -164,12 +167,49 @@ public class RezervacijaControllerTest {
 	public void zakazivanjeTest() throws Exception {
 		Rezervacija r = new Rezervacija();
 		r.setTermin(termin1);
+		InstitucijaKulture ik = new InstitucijaKulture();
+		ik.setNaziv("TEST");
+		termin1.getpredProj().setInstitucija(ik);
+		termin1.getpredProj().setNaziv("TEST");
+		int redovi = termin1.getSala().getBrojVrsta();
+		int kolone = termin1.getSala().getBrojKolona();
+		boolean[][] sala = new boolean[redovi][kolone];
+		termin1.setMesta(sala);
 		session.setAttribute("rezervacija", r);
 		session.setAttribute("korisnik", korisnik);
 		mockMvc.perform(post(URL_PREFIX+"/zakazivanje").contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.content(buildUrlEncodedFormEntity("odabranaMesta", "1_2-"))
 				.session(session))
 				.andExpect(status().isOk());
+		assertTrue(r.getTermin().getMesta()[0][1]);
+	}
+	
+	@Test
+	public void otkazivanjeTest() throws Exception {
+		Rezervacija r = new Rezervacija();
+		r.setTermin(termin1);
+		InstitucijaKulture ik = new InstitucijaKulture();
+		ik.setNaziv("TEST");
+		termin1.getpredProj().setInstitucija(ik);
+		termin1.getpredProj().setNaziv("TEST");
+		int redovi = termin1.getSala().getBrojVrsta();
+		int kolone = termin1.getSala().getBrojKolona();
+		boolean[][] sala = new boolean[redovi][kolone];
+		termin1.setMesta(sala);
+		session.setAttribute("rezervacija", r);
+		session.setAttribute("korisnik", korisnik);
+		mockMvc.perform(post(URL_PREFIX+"/zakazivanje").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.content(buildUrlEncodedFormEntity("odabranaMesta", "1_2-"))
+				.session(session))
+				.andExpect(status().isOk());
+		ArrayList<Rezervacija> rez = (ArrayList<Rezervacija>) rezervacijaRep.findAll();
+		assertTrue(rez.size()>0);
+		mockMvc.perform(post("/otkazivanje").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.content(buildUrlEncodedFormEntity("id", ""+rez.get(0).getId()))
+				.session(session))
+				.andExpect(status().isOk());
+		rez = (ArrayList<Rezervacija>) rezervacijaRep.findAll();
+		assertTrue(rez.size()==0);
 	}
 	
 	public String buildUrlEncodedFormEntity(String... params) {
